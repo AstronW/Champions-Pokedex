@@ -1,0 +1,8 @@
+# Preserve exact bytes for data and sources verified by the import/build hashes.
+*.kt text eol=lf
+*.kts text eol=lf
+app/src/main/assets/** -text
+data/** -text
+vendor/** -text
+scripts/calculator/adapter.js -text
+scripts/calculator/form-aliases.json -text
