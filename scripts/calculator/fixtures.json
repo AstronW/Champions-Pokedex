@@ -1,0 +1,4327 @@
+[
+  {
+    "name": "STAB + super effective",
+    "request": {
+      "attacker": {
+        "id": "0006000",
+        "ability": 66,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0003000",
+        "ability": 65,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 53,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 110,
+      "max": 132,
+      "maxHP": 155,
+      "currentHP": 155,
+      "percentMin": 70.9,
+      "percentMax": 85.1,
+      "ohko": 0,
+      "rolls": [
+        [
+          110,
+          110,
+          114,
+          114,
+          116,
+          116,
+          120,
+          120,
+          120,
+          122,
+          122,
+          126,
+          126,
+          128,
+          128,
+          132
+        ]
+      ],
+      "attackerStats": {
+        "hp": 153,
+        "atk": 104,
+        "def": 98,
+        "spa": 129,
+        "spd": 105,
+        "spe": 120
+      },
+      "defenderStats": {
+        "hp": 155,
+        "atk": 102,
+        "def": 103,
+        "spa": 120,
+        "spd": 120,
+        "spe": 100
+      },
+      "applied": {
+        "attackerName": "Charizard",
+        "moveName": "Flamethrower",
+        "defenderName": "Venusaur",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Sun",
+    "request": {
+      "attacker": {
+        "id": "0006000",
+        "ability": 66,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0003000",
+        "ability": 65,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 53,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles",
+        "weather": "Sun"
+      }
+    },
+    "expected": {
+      "min": 168,
+      "max": 198,
+      "maxHP": 155,
+      "currentHP": 155,
+      "percentMin": 108.3,
+      "percentMax": 127.7,
+      "ohko": 100,
+      "rolls": [
+        [
+          168,
+          168,
+          170,
+          174,
+          174,
+          176,
+          180,
+          180,
+          182,
+          186,
+          186,
+          188,
+          192,
+          192,
+          194,
+          198
+        ]
+      ],
+      "attackerStats": {
+        "hp": 153,
+        "atk": 104,
+        "def": 98,
+        "spa": 129,
+        "spd": 105,
+        "spe": 120
+      },
+      "defenderStats": {
+        "hp": 155,
+        "atk": 102,
+        "def": 103,
+        "spa": 120,
+        "spd": 120,
+        "spe": 100
+      },
+      "applied": {
+        "attackerName": "Charizard",
+        "moveName": "Flamethrower",
+        "defenderName": "Venusaur",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "weather": "Sun",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Rain",
+    "request": {
+      "attacker": {
+        "id": "0006000",
+        "ability": 66,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0003000",
+        "ability": 65,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 53,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles",
+        "weather": "Rain"
+      }
+    },
+    "expected": {
+      "min": 54,
+      "max": 66,
+      "maxHP": 155,
+      "currentHP": 155,
+      "percentMin": 34.8,
+      "percentMax": 42.5,
+      "ohko": 0,
+      "rolls": [
+        [
+          54,
+          54,
+          56,
+          56,
+          56,
+          56,
+          60,
+          60,
+          60,
+          60,
+          60,
+          62,
+          62,
+          62,
+          62,
+          66
+        ]
+      ],
+      "attackerStats": {
+        "hp": 153,
+        "atk": 104,
+        "def": 98,
+        "spa": 129,
+        "spd": 105,
+        "spe": 120
+      },
+      "defenderStats": {
+        "hp": 155,
+        "atk": 102,
+        "def": 103,
+        "spa": 120,
+        "spd": 120,
+        "spe": 100
+      },
+      "applied": {
+        "attackerName": "Charizard",
+        "moveName": "Flamethrower",
+        "defenderName": "Venusaur",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "weather": "Rain",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Sand",
+    "request": {
+      "attacker": {
+        "id": "0006000",
+        "ability": 66,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0003000",
+        "ability": 65,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 53,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles",
+        "weather": "Sand"
+      }
+    },
+    "expected": {
+      "min": 110,
+      "max": 132,
+      "maxHP": 155,
+      "currentHP": 155,
+      "percentMin": 70.9,
+      "percentMax": 85.1,
+      "ohko": 0,
+      "rolls": [
+        [
+          110,
+          110,
+          114,
+          114,
+          116,
+          116,
+          120,
+          120,
+          120,
+          122,
+          122,
+          126,
+          126,
+          128,
+          128,
+          132
+        ]
+      ],
+      "attackerStats": {
+        "hp": 153,
+        "atk": 104,
+        "def": 98,
+        "spa": 129,
+        "spd": 105,
+        "spe": 120
+      },
+      "defenderStats": {
+        "hp": 155,
+        "atk": 102,
+        "def": 103,
+        "spa": 120,
+        "spd": 120,
+        "spe": 100
+      },
+      "applied": {
+        "attackerName": "Charizard",
+        "moveName": "Flamethrower",
+        "defenderName": "Venusaur",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Snow",
+    "request": {
+      "attacker": {
+        "id": "0006000",
+        "ability": 66,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0003000",
+        "ability": 65,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 53,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles",
+        "weather": "Snow"
+      }
+    },
+    "expected": {
+      "min": 110,
+      "max": 132,
+      "maxHP": 155,
+      "currentHP": 155,
+      "percentMin": 70.9,
+      "percentMax": 85.1,
+      "ohko": 0,
+      "rolls": [
+        [
+          110,
+          110,
+          114,
+          114,
+          116,
+          116,
+          120,
+          120,
+          120,
+          122,
+          122,
+          126,
+          126,
+          128,
+          128,
+          132
+        ]
+      ],
+      "attackerStats": {
+        "hp": 153,
+        "atk": 104,
+        "def": 98,
+        "spa": 129,
+        "spd": 105,
+        "spe": 120
+      },
+      "defenderStats": {
+        "hp": 155,
+        "atk": 102,
+        "def": 103,
+        "spa": 120,
+        "spd": 120,
+        "spe": 100
+      },
+      "applied": {
+        "attackerName": "Charizard",
+        "moveName": "Flamethrower",
+        "defenderName": "Venusaur",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Electric",
+    "request": {
+      "attacker": {
+        "id": "0026000",
+        "ability": 9,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0009000",
+        "ability": 67,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 85,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles",
+        "terrain": "Electric"
+      }
+    },
+    "expected": {
+      "min": 116,
+      "max": 140,
+      "maxHP": 154,
+      "currentHP": 154,
+      "percentMin": 75.3,
+      "percentMax": 90.9,
+      "ohko": 0,
+      "rolls": [
+        [
+          116,
+          120,
+          120,
+          122,
+          122,
+          126,
+          126,
+          128,
+          128,
+          132,
+          132,
+          134,
+          134,
+          138,
+          138,
+          140
+        ]
+      ],
+      "attackerStats": {
+        "hp": 135,
+        "atk": 110,
+        "def": 75,
+        "spa": 110,
+        "spd": 100,
+        "spe": 130
+      },
+      "defenderStats": {
+        "hp": 154,
+        "atk": 103,
+        "def": 120,
+        "spa": 105,
+        "spd": 125,
+        "spe": 98
+      },
+      "applied": {
+        "attackerName": "Raichu",
+        "moveName": "Thunderbolt",
+        "defenderName": "Blastoise",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "terrain": "Electric",
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Grassy",
+    "request": {
+      "attacker": {
+        "id": "0026000",
+        "ability": 9,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0009000",
+        "ability": 67,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 85,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles",
+        "terrain": "Grassy"
+      }
+    },
+    "expected": {
+      "min": 90,
+      "max": 108,
+      "maxHP": 154,
+      "currentHP": 154,
+      "percentMin": 58.4,
+      "percentMax": 70.1,
+      "ohko": 0,
+      "rolls": [
+        [
+          90,
+          90,
+          92,
+          92,
+          96,
+          96,
+          96,
+          98,
+          98,
+          98,
+          102,
+          102,
+          102,
+          104,
+          104,
+          108
+        ]
+      ],
+      "attackerStats": {
+        "hp": 135,
+        "atk": 110,
+        "def": 75,
+        "spa": 110,
+        "spd": 100,
+        "spe": 130
+      },
+      "defenderStats": {
+        "hp": 154,
+        "atk": 103,
+        "def": 120,
+        "spa": 105,
+        "spd": 125,
+        "spe": 98
+      },
+      "applied": {
+        "attackerName": "Raichu",
+        "moveName": "Thunderbolt",
+        "defenderName": "Blastoise",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Misty",
+    "request": {
+      "attacker": {
+        "id": "0026000",
+        "ability": 9,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0009000",
+        "ability": 67,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 85,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles",
+        "terrain": "Misty"
+      }
+    },
+    "expected": {
+      "min": 90,
+      "max": 108,
+      "maxHP": 154,
+      "currentHP": 154,
+      "percentMin": 58.4,
+      "percentMax": 70.1,
+      "ohko": 0,
+      "rolls": [
+        [
+          90,
+          90,
+          92,
+          92,
+          96,
+          96,
+          96,
+          98,
+          98,
+          98,
+          102,
+          102,
+          102,
+          104,
+          104,
+          108
+        ]
+      ],
+      "attackerStats": {
+        "hp": 135,
+        "atk": 110,
+        "def": 75,
+        "spa": 110,
+        "spd": 100,
+        "spe": 130
+      },
+      "defenderStats": {
+        "hp": 154,
+        "atk": 103,
+        "def": 120,
+        "spa": 105,
+        "spd": 125,
+        "spe": 98
+      },
+      "applied": {
+        "attackerName": "Raichu",
+        "moveName": "Thunderbolt",
+        "defenderName": "Blastoise",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Psychic",
+    "request": {
+      "attacker": {
+        "id": "0026000",
+        "ability": 9,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0009000",
+        "ability": 67,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 85,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles",
+        "terrain": "Psychic"
+      }
+    },
+    "expected": {
+      "min": 90,
+      "max": 108,
+      "maxHP": 154,
+      "currentHP": 154,
+      "percentMin": 58.4,
+      "percentMax": 70.1,
+      "ohko": 0,
+      "rolls": [
+        [
+          90,
+          90,
+          92,
+          92,
+          96,
+          96,
+          96,
+          98,
+          98,
+          98,
+          102,
+          102,
+          102,
+          104,
+          104,
+          108
+        ]
+      ],
+      "attackerStats": {
+        "hp": 135,
+        "atk": 110,
+        "def": 75,
+        "spa": 110,
+        "spd": 100,
+        "spe": 130
+      },
+      "defenderStats": {
+        "hp": 154,
+        "atk": 103,
+        "def": 120,
+        "spa": 105,
+        "spd": 125,
+        "spe": 98
+      },
+      "applied": {
+        "attackerName": "Raichu",
+        "moveName": "Thunderbolt",
+        "defenderName": "Blastoise",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Gengar / Shadow Ball",
+    "request": {
+      "attacker": {
+        "id": "0094000",
+        "ability": 130,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0143000",
+        "ability": 17,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 247,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 0,
+      "max": 0,
+      "maxHP": 235,
+      "currentHP": 235,
+      "percentMin": 0,
+      "percentMax": 0,
+      "ohko": 0,
+      "rolls": [
+        [
+          0
+        ]
+      ],
+      "attackerStats": {
+        "hp": 135,
+        "atk": 85,
+        "def": 80,
+        "spa": 150,
+        "spd": 95,
+        "spe": 130
+      },
+      "defenderStats": {
+        "hp": 235,
+        "atk": 130,
+        "def": 85,
+        "spa": 85,
+        "spd": 130,
+        "spe": 50
+      },
+      "applied": {
+        "attackerName": "Gengar",
+        "moveName": "Shadow Ball",
+        "defenderName": "Snorlax",
+        "isWonderRoom": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Kangaskhan-Mega / Body Slam",
+    "request": {
+      "attacker": {
+        "id": "0115001",
+        "ability": 185,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "F",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0009000",
+        "ability": 67,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 34,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 73,
+      "max": 88,
+      "maxHP": 154,
+      "currentHP": 154,
+      "percentMin": 47.4,
+      "percentMax": 57.1,
+      "ohko": 0,
+      "rolls": [
+        [
+          58,
+          60,
+          60,
+          61,
+          61,
+          63,
+          63,
+          64,
+          64,
+          66,
+          66,
+          67,
+          67,
+          69,
+          69,
+          70
+        ],
+        [
+          15,
+          15,
+          15,
+          15,
+          15,
+          15,
+          15,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          18
+        ]
+      ],
+      "attackerStats": {
+        "hp": 180,
+        "atk": 145,
+        "def": 120,
+        "spa": 80,
+        "spd": 120,
+        "spe": 120
+      },
+      "defenderStats": {
+        "hp": 154,
+        "atk": 103,
+        "def": 120,
+        "spa": 105,
+        "spd": 125,
+        "spe": 98
+      },
+      "applied": {
+        "attackerName": "Kangaskhan-Mega",
+        "moveName": "Body Slam",
+        "defenderName": "Blastoise",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 Atk",
+        "defenseEVs": "0 Def",
+        "isBurned": false,
+        "attackerAbility": "Parental Bond"
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Dragonite / Scale Shot",
+    "request": {
+      "attacker": {
+        "id": "0149000",
+        "ability": 39,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0009000",
+        "ability": 67,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 799,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 57,
+      "max": 72,
+      "maxHP": 154,
+      "currentHP": 154,
+      "percentMin": 37,
+      "percentMax": 46.7,
+      "ohko": 0,
+      "rolls": [
+        [
+          19,
+          19,
+          19,
+          21,
+          21,
+          21,
+          21,
+          21,
+          21,
+          22,
+          22,
+          22,
+          22,
+          22,
+          22,
+          24
+        ],
+        [
+          19,
+          19,
+          19,
+          21,
+          21,
+          21,
+          21,
+          21,
+          21,
+          22,
+          22,
+          22,
+          22,
+          22,
+          22,
+          24
+        ],
+        [
+          19,
+          19,
+          19,
+          21,
+          21,
+          21,
+          21,
+          21,
+          21,
+          22,
+          22,
+          22,
+          22,
+          22,
+          22,
+          24
+        ]
+      ],
+      "attackerStats": {
+        "hp": 166,
+        "atk": 154,
+        "def": 115,
+        "spa": 120,
+        "spd": 120,
+        "spe": 100
+      },
+      "defenderStats": {
+        "hp": 154,
+        "atk": 103,
+        "def": 120,
+        "spa": 105,
+        "spd": 125,
+        "spe": 98
+      },
+      "applied": {
+        "attackerName": "Dragonite",
+        "moveName": "Scale Shot",
+        "defenderName": "Blastoise",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "hits": 3,
+        "attackEVs": "0 Atk",
+        "defenseEVs": "0 Def",
+        "isBurned": false
+      },
+      "hits": 3
+    }
+  },
+  {
+    "name": "Blastoise / Seismic Toss",
+    "request": {
+      "attacker": {
+        "id": "0009000",
+        "ability": 67,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0143000",
+        "ability": 17,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 69,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 50,
+      "max": 50,
+      "maxHP": 235,
+      "currentHP": 235,
+      "percentMin": 21.2,
+      "percentMax": 21.2,
+      "ohko": 0,
+      "rolls": [
+        [
+          50
+        ]
+      ],
+      "attackerStats": {
+        "hp": 154,
+        "atk": 103,
+        "def": 120,
+        "spa": 105,
+        "spd": 125,
+        "spe": 98
+      },
+      "defenderStats": {
+        "hp": 235,
+        "atk": 130,
+        "def": 85,
+        "spa": 85,
+        "spd": 130,
+        "spe": 50
+      },
+      "applied": {
+        "attackerName": "Blastoise",
+        "moveName": "Seismic Toss",
+        "defenderName": "Snorlax",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP"
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Blastoise / Water Spout",
+    "request": {
+      "attacker": {
+        "id": "0009000",
+        "ability": 67,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0143000",
+        "ability": 17,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 323,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 69,
+      "max": 82,
+      "maxHP": 235,
+      "currentHP": 235,
+      "percentMin": 29.3,
+      "percentMax": 34.8,
+      "ohko": 0,
+      "rolls": [
+        [
+          69,
+          70,
+          70,
+          72,
+          72,
+          73,
+          75,
+          75,
+          76,
+          76,
+          78,
+          78,
+          79,
+          79,
+          81,
+          82
+        ]
+      ],
+      "attackerStats": {
+        "hp": 154,
+        "atk": 103,
+        "def": 120,
+        "spa": 105,
+        "spd": 125,
+        "spe": 98
+      },
+      "defenderStats": {
+        "hp": 235,
+        "atk": 130,
+        "def": 85,
+        "spa": 85,
+        "spd": 130,
+        "spe": 50
+      },
+      "applied": {
+        "attackerName": "Blastoise",
+        "moveName": "Water Spout",
+        "defenderName": "Snorlax",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "moveBP": 150,
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Snorlax / Pound",
+    "request": {
+      "attacker": {
+        "id": "0143000",
+        "ability": 17,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0094000",
+        "ability": 130,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 1,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 0,
+      "max": 0,
+      "maxHP": 135,
+      "currentHP": 135,
+      "percentMin": 0,
+      "percentMax": 0,
+      "ohko": 0,
+      "rolls": [
+        [
+          0
+        ]
+      ],
+      "attackerStats": {
+        "hp": 235,
+        "atk": 130,
+        "def": 85,
+        "spa": 85,
+        "spd": 130,
+        "spe": 50
+      },
+      "defenderStats": {
+        "hp": 135,
+        "atk": 85,
+        "def": 80,
+        "spa": 150,
+        "spd": 95,
+        "spe": 130
+      },
+      "applied": {
+        "attackerName": "Snorlax",
+        "moveName": "Pound",
+        "defenderName": "Gengar",
+        "isWonderRoom": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Blastoise / Grass Knot",
+    "request": {
+      "attacker": {
+        "id": "0009000",
+        "ability": 67,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0130000",
+        "ability": 22,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 447,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 40,
+      "max": 48,
+      "maxHP": 170,
+      "currentHP": 170,
+      "percentMin": 23.5,
+      "percentMax": 28.2,
+      "ohko": 0,
+      "rolls": [
+        [
+          40,
+          41,
+          41,
+          42,
+          42,
+          43,
+          43,
+          44,
+          44,
+          45,
+          45,
+          46,
+          46,
+          47,
+          47,
+          48
+        ]
+      ],
+      "attackerStats": {
+        "hp": 154,
+        "atk": 103,
+        "def": 120,
+        "spa": 105,
+        "spd": 125,
+        "spe": 98
+      },
+      "defenderStats": {
+        "hp": 170,
+        "atk": 145,
+        "def": 99,
+        "spa": 80,
+        "spd": 120,
+        "spe": 101
+      },
+      "applied": {
+        "attackerName": "Blastoise",
+        "moveName": "Grass Knot",
+        "defenderName": "Gyarados",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "moveBP": 120,
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Tyranitar / Low Kick",
+    "request": {
+      "attacker": {
+        "id": "0248000",
+        "ability": 45,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0009000",
+        "ability": 67,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 67,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 39,
+      "max": 47,
+      "maxHP": 154,
+      "currentHP": 154,
+      "percentMin": 25.3,
+      "percentMax": 30.5,
+      "ohko": 0,
+      "rolls": [
+        [
+          39,
+          40,
+          40,
+          41,
+          41,
+          42,
+          42,
+          43,
+          43,
+          44,
+          44,
+          45,
+          45,
+          46,
+          46,
+          47
+        ]
+      ],
+      "attackerStats": {
+        "hp": 175,
+        "atk": 154,
+        "def": 130,
+        "spa": 115,
+        "spd": 120,
+        "spe": 81
+      },
+      "defenderStats": {
+        "hp": 154,
+        "atk": 103,
+        "def": 120,
+        "spa": 105,
+        "spd": 125,
+        "spe": 98
+      },
+      "applied": {
+        "attackerName": "Tyranitar",
+        "moveName": "Low Kick",
+        "defenderName": "Blastoise",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "moveBP": 80,
+        "attackEVs": "0 Atk",
+        "defenseEVs": "0 Def",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Aegislash-Shield / Body Press",
+    "request": {
+      "attacker": {
+        "id": "0681000",
+        "ability": 176,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0009000",
+        "ability": 67,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 776,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 40,
+      "max": 48,
+      "maxHP": 154,
+      "currentHP": 154,
+      "percentMin": 25.9,
+      "percentMax": 31.1,
+      "ohko": 0,
+      "rolls": [
+        [
+          40,
+          41,
+          41,
+          42,
+          42,
+          43,
+          43,
+          44,
+          44,
+          45,
+          45,
+          46,
+          46,
+          47,
+          47,
+          48
+        ]
+      ],
+      "attackerStats": {
+        "hp": 135,
+        "atk": 70,
+        "def": 160,
+        "spa": 70,
+        "spd": 160,
+        "spe": 80
+      },
+      "defenderStats": {
+        "hp": 154,
+        "atk": 103,
+        "def": 120,
+        "spa": 105,
+        "spd": 125,
+        "spe": 98
+      },
+      "applied": {
+        "attackerName": "Aegislash-Shield",
+        "moveName": "Body Press",
+        "defenderName": "Blastoise",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 Def",
+        "defenseEVs": "0 Def",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Gourgeist-Super / Foul Play",
+    "request": {
+      "attacker": {
+        "id": "0711003",
+        "ability": 53,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0006000",
+        "ability": 66,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 492,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 39,
+      "max": 46,
+      "maxHP": 153,
+      "currentHP": 153,
+      "percentMin": 25.4,
+      "percentMax": 30,
+      "ohko": 0,
+      "rolls": [
+        [
+          39,
+          39,
+          40,
+          40,
+          40,
+          41,
+          41,
+          42,
+          42,
+          43,
+          43,
+          44,
+          44,
+          45,
+          45,
+          46
+        ]
+      ],
+      "attackerStats": {
+        "hp": 160,
+        "atk": 120,
+        "def": 142,
+        "spa": 78,
+        "spd": 95,
+        "spe": 74
+      },
+      "defenderStats": {
+        "hp": 153,
+        "atk": 104,
+        "def": 98,
+        "spa": 129,
+        "spd": 105,
+        "spe": 120
+      },
+      "applied": {
+        "attackerName": "Gourgeist-Super",
+        "moveName": "Foul Play",
+        "defenderName": "Charizard",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 Atk",
+        "defenseEVs": "0 Def",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Meganium-Mega / Giga Drain",
+    "request": {
+      "attacker": {
+        "id": "0154001",
+        "ability": 315,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0248000",
+        "ability": 45,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 202,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 116,
+      "max": 138,
+      "maxHP": 175,
+      "currentHP": 175,
+      "percentMin": 66.2,
+      "percentMax": 78.8,
+      "ohko": 0,
+      "rolls": [
+        [
+          116,
+          116,
+          120,
+          120,
+          120,
+          122,
+          122,
+          126,
+          126,
+          128,
+          128,
+          132,
+          132,
+          134,
+          134,
+          138
+        ]
+      ],
+      "attackerStats": {
+        "hp": 155,
+        "atk": 112,
+        "def": 135,
+        "spa": 163,
+        "spd": 135,
+        "spe": 100
+      },
+      "defenderStats": {
+        "hp": 175,
+        "atk": 154,
+        "def": 130,
+        "spa": 115,
+        "spd": 120,
+        "spe": 81
+      },
+      "applied": {
+        "attackerName": "Meganium-Mega",
+        "moveName": "Giga Drain",
+        "defenderName": "Tyranitar",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Morpeko-Hangry / Aura Wheel",
+    "request": {
+      "attacker": {
+        "id": "0877001",
+        "ability": 258,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0009000",
+        "ability": 67,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 783,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 60,
+      "max": 72,
+      "maxHP": 154,
+      "currentHP": 154,
+      "percentMin": 38.9,
+      "percentMax": 46.7,
+      "ohko": 0,
+      "rolls": [
+        [
+          60,
+          61,
+          61,
+          63,
+          63,
+          64,
+          64,
+          66,
+          66,
+          67,
+          67,
+          69,
+          69,
+          70,
+          70,
+          72
+        ]
+      ],
+      "attackerStats": {
+        "hp": 133,
+        "atk": 115,
+        "def": 78,
+        "spa": 90,
+        "spd": 78,
+        "spe": 117
+      },
+      "defenderStats": {
+        "hp": 154,
+        "atk": 103,
+        "def": 120,
+        "spa": 105,
+        "spd": 125,
+        "spe": 98
+      },
+      "applied": {
+        "attackerName": "Morpeko-Hangry",
+        "moveName": "Aura Wheel",
+        "defenderName": "Blastoise",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 Atk",
+        "defenseEVs": "0 Def",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "isReflect",
+    "request": {
+      "attacker": {
+        "id": "0006000",
+        "ability": 66,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0003000",
+        "ability": 65,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 53,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles",
+        "defenderSide": {
+          "isReflect": true
+        }
+      }
+    },
+    "expected": {
+      "min": 110,
+      "max": 132,
+      "maxHP": 155,
+      "currentHP": 155,
+      "percentMin": 70.9,
+      "percentMax": 85.1,
+      "ohko": 0,
+      "rolls": [
+        [
+          110,
+          110,
+          114,
+          114,
+          116,
+          116,
+          120,
+          120,
+          120,
+          122,
+          122,
+          126,
+          126,
+          128,
+          128,
+          132
+        ]
+      ],
+      "attackerStats": {
+        "hp": 153,
+        "atk": 104,
+        "def": 98,
+        "spa": 129,
+        "spd": 105,
+        "spe": 120
+      },
+      "defenderStats": {
+        "hp": 155,
+        "atk": 102,
+        "def": 103,
+        "spa": 120,
+        "spd": 120,
+        "spe": 100
+      },
+      "applied": {
+        "attackerName": "Charizard",
+        "moveName": "Flamethrower",
+        "defenderName": "Venusaur",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "isLightScreen",
+    "request": {
+      "attacker": {
+        "id": "0006000",
+        "ability": 66,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0003000",
+        "ability": 65,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 53,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles",
+        "defenderSide": {
+          "isLightScreen": true
+        }
+      }
+    },
+    "expected": {
+      "min": 55,
+      "max": 66,
+      "maxHP": 155,
+      "currentHP": 155,
+      "percentMin": 35.4,
+      "percentMax": 42.5,
+      "ohko": 0,
+      "rolls": [
+        [
+          55,
+          55,
+          57,
+          57,
+          58,
+          58,
+          60,
+          60,
+          60,
+          61,
+          61,
+          63,
+          63,
+          64,
+          64,
+          66
+        ]
+      ],
+      "attackerStats": {
+        "hp": 153,
+        "atk": 104,
+        "def": 98,
+        "spa": 129,
+        "spd": 105,
+        "spe": 120
+      },
+      "defenderStats": {
+        "hp": 155,
+        "atk": 102,
+        "def": 103,
+        "spa": 120,
+        "spd": 120,
+        "spe": 100
+      },
+      "applied": {
+        "attackerName": "Charizard",
+        "moveName": "Flamethrower",
+        "defenderName": "Venusaur",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "isBurned": false,
+        "isLightScreen": true
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "isAuroraVeil",
+    "request": {
+      "attacker": {
+        "id": "0006000",
+        "ability": 66,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0003000",
+        "ability": 65,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 53,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles",
+        "defenderSide": {
+          "isAuroraVeil": true
+        }
+      }
+    },
+    "expected": {
+      "min": 55,
+      "max": 66,
+      "maxHP": 155,
+      "currentHP": 155,
+      "percentMin": 35.4,
+      "percentMax": 42.5,
+      "ohko": 0,
+      "rolls": [
+        [
+          55,
+          55,
+          57,
+          57,
+          58,
+          58,
+          60,
+          60,
+          60,
+          61,
+          61,
+          63,
+          63,
+          64,
+          64,
+          66
+        ]
+      ],
+      "attackerStats": {
+        "hp": 153,
+        "atk": 104,
+        "def": 98,
+        "spa": 129,
+        "spd": 105,
+        "spe": 120
+      },
+      "defenderStats": {
+        "hp": 155,
+        "atk": 102,
+        "def": 103,
+        "spa": 120,
+        "spd": 120,
+        "spe": 100
+      },
+      "applied": {
+        "attackerName": "Charizard",
+        "moveName": "Flamethrower",
+        "defenderName": "Venusaur",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "isBurned": false,
+        "isAuroraVeil": true
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "isProtected",
+    "request": {
+      "attacker": {
+        "id": "0006000",
+        "ability": 66,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0003000",
+        "ability": 65,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 53,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles",
+        "defenderSide": {
+          "isProtected": true
+        }
+      }
+    },
+    "expected": {
+      "min": 0,
+      "max": 0,
+      "maxHP": 155,
+      "currentHP": 155,
+      "percentMin": 0,
+      "percentMax": 0,
+      "ohko": 0,
+      "rolls": [
+        [
+          0
+        ]
+      ],
+      "attackerStats": {
+        "hp": 153,
+        "atk": 104,
+        "def": 98,
+        "spa": 129,
+        "spd": 105,
+        "spe": 120
+      },
+      "defenderStats": {
+        "hp": 155,
+        "atk": 102,
+        "def": 103,
+        "spa": 120,
+        "spd": 120,
+        "spe": 100
+      },
+      "applied": {
+        "attackerName": "Charizard",
+        "moveName": "Flamethrower",
+        "defenderName": "Venusaur",
+        "isWonderRoom": false,
+        "isProtected": true
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "isFriendGuard",
+    "request": {
+      "attacker": {
+        "id": "0006000",
+        "ability": 66,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0003000",
+        "ability": 65,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 53,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles",
+        "defenderSide": {
+          "isFriendGuard": true
+        }
+      }
+    },
+    "expected": {
+      "min": 82,
+      "max": 99,
+      "maxHP": 155,
+      "currentHP": 155,
+      "percentMin": 52.9,
+      "percentMax": 63.8,
+      "ohko": 0,
+      "rolls": [
+        [
+          82,
+          82,
+          85,
+          85,
+          87,
+          87,
+          90,
+          90,
+          90,
+          91,
+          91,
+          94,
+          94,
+          96,
+          96,
+          99
+        ]
+      ],
+      "attackerStats": {
+        "hp": 153,
+        "atk": 104,
+        "def": 98,
+        "spa": 129,
+        "spd": 105,
+        "spe": 120
+      },
+      "defenderStats": {
+        "hp": 155,
+        "atk": 102,
+        "def": 103,
+        "spa": 120,
+        "spd": 120,
+        "spe": 100
+      },
+      "applied": {
+        "attackerName": "Charizard",
+        "moveName": "Flamethrower",
+        "defenderName": "Venusaur",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "isBurned": false,
+        "isFriendGuard": true
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Life Orb",
+    "request": {
+      "attacker": {
+        "id": "0006000",
+        "ability": 66,
+        "nature": "Serious",
+        "item": "Life Orb",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0003000",
+        "ability": 65,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 53,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 143,
+      "max": 172,
+      "maxHP": 155,
+      "currentHP": 155,
+      "percentMin": 92.2,
+      "percentMax": 110.9,
+      "ohko": 62.5,
+      "rolls": [
+        [
+          143,
+          143,
+          148,
+          148,
+          151,
+          151,
+          156,
+          156,
+          156,
+          159,
+          159,
+          164,
+          164,
+          166,
+          166,
+          172
+        ]
+      ],
+      "attackerStats": {
+        "hp": 153,
+        "atk": 104,
+        "def": 98,
+        "spa": 129,
+        "spd": 105,
+        "spe": 120
+      },
+      "defenderStats": {
+        "hp": 155,
+        "atk": 102,
+        "def": 103,
+        "spa": 120,
+        "spd": 120,
+        "spe": 100
+      },
+      "applied": {
+        "attackerName": "Charizard",
+        "moveName": "Flamethrower",
+        "defenderName": "Venusaur",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "isBurned": false,
+        "attackerItem": "Life Orb"
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Occa Berry",
+    "request": {
+      "attacker": {
+        "id": "0006000",
+        "ability": 66,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0003000",
+        "ability": 65,
+        "nature": "Serious",
+        "item": "Occa Berry",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 53,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 55,
+      "max": 66,
+      "maxHP": 155,
+      "currentHP": 155,
+      "percentMin": 35.4,
+      "percentMax": 42.5,
+      "ohko": 0,
+      "rolls": [
+        [
+          55,
+          55,
+          57,
+          57,
+          58,
+          58,
+          60,
+          60,
+          60,
+          61,
+          61,
+          63,
+          63,
+          64,
+          64,
+          66
+        ]
+      ],
+      "attackerStats": {
+        "hp": 153,
+        "atk": 104,
+        "def": 98,
+        "spa": 129,
+        "spd": 105,
+        "spe": 120
+      },
+      "defenderStats": {
+        "hp": 155,
+        "atk": 102,
+        "def": 103,
+        "spa": 120,
+        "spd": 120,
+        "spe": 100
+      },
+      "applied": {
+        "attackerName": "Charizard",
+        "moveName": "Flamethrower",
+        "defenderName": "Venusaur",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "isBurned": false,
+        "defenderItem": "Occa Berry"
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Leftovers",
+    "request": {
+      "attacker": {
+        "id": "0006000",
+        "ability": 66,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0003000",
+        "ability": 65,
+        "nature": "Serious",
+        "item": "Leftovers",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 53,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 110,
+      "max": 132,
+      "maxHP": 155,
+      "currentHP": 155,
+      "percentMin": 70.9,
+      "percentMax": 85.1,
+      "ohko": 0,
+      "rolls": [
+        [
+          110,
+          110,
+          114,
+          114,
+          116,
+          116,
+          120,
+          120,
+          120,
+          122,
+          122,
+          126,
+          126,
+          128,
+          128,
+          132
+        ]
+      ],
+      "attackerStats": {
+        "hp": 153,
+        "atk": 104,
+        "def": 98,
+        "spa": 129,
+        "spd": 105,
+        "spe": 120
+      },
+      "defenderStats": {
+        "hp": 155,
+        "atk": 102,
+        "def": 103,
+        "spa": 120,
+        "spd": 120,
+        "spe": 100
+      },
+      "applied": {
+        "attackerName": "Charizard",
+        "moveName": "Flamethrower",
+        "defenderName": "Venusaur",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Air Balloon",
+    "request": {
+      "attacker": {
+        "id": "0006000",
+        "ability": 66,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0003000",
+        "ability": 65,
+        "nature": "Serious",
+        "item": "Air Balloon",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 53,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 110,
+      "max": 132,
+      "maxHP": 155,
+      "currentHP": 155,
+      "percentMin": 70.9,
+      "percentMax": 85.1,
+      "ohko": 0,
+      "rolls": [
+        [
+          110,
+          110,
+          114,
+          114,
+          116,
+          116,
+          120,
+          120,
+          120,
+          122,
+          122,
+          126,
+          126,
+          128,
+          128,
+          132
+        ]
+      ],
+      "attackerStats": {
+        "hp": 153,
+        "atk": 104,
+        "def": 98,
+        "spa": 129,
+        "spd": 105,
+        "spe": 120
+      },
+      "defenderStats": {
+        "hp": 155,
+        "atk": 102,
+        "def": 103,
+        "spa": 120,
+        "spd": 120,
+        "spe": 100
+      },
+      "applied": {
+        "attackerName": "Charizard",
+        "moveName": "Flamethrower",
+        "defenderName": "Venusaur",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Burn",
+    "request": {
+      "attacker": {
+        "id": "0143000",
+        "ability": 17,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "brn",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0009000",
+        "ability": 67,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 34,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 26,
+      "max": 31,
+      "maxHP": 154,
+      "currentHP": 154,
+      "percentMin": 16.8,
+      "percentMax": 20.1,
+      "ohko": 0,
+      "rolls": [
+        [
+          26,
+          27,
+          27,
+          27,
+          27,
+          27,
+          28,
+          28,
+          29,
+          29,
+          29,
+          30,
+          30,
+          30,
+          30,
+          31
+        ]
+      ],
+      "attackerStats": {
+        "hp": 235,
+        "atk": 130,
+        "def": 85,
+        "spa": 85,
+        "spd": 130,
+        "spe": 50
+      },
+      "defenderStats": {
+        "hp": 154,
+        "atk": 103,
+        "def": 120,
+        "spa": 105,
+        "spd": 125,
+        "spe": 98
+      },
+      "applied": {
+        "attackerName": "Snorlax",
+        "moveName": "Body Slam",
+        "defenderName": "Blastoise",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 Atk",
+        "defenseEVs": "0 Def",
+        "isBurned": true
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Critical bypass",
+    "request": {
+      "attacker": {
+        "id": "0006000",
+        "ability": 66,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          -3,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0003000",
+        "ability": 65,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          4,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 53,
+      "critical": true,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 168,
+      "max": 198,
+      "maxHP": 155,
+      "currentHP": 155,
+      "percentMin": 108.3,
+      "percentMax": 127.7,
+      "ohko": 100,
+      "rolls": [
+        [
+          168,
+          168,
+          170,
+          174,
+          174,
+          176,
+          180,
+          180,
+          182,
+          186,
+          186,
+          188,
+          192,
+          192,
+          194,
+          198
+        ]
+      ],
+      "attackerStats": {
+        "hp": 153,
+        "atk": 104,
+        "def": 98,
+        "spa": 129,
+        "spd": 105,
+        "spe": 120
+      },
+      "defenderStats": {
+        "hp": 155,
+        "atk": 102,
+        "def": 103,
+        "spa": 120,
+        "spd": 120,
+        "spe": 100
+      },
+      "applied": {
+        "attackerName": "Charizard",
+        "moveName": "Flamethrower",
+        "defenderName": "Venusaur",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "isCritical": true,
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Doubles spread",
+    "request": {
+      "attacker": {
+        "id": "0006000",
+        "ability": 66,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0003000",
+        "ability": 65,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 257,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Doubles"
+      }
+    },
+    "expected": {
+      "min": 84,
+      "max": 102,
+      "maxHP": 155,
+      "currentHP": 155,
+      "percentMin": 54.1,
+      "percentMax": 65.8,
+      "ohko": 0,
+      "rolls": [
+        [
+          84,
+          86,
+          86,
+          86,
+          90,
+          90,
+          90,
+          92,
+          92,
+          92,
+          96,
+          96,
+          96,
+          98,
+          98,
+          102
+        ]
+      ],
+      "attackerStats": {
+        "hp": 153,
+        "atk": 104,
+        "def": 98,
+        "spa": 129,
+        "spd": 105,
+        "spe": 120
+      },
+      "defenderStats": {
+        "hp": 155,
+        "atk": 102,
+        "def": 103,
+        "spa": 120,
+        "spd": 120,
+        "spe": 100
+      },
+      "applied": {
+        "attackerName": "Charizard",
+        "moveName": "Heat Wave",
+        "defenderName": "Venusaur",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "0 SpA",
+        "defenseEVs": "0 SpD",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Champions points",
+    "request": {
+      "attacker": {
+        "id": "0006000",
+        "ability": 66,
+        "nature": "Modest",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          32,
+          0,
+          32
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0003000",
+        "ability": 65,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 53,
+      "critical": false,
+      "hits": 0,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 152,
+      "max": 180,
+      "maxHP": 155,
+      "currentHP": 155,
+      "percentMin": 98,
+      "percentMax": 116.1,
+      "ohko": 87.5,
+      "rolls": [
+        [
+          152,
+          152,
+          156,
+          156,
+          158,
+          162,
+          162,
+          164,
+          164,
+          168,
+          170,
+          170,
+          174,
+          174,
+          176,
+          180
+        ]
+      ],
+      "attackerStats": {
+        "hp": 153,
+        "atk": 93,
+        "def": 98,
+        "spa": 177,
+        "spd": 105,
+        "spe": 152
+      },
+      "defenderStats": {
+        "hp": 155,
+        "atk": 102,
+        "def": 103,
+        "spa": 120,
+        "spd": 120,
+        "spe": 100
+      },
+      "applied": {
+        "attackerName": "Charizard",
+        "moveName": "Flamethrower",
+        "defenderName": "Venusaur",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "attackEVs": "32+ SpA",
+        "defenseEVs": "0 SpD",
+        "isBurned": false
+      },
+      "hits": 1
+    }
+  },
+  {
+    "name": "Independent multihit",
+    "request": {
+      "attacker": {
+        "id": "0149000",
+        "ability": 39,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 100,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "defender": {
+        "id": "0009000",
+        "ability": 67,
+        "nature": "Serious",
+        "item": "",
+        "sp": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "boosts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hp": 40,
+        "status": "",
+        "gender": "M",
+        "abilityOn": false,
+        "alliesFainted": 0
+      },
+      "move": 799,
+      "critical": false,
+      "hits": 5,
+      "field": {
+        "gameType": "Singles"
+      }
+    },
+    "expected": {
+      "min": 95,
+      "max": 120,
+      "maxHP": 154,
+      "currentHP": 61,
+      "percentMin": 61.6,
+      "percentMax": 77.9,
+      "ohko": 100,
+      "rolls": [
+        [
+          19,
+          19,
+          19,
+          21,
+          21,
+          21,
+          21,
+          21,
+          21,
+          22,
+          22,
+          22,
+          22,
+          22,
+          22,
+          24
+        ],
+        [
+          19,
+          19,
+          19,
+          21,
+          21,
+          21,
+          21,
+          21,
+          21,
+          22,
+          22,
+          22,
+          22,
+          22,
+          22,
+          24
+        ],
+        [
+          19,
+          19,
+          19,
+          21,
+          21,
+          21,
+          21,
+          21,
+          21,
+          22,
+          22,
+          22,
+          22,
+          22,
+          22,
+          24
+        ],
+        [
+          19,
+          19,
+          19,
+          21,
+          21,
+          21,
+          21,
+          21,
+          21,
+          22,
+          22,
+          22,
+          22,
+          22,
+          22,
+          24
+        ],
+        [
+          19,
+          19,
+          19,
+          21,
+          21,
+          21,
+          21,
+          21,
+          21,
+          22,
+          22,
+          22,
+          22,
+          22,
+          22,
+          24
+        ]
+      ],
+      "attackerStats": {
+        "hp": 166,
+        "atk": 154,
+        "def": 115,
+        "spa": 120,
+        "spd": 120,
+        "spe": 100
+      },
+      "defenderStats": {
+        "hp": 154,
+        "atk": 103,
+        "def": 120,
+        "spa": 105,
+        "spd": 125,
+        "spe": 98
+      },
+      "applied": {
+        "attackerName": "Dragonite",
+        "moveName": "Scale Shot",
+        "defenderName": "Blastoise",
+        "isWonderRoom": false,
+        "HPEVs": "0 HP",
+        "hits": 5,
+        "attackEVs": "0 Atk",
+        "defenseEVs": "0 Def",
+        "isBurned": false
+      },
+      "hits": 5
+    }
+  }
+]

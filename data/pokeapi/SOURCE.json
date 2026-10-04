@@ -1,0 +1,7 @@
+{
+  "repository": "https://github.com/PokeAPI/pokeapi",
+  "commit": "bc92d3b6029ef1abe9e7ad424c400b338f3c11fe",
+  "url": "https://raw.githubusercontent.com/PokeAPI/pokeapi/bc92d3b6029ef1abe9e7ad424c400b338f3c11fe/data/v2/csv/pokemon.csv",
+  "sha256": "16c81c33188b0eac403aa2f759fcbe9e42c611f722d263f5b5a6a5bff9f8ce6b",
+  "purpose": "Only variety ID and species association; app stats come from champout."
+}

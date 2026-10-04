@@ -1,0 +1,3974 @@
+{
+  "species": {
+    "1000000": "Gholdengo",
+    "1013000": "Sinistcha",
+    "1013001": "Sinistcha-Masterpiece",
+    "1018000": "Archaludon",
+    "1019000": "Hydrapple",
+    "0003000": "Venusaur",
+    "0003001": "Venusaur-Mega",
+    "0006000": "Charizard",
+    "0006001": "Charizard-Mega-X",
+    "0006002": "Charizard-Mega-Y",
+    "0009000": "Blastoise",
+    "0009001": "Blastoise-Mega",
+    "0015000": "Beedrill",
+    "0015001": "Beedrill-Mega",
+    "0018000": "Pidgeot",
+    "0018001": "Pidgeot-Mega",
+    "0024000": "Arbok",
+    "0025000": "Pikachu",
+    "0026000": "Raichu",
+    "0026001": "Raichu-Alola",
+    "0026002": "Raichu-Mega-X",
+    "0026003": "Raichu-Mega-Y",
+    "0036000": "Clefable",
+    "0036001": "Clefable-Mega",
+    "0038000": "Ninetales",
+    "0038001": "Ninetales-Alola",
+    "0040000": "Wigglytuff",
+    "0045000": "Vileplume",
+    "0053000": "Persian",
+    "0053001": "Persian-Alola",
+    "0059000": "Arcanine",
+    "0059001": "Arcanine-Hisui",
+    "0065000": "Alakazam",
+    "0065001": "Alakazam-Mega",
+    "0068000": "Machamp",
+    "0071000": "Victreebel",
+    "0071001": "Victreebel-Mega",
+    "0080000": "Slowbro",
+    "0080001": "Slowbro-Mega",
+    "0080002": "Slowbro-Galar",
+    "0083000": "Farfetch’d",
+    "0094000": "Gengar",
+    "0094001": "Gengar-Mega",
+    "0115000": "Kangaskhan",
+    "0115001": "Kangaskhan-Mega",
+    "0121000": "Starmie",
+    "0121001": "Starmie-Mega",
+    "0122000": "Mr. Mime",
+    "0127000": "Pinsir",
+    "0127001": "Pinsir-Mega",
+    "0128000": "Tauros",
+    "0128001": "Tauros-Paldea-Combat",
+    "0128002": "Tauros-Paldea-Blaze",
+    "0128003": "Tauros-Paldea-Aqua",
+    "0130000": "Gyarados",
+    "0130001": "Gyarados-Mega",
+    "0132000": "Ditto",
+    "0134000": "Vaporeon",
+    "0135000": "Jolteon",
+    "0136000": "Flareon",
+    "0142000": "Aerodactyl",
+    "0142001": "Aerodactyl-Mega",
+    "0143000": "Snorlax",
+    "0149000": "Dragonite",
+    "0149001": "Dragonite-Mega",
+    "0154000": "Meganium",
+    "0154001": "Meganium-Mega",
+    "0157000": "Typhlosion",
+    "0157001": "Typhlosion-Hisui",
+    "0160000": "Feraligatr",
+    "0160001": "Feraligatr-Mega",
+    "0168000": "Ariados",
+    "0181000": "Ampharos",
+    "0181001": "Ampharos-Mega",
+    "0184000": "Azumarill",
+    "0186000": "Politoed",
+    "0196000": "Espeon",
+    "0197000": "Umbreon",
+    "0199000": "Slowking",
+    "0199001": "Slowking-Galar",
+    "0205000": "Forretress",
+    "0208000": "Steelix",
+    "0208001": "Steelix-Mega",
+    "0211000": "Qwilfish",
+    "0212000": "Scizor",
+    "0212001": "Scizor-Mega",
+    "0214000": "Heracross",
+    "0214001": "Heracross-Mega",
+    "0227000": "Skarmory",
+    "0227001": "Skarmory-Mega",
+    "0229000": "Houndoom",
+    "0229001": "Houndoom-Mega",
+    "0248000": "Tyranitar",
+    "0248001": "Tyranitar-Mega",
+    "0254000": "Sceptile",
+    "0254001": "Sceptile-Mega",
+    "0257000": "Blaziken",
+    "0257001": "Blaziken-Mega",
+    "0260000": "Swampert",
+    "0260001": "Swampert-Mega",
+    "0279000": "Pelipper",
+    "0282000": "Gardevoir",
+    "0282001": "Gardevoir-Mega",
+    "0302000": "Sableye",
+    "0302001": "Sableye-Mega",
+    "0303000": "Mawile",
+    "0303001": "Mawile-Mega",
+    "0306000": "Aggron",
+    "0306001": "Aggron-Mega",
+    "0308000": "Medicham",
+    "0308001": "Medicham-Mega",
+    "0310000": "Manectric",
+    "0310001": "Manectric-Mega",
+    "0317000": "Swalot",
+    "0319000": "Sharpedo",
+    "0319001": "Sharpedo-Mega",
+    "0323000": "Camerupt",
+    "0323001": "Camerupt-Mega",
+    "0324000": "Torkoal",
+    "0334000": "Altaria",
+    "0334001": "Altaria-Mega",
+    "0350000": "Milotic",
+    "0351000": "Castform",
+    "0351001": "Castform-Sunny",
+    "0351002": "Castform-Rainy",
+    "0351003": "Castform-Snowy",
+    "0354000": "Banette",
+    "0354001": "Banette-Mega",
+    "0358000": "Chimecho",
+    "0358001": "Chimecho-Mega",
+    "0359000": "Absol",
+    "0359001": "Absol-Mega",
+    "0359002": "Absol-Mega-Z",
+    "0362000": "Glalie",
+    "0362001": "Glalie-Mega",
+    "0373000": "Salamence",
+    "0373001": "Salamence-Mega",
+    "0376000": "Metagross",
+    "0376001": "Metagross-Mega",
+    "0389000": "Torterra",
+    "0392000": "Infernape",
+    "0395000": "Empoleon",
+    "0398000": "Staraptor",
+    "0398001": "Staraptor-Mega",
+    "0405000": "Luxray",
+    "0407000": "Roserade",
+    "0409000": "Rampardos",
+    "0411000": "Bastiodon",
+    "0428000": "Lopunny",
+    "0428001": "Lopunny-Mega",
+    "0442000": "Spiritomb",
+    "0445000": "Garchomp",
+    "0445001": "Garchomp-Mega",
+    "0445002": "Garchomp-Mega-Z",
+    "0448000": "Lucario",
+    "0448001": "Lucario-Mega",
+    "0448002": "Lucario-Mega-Z",
+    "0450000": "Hippowdon",
+    "0454000": "Toxicroak",
+    "0460000": "Abomasnow",
+    "0460001": "Abomasnow-Mega",
+    "0461000": "Weavile",
+    "0464000": "Rhyperior",
+    "0470000": "Leafeon",
+    "0471000": "Glaceon",
+    "0472000": "Gliscor",
+    "0473000": "Mamoswine",
+    "0475000": "Gallade",
+    "0475001": "Gallade-Mega",
+    "0478000": "Froslass",
+    "0478001": "Froslass-Mega",
+    "0479000": "Rotom",
+    "0479001": "Rotom-Heat",
+    "0479002": "Rotom-Wash",
+    "0479003": "Rotom-Frost",
+    "0479004": "Rotom-Fan",
+    "0479005": "Rotom-Mow",
+    "0497000": "Serperior",
+    "0500000": "Emboar",
+    "0500001": "Emboar-Mega",
+    "0503000": "Samurott",
+    "0503001": "Samurott-Hisui",
+    "0505000": "Watchog",
+    "0510000": "Liepard",
+    "0512000": "Simisage",
+    "0514000": "Simisear",
+    "0516000": "Simipour",
+    "0518000": "Musharna",
+    "0530000": "Excadrill",
+    "0530001": "Excadrill-Mega",
+    "0531000": "Audino",
+    "0531001": "Audino-Mega",
+    "0534000": "Conkeldurr",
+    "0545000": "Scolipede",
+    "0545001": "Scolipede-Mega",
+    "0547000": "Whimsicott",
+    "0553000": "Krookodile",
+    "0560000": "Scrafty",
+    "0560001": "Scrafty-Mega",
+    "0563000": "Cofagrigus",
+    "0569000": "Garbodor",
+    "0571000": "Zoroark",
+    "0571001": "Zoroark-Hisui",
+    "0579000": "Reuniclus",
+    "0584000": "Vanilluxe",
+    "0587000": "Emolga",
+    "0604000": "Eelektross",
+    "0604001": "Eelektross-Mega",
+    "0609000": "Chandelure",
+    "0609001": "Chandelure-Mega",
+    "0614000": "Beartic",
+    "0618000": "Stunfisk",
+    "0618001": "Stunfisk-Galar",
+    "0623000": "Golurk",
+    "0623001": "Golurk-Mega",
+    "0635000": "Hydreigon",
+    "0637000": "Volcarona",
+    "0652000": "Chesnaught",
+    "0652001": "Chesnaught-Mega",
+    "0655000": "Delphox",
+    "0655001": "Delphox-Mega",
+    "0658000": "Greninja",
+    "0658003": "Greninja-Mega",
+    "0660000": "Diggersby",
+    "0663000": "Talonflame",
+    "0666000": "Vivillon",
+    "0666001": "Vivillon",
+    "0666002": "Vivillon",
+    "0666003": "Vivillon",
+    "0666004": "Vivillon",
+    "0666005": "Vivillon",
+    "0666006": "Vivillon",
+    "0666007": "Vivillon",
+    "0666008": "Vivillon",
+    "0666009": "Vivillon",
+    "0666010": "Vivillon",
+    "0666011": "Vivillon",
+    "0666012": "Vivillon",
+    "0666013": "Vivillon",
+    "0666014": "Vivillon",
+    "0666015": "Vivillon",
+    "0666016": "Vivillon",
+    "0666017": "Vivillon",
+    "0666018": "Vivillon-Fancy",
+    "0666019": "Vivillon-Pokeball",
+    "0668000": "Pyroar",
+    "0668001": "Pyroar-Mega",
+    "0670005": "Floette-Eternal",
+    "0670006": "Floette-Mega",
+    "0671000": "Florges",
+    "0671001": "Florges",
+    "0671002": "Florges",
+    "0671003": "Florges",
+    "0671004": "Florges",
+    "0673000": "Gogoat",
+    "0675000": "Pangoro",
+    "0676000": "Furfrou",
+    "0676001": "Furfrou",
+    "0676002": "Furfrou",
+    "0676003": "Furfrou",
+    "0676004": "Furfrou",
+    "0676005": "Furfrou",
+    "0676006": "Furfrou",
+    "0676007": "Furfrou",
+    "0676008": "Furfrou",
+    "0676009": "Furfrou",
+    "0678000": "Meowstic",
+    "0678001": "Meowstic-F",
+    "0678002": "Meowstic-M-Mega",
+    "0678003": "Meowstic-F-Mega",
+    "0681000": "Aegislash-Shield",
+    "0681001": "Aegislash-Blade",
+    "0683000": "Aromatisse",
+    "0685000": "Slurpuff",
+    "0687000": "Malamar",
+    "0687001": "Malamar-Mega",
+    "0689000": "Barbaracle",
+    "0689001": "Barbaracle-Mega",
+    "0691000": "Dragalge",
+    "0691001": "Dragalge-Mega",
+    "0693000": "Clawitzer",
+    "0695000": "Heliolisk",
+    "0697000": "Tyrantrum",
+    "0699000": "Aurorus",
+    "0700000": "Sylveon",
+    "0701000": "Hawlucha",
+    "0701001": "Hawlucha-Mega",
+    "0702000": "Dedenne",
+    "0706000": "Goodra",
+    "0706001": "Goodra-Hisui",
+    "0707000": "Klefki",
+    "0709000": "Trevenant",
+    "0711000": "Gourgeist",
+    "0711001": "Gourgeist-Small",
+    "0711002": "Gourgeist-Large",
+    "0711003": "Gourgeist-Super",
+    "0713000": "Avalugg",
+    "0713001": "Avalugg-Hisui",
+    "0715000": "Noivern",
+    "0724000": "Decidueye",
+    "0724001": "Decidueye-Hisui",
+    "0727000": "Incineroar",
+    "0730000": "Primarina",
+    "0733000": "Toucannon",
+    "0740000": "Crabominable",
+    "0740001": "Crabominable-Mega",
+    "0745000": "Lycanroc",
+    "0745001": "Lycanroc-Midnight",
+    "0745002": "Lycanroc-Dusk",
+    "0748000": "Toxapex",
+    "0750000": "Mudsdale",
+    "0752000": "Araquanid",
+    "0758000": "Salazzle",
+    "0763000": "Tsareena",
+    "0765000": "Oranguru",
+    "0766000": "Passimian",
+    "0768000": "Golisopod",
+    "0768001": "Golisopod-Mega",
+    "0778000": "Mimikyu",
+    "0778001": "Mimikyu-Busted",
+    "0780000": "Drampa",
+    "0780001": "Drampa-Mega",
+    "0784000": "Kommo-o",
+    "0812000": "Rillaboom",
+    "0815000": "Cinderace",
+    "0818000": "Inteleon",
+    "0823000": "Corviknight",
+    "0828000": "Thievul",
+    "0841000": "Flapple",
+    "0842000": "Appletun",
+    "0844000": "Sandaconda",
+    "0849000": "Toxtricity",
+    "0849001": "Toxtricity-Low-Key",
+    "0853000": "Grapploct",
+    "0855000": "Polteageist",
+    "0855001": "Polteageist-Antique",
+    "0858000": "Hatterene",
+    "0861000": "Grimmsnarl",
+    "0863000": "Perrserker",
+    "0865000": "Sirfetch’d",
+    "0866000": "Mr. Rime",
+    "0867000": "Runerigus",
+    "0869000": "Alcremie",
+    "0869001": "Alcremie",
+    "0869002": "Alcremie",
+    "0869003": "Alcremie",
+    "0869004": "Alcremie",
+    "0869005": "Alcremie",
+    "0869006": "Alcremie",
+    "0869007": "Alcremie",
+    "0869008": "Alcremie",
+    "0870000": "Falinks",
+    "0870001": "Falinks-Mega",
+    "0871000": "Pincurchin",
+    "0876000": "Indeedee",
+    "0876001": "Indeedee-F",
+    "0877000": "Morpeko",
+    "0877001": "Morpeko-Hangry",
+    "0887000": "Dragapult",
+    "0899000": "Wyrdeer",
+    "0900000": "Kleavor",
+    "0902000": "Basculegion",
+    "0902001": "Basculegion-F",
+    "0903000": "Sneasler",
+    "0904000": "Overqwil",
+    "0908000": "Meowscarada",
+    "0911000": "Skeledirge",
+    "0914000": "Quaquaval",
+    "0923000": "Pawmot",
+    "0925000": "Maushold",
+    "0925001": "Maushold-Four",
+    "0930000": "Arboliva",
+    "0931000": "Squawkabilly",
+    "0931001": "Squawkabilly-Blue",
+    "0931002": "Squawkabilly-Yellow",
+    "0931003": "Squawkabilly-White",
+    "0934000": "Garganacl",
+    "0936000": "Armarouge",
+    "0937000": "Ceruledge",
+    "0939000": "Bellibolt",
+    "0943000": "Mabosstiff",
+    "0952000": "Scovillain",
+    "0952001": "Scovillain-Mega",
+    "0956000": "Espathra",
+    "0959000": "Tinkaton",
+    "0964000": "Palafin",
+    "0964001": "Palafin-Hero",
+    "0968000": "Orthworm",
+    "0970000": "Glimmora",
+    "0970001": "Glimmora-Mega",
+    "0972000": "Houndstone",
+    "0979000": "Annihilape",
+    "0981000": "Farigiraf",
+    "0983000": "Kingambit",
+    "0998000": "Baxcalibur",
+    "0998001": "Baxcalibur-Mega"
+  },
+  "moves": {
+    "1": "Pound",
+    "7": "Fire Punch",
+    "8": "Ice Punch",
+    "9": "Thunder Punch",
+    "12": "Guillotine",
+    "14": "Swords Dance",
+    "18": "Whirlwind",
+    "19": "Fly",
+    "20": "Bind",
+    "25": "Mega Kick",
+    "32": "Horn Drill",
+    "34": "Body Slam",
+    "35": "Wrap",
+    "37": "Thrash",
+    "38": "Double-Edge",
+    "42": "Pin Missile",
+    "44": "Bite",
+    "46": "Roar",
+    "47": "Sing",
+    "50": "Disable",
+    "53": "Flamethrower",
+    "56": "Hydro Pump",
+    "57": "Surf",
+    "58": "Ice Beam",
+    "59": "Blizzard",
+    "63": "Hyper Beam",
+    "65": "Drill Peck",
+    "67": "Low Kick",
+    "68": "Counter",
+    "69": "Seismic Toss",
+    "73": "Leech Seed",
+    "74": "Growth",
+    "76": "Solar Beam",
+    "77": "Poison Powder",
+    "78": "Stun Spore",
+    "79": "Sleep Powder",
+    "80": "Petal Dance",
+    "81": "String Shot",
+    "83": "Fire Spin",
+    "85": "Thunderbolt",
+    "86": "Thunder Wave",
+    "87": "Thunder",
+    "89": "Earthquake",
+    "90": "Fissure",
+    "91": "Dig",
+    "92": "Toxic",
+    "94": "Psychic",
+    "95": "Hypnosis",
+    "97": "Agility",
+    "98": "Quick Attack",
+    "101": "Night Shade",
+    "103": "Screech",
+    "104": "Double Team",
+    "105": "Recover",
+    "107": "Minimize",
+    "109": "Confuse Ray",
+    "113": "Light Screen",
+    "114": "Haze",
+    "115": "Reflect",
+    "116": "Focus Energy",
+    "120": "Self-Destruct",
+    "126": "Fire Blast",
+    "127": "Waterfall",
+    "133": "Amnesia",
+    "136": "High Jump Kick",
+    "137": "Glare",
+    "141": "Leech Life",
+    "143": "Sky Attack",
+    "144": "Transform",
+    "151": "Acid Armor",
+    "152": "Crabhammer",
+    "153": "Explosion",
+    "156": "Rest",
+    "157": "Rock Slide",
+    "161": "Tri Attack",
+    "162": "Super Fang",
+    "163": "Slash",
+    "164": "Substitute",
+    "165": "Struggle",
+    "168": "Thief",
+    "173": "Snore",
+    "174": "Curse",
+    "175": "Flail",
+    "178": "Cotton Spore",
+    "179": "Reversal",
+    "180": "Spite",
+    "182": "Protect",
+    "183": "Mach Punch",
+    "184": "Scary Face",
+    "186": "Sweet Kiss",
+    "187": "Belly Drum",
+    "188": "Sludge Bomb",
+    "189": "Mud-Slap",
+    "191": "Spikes",
+    "192": "Zap Cannon",
+    "194": "Destiny Bond",
+    "195": "Perish Song",
+    "196": "Icy Wind",
+    "197": "Detect",
+    "198": "Bone Rush",
+    "199": "Lock-On",
+    "200": "Outrage",
+    "201": "Sandstorm",
+    "202": "Giga Drain",
+    "203": "Endure",
+    "204": "Charm",
+    "207": "Swagger",
+    "208": "Milk Drink",
+    "211": "Steel Wing",
+    "212": "Mean Look",
+    "213": "Attract",
+    "214": "Sleep Talk",
+    "215": "Heal Bell",
+    "219": "Safeguard",
+    "220": "Pain Split",
+    "223": "Dynamic Punch",
+    "224": "Megahorn",
+    "226": "Baton Pass",
+    "227": "Encore",
+    "229": "Rapid Spin",
+    "230": "Sweet Scent",
+    "231": "Iron Tail",
+    "234": "Morning Sun",
+    "235": "Synthesis",
+    "236": "Moonlight",
+    "238": "Cross Chop",
+    "240": "Rain Dance",
+    "241": "Sunny Day",
+    "242": "Crunch",
+    "243": "Mirror Coat",
+    "244": "Psych Up",
+    "245": "Extreme Speed",
+    "246": "Ancient Power",
+    "247": "Shadow Ball",
+    "248": "Future Sight",
+    "250": "Whirlpool",
+    "251": "Beat Up",
+    "252": "Fake Out",
+    "253": "Uproar",
+    "254": "Stockpile",
+    "255": "Spit Up",
+    "256": "Swallow",
+    "257": "Heat Wave",
+    "259": "Torment",
+    "260": "Flatter",
+    "261": "Will-O-Wisp",
+    "262": "Memento",
+    "263": "Facade",
+    "264": "Focus Punch",
+    "266": "Follow Me",
+    "268": "Charge",
+    "269": "Taunt",
+    "270": "Helping Hand",
+    "271": "Trick",
+    "272": "Role Play",
+    "273": "Wish",
+    "275": "Ingrain",
+    "276": "Superpower",
+    "278": "Recycle",
+    "280": "Brick Break",
+    "281": "Yawn",
+    "282": "Knock Off",
+    "283": "Endeavor",
+    "284": "Eruption",
+    "285": "Skill Swap",
+    "286": "Imprison",
+    "291": "Dive",
+    "297": "Feather Dance",
+    "298": "Teeter Dance",
+    "299": "Blaze Kick",
+    "303": "Slack Off",
+    "304": "Hyper Voice",
+    "305": "Poison Fang",
+    "306": "Crush Claw",
+    "307": "Blast Burn",
+    "308": "Hydro Cannon",
+    "309": "Meteor Mash",
+    "311": "Weather Ball",
+    "313": "Fake Tears",
+    "314": "Air Cutter",
+    "315": "Overheat",
+    "317": "Rock Tomb",
+    "319": "Metal Sound",
+    "321": "Tickle",
+    "322": "Cosmic Power",
+    "323": "Water Spout",
+    "325": "Shadow Punch",
+    "326": "Extrasensory",
+    "328": "Sand Tomb",
+    "329": "Sheer Cold",
+    "330": "Muddy Water",
+    "331": "Bullet Seed",
+    "332": "Aerial Ace",
+    "333": "Icicle Spear",
+    "334": "Iron Defense",
+    "335": "Block",
+    "336": "Howl",
+    "337": "Dragon Claw",
+    "338": "Frenzy Plant",
+    "339": "Bulk Up",
+    "340": "Bounce",
+    "341": "Mud Shot",
+    "343": "Covet",
+    "344": "Volt Tackle",
+    "347": "Calm Mind",
+    "348": "Leaf Blade",
+    "349": "Dragon Dance",
+    "350": "Rock Blast",
+    "352": "Water Pulse",
+    "355": "Roost",
+    "356": "Gravity",
+    "359": "Hammer Arm",
+    "360": "Gyro Ball",
+    "361": "Healing Wish",
+    "364": "Feint",
+    "365": "Pluck",
+    "366": "Tailwind",
+    "367": "Acupressure",
+    "368": "Metal Burst",
+    "369": "U-turn",
+    "370": "Close Combat",
+    "371": "Payback",
+    "372": "Assurance",
+    "374": "Fling",
+    "379": "Power Trick",
+    "380": "Gastro Acid",
+    "383": "Copycat",
+    "384": "Power Swap",
+    "385": "Guard Swap",
+    "387": "Last Resort",
+    "388": "Worry Seed",
+    "389": "Sucker Punch",
+    "390": "Toxic Spikes",
+    "392": "Aqua Ring",
+    "393": "Magnet Rise",
+    "394": "Flare Blitz",
+    "396": "Aura Sphere",
+    "397": "Rock Polish",
+    "398": "Poison Jab",
+    "399": "Dark Pulse",
+    "400": "Night Slash",
+    "401": "Aqua Tail",
+    "402": "Seed Bomb",
+    "403": "Air Slash",
+    "404": "X-Scissor",
+    "405": "Bug Buzz",
+    "406": "Dragon Pulse",
+    "407": "Dragon Rush",
+    "408": "Power Gem",
+    "409": "Drain Punch",
+    "410": "Vacuum Wave",
+    "411": "Focus Blast",
+    "412": "Energy Ball",
+    "413": "Brave Bird",
+    "414": "Earth Power",
+    "415": "Switcheroo",
+    "416": "Giga Impact",
+    "417": "Nasty Plot",
+    "418": "Bullet Punch",
+    "419": "Avalanche",
+    "420": "Ice Shard",
+    "421": "Shadow Claw",
+    "422": "Thunder Fang",
+    "423": "Ice Fang",
+    "424": "Fire Fang",
+    "425": "Shadow Sneak",
+    "427": "Psycho Cut",
+    "428": "Zen Headbutt",
+    "430": "Flash Cannon",
+    "432": "Defog",
+    "433": "Trick Room",
+    "434": "Draco Meteor",
+    "435": "Discharge",
+    "436": "Lava Plume",
+    "437": "Leaf Storm",
+    "438": "Power Whip",
+    "439": "Rock Wrecker",
+    "440": "Cross Poison",
+    "441": "Gunk Shot",
+    "442": "Iron Head",
+    "444": "Stone Edge",
+    "446": "Stealth Rock",
+    "447": "Grass Knot",
+    "450": "Bug Bite",
+    "451": "Charge Beam",
+    "452": "Wood Hammer",
+    "453": "Aqua Jet",
+    "457": "Head Smash",
+    "458": "Double Hit",
+    "469": "Wide Guard",
+    "470": "Guard Split",
+    "471": "Power Split",
+    "472": "Wonder Room",
+    "473": "Psyshock",
+    "474": "Venoshock",
+    "476": "Rage Powder",
+    "478": "Magic Room",
+    "479": "Smack Down",
+    "480": "Storm Throw",
+    "482": "Sludge Wave",
+    "483": "Quiver Dance",
+    "484": "Heavy Slam",
+    "486": "Electro Ball",
+    "487": "Soak",
+    "488": "Flame Charge",
+    "489": "Coil",
+    "490": "Low Sweep",
+    "491": "Acid Spray",
+    "492": "Foul Play",
+    "493": "Simple Beam",
+    "494": "Entrainment",
+    "495": "After You",
+    "496": "Round",
+    "499": "Clear Smog",
+    "500": "Stored Power",
+    "501": "Quick Guard",
+    "502": "Ally Switch",
+    "503": "Scald",
+    "504": "Shell Smash",
+    "505": "Heal Pulse",
+    "506": "Hex",
+    "508": "Shift Gear",
+    "509": "Circle Throw",
+    "511": "Quash",
+    "512": "Acrobatics",
+    "513": "Reflect Type",
+    "515": "Final Gambit",
+    "517": "Inferno",
+    "521": "Volt Switch",
+    "522": "Struggle Bug",
+    "523": "Bulldoze",
+    "524": "Frost Breath",
+    "525": "Dragon Tail",
+    "527": "Electroweb",
+    "528": "Wild Charge",
+    "529": "Drill Run",
+    "532": "Horn Leech",
+    "533": "Sacred Sword",
+    "534": "Razor Shell",
+    "535": "Heat Crash",
+    "538": "Cotton Guard",
+    "539": "Night Daze",
+    "541": "Tail Slap",
+    "542": "Hurricane",
+    "552": "Fiery Dance",
+    "555": "Snarl",
+    "556": "Icicle Crash",
+    "560": "Flying Press",
+    "562": "Belch",
+    "564": "Sticky Web",
+    "565": "Fell Stinger",
+    "566": "Phantom Force",
+    "567": "Trick-or-Treat",
+    "568": "Noble Roar",
+    "570": "Parabolic Charge",
+    "571": "Forest's Curse",
+    "572": "Petal Blizzard",
+    "573": "Freeze-Dry",
+    "575": "Parting Shot",
+    "576": "Topsy-Turvy",
+    "577": "Draining Kiss",
+    "580": "Grassy Terrain",
+    "581": "Misty Terrain",
+    "582": "Electrify",
+    "583": "Play Rough",
+    "585": "Moonblast",
+    "586": "Boomburst",
+    "587": "Fairy Lock",
+    "588": "King's Shield",
+    "594": "Water Shuriken",
+    "595": "Mystical Fire",
+    "596": "Spiky Shield",
+    "597": "Aromatic Mist",
+    "598": "Eerie Impulse",
+    "602": "Magnetic Flux",
+    "604": "Electric Terrain",
+    "605": "Dazzling Gleam",
+    "608": "Baby-Doll Eyes",
+    "609": "Nuzzle",
+    "611": "Infestation",
+    "617": "Light of Ruin",
+    "660": "First Impression",
+    "661": "Baneful Bunker",
+    "662": "Spirit Shackle",
+    "663": "Darkest Lariat",
+    "664": "Sparkling Aria",
+    "665": "Ice Hammer",
+    "667": "High Horsepower",
+    "668": "Strength Sap",
+    "669": "Solar Blade",
+    "672": "Toxic Thread",
+    "675": "Throat Chop",
+    "676": "Pollen Puff",
+    "678": "Psychic Terrain",
+    "679": "Lunge",
+    "680": "Fire Lash",
+    "681": "Power Trip",
+    "682": "Burn Up",
+    "683": "Speed Swap",
+    "684": "Smart Strike",
+    "688": "Trop Kick",
+    "689": "Instruct",
+    "690": "Beak Blast",
+    "691": "Clanging Scales",
+    "693": "Brutal Swing",
+    "694": "Aurora Veil",
+    "706": "Psychic Fangs",
+    "707": "Stomping Tantrum",
+    "709": "Accelerock",
+    "710": "Liquidation",
+    "715": "Tearful Look",
+    "716": "Zing Zap",
+    "745": "Snipe Shot",
+    "746": "Jaw Lock",
+    "747": "Stuff Cheeks",
+    "748": "No Retreat",
+    "750": "Magic Powder",
+    "751": "Dragon Darts",
+    "752": "Teatime",
+    "753": "Octolock",
+    "756": "Court Change",
+    "775": "Clangorous Soul",
+    "776": "Body Press",
+    "777": "Decorate",
+    "778": "Drum Beating",
+    "779": "Snap Trap",
+    "780": "Pyro Ball",
+    "783": "Aura Wheel",
+    "784": "Breaking Swipe",
+    "786": "Overdrive",
+    "787": "Apple Acid",
+    "788": "Grav Apple",
+    "789": "Spirit Break",
+    "791": "Life Dew",
+    "794": "Meteor Assault",
+    "796": "Steel Beam",
+    "797": "Expanding Force",
+    "798": "Steel Roller",
+    "799": "Scale Shot",
+    "800": "Meteor Beam",
+    "801": "Shell Side Arm",
+    "802": "Misty Explosion",
+    "803": "Grassy Glide",
+    "804": "Rising Voltage",
+    "805": "Terrain Pulse",
+    "806": "Skitter Smack",
+    "807": "Burning Jealousy",
+    "808": "Lash Out",
+    "809": "Poltergeist",
+    "810": "Corrosive Gas",
+    "811": "Coaching",
+    "812": "Flip Turn",
+    "813": "Triple Axel",
+    "814": "Dual Wingbeat",
+    "815": "Scorching Sands",
+    "826": "Eerie Spell",
+    "827": "Dire Claw",
+    "828": "Psyshield Bash",
+    "830": "Stone Axe",
+    "833": "Raging Fury",
+    "834": "Wave Crash",
+    "836": "Mountain Gale",
+    "838": "Headlong Rush",
+    "839": "Barb Barrage",
+    "841": "Bitter Malice",
+    "842": "Shelter",
+    "843": "Triple Arrows",
+    "844": "Infernal Parade",
+    "845": "Ceaseless Edge",
+    "853": "Axe Kick",
+    "854": "Last Respects",
+    "855": "Lumina Crash",
+    "857": "Jet Punch",
+    "858": "Spicy Extract",
+    "860": "Population Bomb",
+    "861": "Ice Spinner",
+    "862": "Glaive Rush",
+    "863": "Revival Blessing",
+    "864": "Salt Cure",
+    "866": "Mortal Spin",
+    "869": "Kowtow Cleave",
+    "870": "Flower Trick",
+    "871": "Torch Song",
+    "872": "Aqua Step",
+    "873": "Raging Bull",
+    "874": "Make It Rain",
+    "880": "Shed Tail",
+    "881": "Chilly Reception",
+    "882": "Tidy Up",
+    "883": "Snowscape",
+    "884": "Pounce",
+    "885": "Trailblaze",
+    "886": "Chilling Water",
+    "888": "Twin Beam",
+    "889": "Rage Fist",
+    "890": "Armor Cannon",
+    "891": "Bitter Blade",
+    "892": "Double Shock",
+    "893": "Gigaton Hammer",
+    "894": "Comeuppance",
+    "895": "Aqua Cutter",
+    "902": "Matcha Gotcha",
+    "903": "Syrup Bomb",
+    "905": "Electro Shot",
+    "907": "Fickle Beam",
+    "912": "Hard Press",
+    "913": "Dragon Cheer",
+    "914": "Alluring Voice",
+    "915": "Temper Flare",
+    "916": "Supercell Slam",
+    "917": "Psychic Noise",
+    "918": "Upper Hand"
+  },
+  "moveHits": {
+    "1": [
+      1,
+      1
+    ],
+    "7": [
+      1,
+      1
+    ],
+    "8": [
+      1,
+      1
+    ],
+    "9": [
+      1,
+      1
+    ],
+    "12": [
+      1,
+      1
+    ],
+    "14": [
+      1,
+      1
+    ],
+    "18": [
+      1,
+      1
+    ],
+    "19": [
+      1,
+      1
+    ],
+    "20": [
+      1,
+      1
+    ],
+    "25": [
+      1,
+      1
+    ],
+    "32": [
+      1,
+      1
+    ],
+    "34": [
+      1,
+      1
+    ],
+    "35": [
+      1,
+      1
+    ],
+    "37": [
+      1,
+      1
+    ],
+    "38": [
+      1,
+      1
+    ],
+    "42": [
+      2,
+      5
+    ],
+    "44": [
+      1,
+      1
+    ],
+    "46": [
+      1,
+      1
+    ],
+    "47": [
+      1,
+      1
+    ],
+    "50": [
+      1,
+      1
+    ],
+    "53": [
+      1,
+      1
+    ],
+    "56": [
+      1,
+      1
+    ],
+    "57": [
+      1,
+      1
+    ],
+    "58": [
+      1,
+      1
+    ],
+    "59": [
+      1,
+      1
+    ],
+    "63": [
+      1,
+      1
+    ],
+    "65": [
+      1,
+      1
+    ],
+    "67": [
+      1,
+      1
+    ],
+    "68": [
+      1,
+      1
+    ],
+    "69": [
+      1,
+      1
+    ],
+    "73": [
+      1,
+      1
+    ],
+    "74": [
+      1,
+      1
+    ],
+    "76": [
+      1,
+      1
+    ],
+    "77": [
+      1,
+      1
+    ],
+    "78": [
+      1,
+      1
+    ],
+    "79": [
+      1,
+      1
+    ],
+    "80": [
+      1,
+      1
+    ],
+    "81": [
+      1,
+      1
+    ],
+    "83": [
+      1,
+      1
+    ],
+    "85": [
+      1,
+      1
+    ],
+    "86": [
+      1,
+      1
+    ],
+    "87": [
+      1,
+      1
+    ],
+    "89": [
+      1,
+      1
+    ],
+    "90": [
+      1,
+      1
+    ],
+    "91": [
+      1,
+      1
+    ],
+    "92": [
+      1,
+      1
+    ],
+    "94": [
+      1,
+      1
+    ],
+    "95": [
+      1,
+      1
+    ],
+    "97": [
+      1,
+      1
+    ],
+    "98": [
+      1,
+      1
+    ],
+    "101": [
+      1,
+      1
+    ],
+    "103": [
+      1,
+      1
+    ],
+    "104": [
+      1,
+      1
+    ],
+    "105": [
+      1,
+      1
+    ],
+    "107": [
+      1,
+      1
+    ],
+    "109": [
+      1,
+      1
+    ],
+    "113": [
+      1,
+      1
+    ],
+    "114": [
+      1,
+      1
+    ],
+    "115": [
+      1,
+      1
+    ],
+    "116": [
+      1,
+      1
+    ],
+    "120": [
+      1,
+      1
+    ],
+    "126": [
+      1,
+      1
+    ],
+    "127": [
+      1,
+      1
+    ],
+    "133": [
+      1,
+      1
+    ],
+    "136": [
+      1,
+      1
+    ],
+    "137": [
+      1,
+      1
+    ],
+    "141": [
+      1,
+      1
+    ],
+    "143": [
+      1,
+      1
+    ],
+    "144": [
+      1,
+      1
+    ],
+    "151": [
+      1,
+      1
+    ],
+    "152": [
+      1,
+      1
+    ],
+    "153": [
+      1,
+      1
+    ],
+    "156": [
+      1,
+      1
+    ],
+    "157": [
+      1,
+      1
+    ],
+    "161": [
+      1,
+      1
+    ],
+    "162": [
+      1,
+      1
+    ],
+    "163": [
+      1,
+      1
+    ],
+    "164": [
+      1,
+      1
+    ],
+    "165": [
+      1,
+      1
+    ],
+    "168": [
+      1,
+      1
+    ],
+    "173": [
+      1,
+      1
+    ],
+    "174": [
+      1,
+      1
+    ],
+    "175": [
+      1,
+      1
+    ],
+    "178": [
+      1,
+      1
+    ],
+    "179": [
+      1,
+      1
+    ],
+    "180": [
+      1,
+      1
+    ],
+    "182": [
+      1,
+      1
+    ],
+    "183": [
+      1,
+      1
+    ],
+    "184": [
+      1,
+      1
+    ],
+    "186": [
+      1,
+      1
+    ],
+    "187": [
+      1,
+      1
+    ],
+    "188": [
+      1,
+      1
+    ],
+    "189": [
+      1,
+      1
+    ],
+    "191": [
+      1,
+      1
+    ],
+    "192": [
+      1,
+      1
+    ],
+    "194": [
+      1,
+      1
+    ],
+    "195": [
+      1,
+      1
+    ],
+    "196": [
+      1,
+      1
+    ],
+    "197": [
+      1,
+      1
+    ],
+    "198": [
+      2,
+      5
+    ],
+    "199": [
+      1,
+      1
+    ],
+    "200": [
+      1,
+      1
+    ],
+    "201": [
+      1,
+      1
+    ],
+    "202": [
+      1,
+      1
+    ],
+    "203": [
+      1,
+      1
+    ],
+    "204": [
+      1,
+      1
+    ],
+    "207": [
+      1,
+      1
+    ],
+    "208": [
+      1,
+      1
+    ],
+    "211": [
+      1,
+      1
+    ],
+    "212": [
+      1,
+      1
+    ],
+    "213": [
+      1,
+      1
+    ],
+    "214": [
+      1,
+      1
+    ],
+    "215": [
+      1,
+      1
+    ],
+    "219": [
+      1,
+      1
+    ],
+    "220": [
+      1,
+      1
+    ],
+    "223": [
+      1,
+      1
+    ],
+    "224": [
+      1,
+      1
+    ],
+    "226": [
+      1,
+      1
+    ],
+    "227": [
+      1,
+      1
+    ],
+    "229": [
+      1,
+      1
+    ],
+    "230": [
+      1,
+      1
+    ],
+    "231": [
+      1,
+      1
+    ],
+    "234": [
+      1,
+      1
+    ],
+    "235": [
+      1,
+      1
+    ],
+    "236": [
+      1,
+      1
+    ],
+    "238": [
+      1,
+      1
+    ],
+    "240": [
+      1,
+      1
+    ],
+    "241": [
+      1,
+      1
+    ],
+    "242": [
+      1,
+      1
+    ],
+    "243": [
+      1,
+      1
+    ],
+    "244": [
+      1,
+      1
+    ],
+    "245": [
+      1,
+      1
+    ],
+    "246": [
+      1,
+      1
+    ],
+    "247": [
+      1,
+      1
+    ],
+    "248": [
+      1,
+      1
+    ],
+    "250": [
+      1,
+      1
+    ],
+    "251": [
+      1,
+      1
+    ],
+    "252": [
+      1,
+      1
+    ],
+    "253": [
+      1,
+      1
+    ],
+    "254": [
+      1,
+      1
+    ],
+    "255": [
+      1,
+      1
+    ],
+    "256": [
+      1,
+      1
+    ],
+    "257": [
+      1,
+      1
+    ],
+    "259": [
+      1,
+      1
+    ],
+    "260": [
+      1,
+      1
+    ],
+    "261": [
+      1,
+      1
+    ],
+    "262": [
+      1,
+      1
+    ],
+    "263": [
+      1,
+      1
+    ],
+    "264": [
+      1,
+      1
+    ],
+    "266": [
+      1,
+      1
+    ],
+    "268": [
+      1,
+      1
+    ],
+    "269": [
+      1,
+      1
+    ],
+    "270": [
+      1,
+      1
+    ],
+    "271": [
+      1,
+      1
+    ],
+    "272": [
+      1,
+      1
+    ],
+    "273": [
+      1,
+      1
+    ],
+    "275": [
+      1,
+      1
+    ],
+    "276": [
+      1,
+      1
+    ],
+    "278": [
+      1,
+      1
+    ],
+    "280": [
+      1,
+      1
+    ],
+    "281": [
+      1,
+      1
+    ],
+    "282": [
+      1,
+      1
+    ],
+    "283": [
+      1,
+      1
+    ],
+    "284": [
+      1,
+      1
+    ],
+    "285": [
+      1,
+      1
+    ],
+    "286": [
+      1,
+      1
+    ],
+    "291": [
+      1,
+      1
+    ],
+    "297": [
+      1,
+      1
+    ],
+    "298": [
+      1,
+      1
+    ],
+    "299": [
+      1,
+      1
+    ],
+    "303": [
+      1,
+      1
+    ],
+    "304": [
+      1,
+      1
+    ],
+    "305": [
+      1,
+      1
+    ],
+    "306": [
+      1,
+      1
+    ],
+    "307": [
+      1,
+      1
+    ],
+    "308": [
+      1,
+      1
+    ],
+    "309": [
+      1,
+      1
+    ],
+    "311": [
+      1,
+      1
+    ],
+    "313": [
+      1,
+      1
+    ],
+    "314": [
+      1,
+      1
+    ],
+    "315": [
+      1,
+      1
+    ],
+    "317": [
+      1,
+      1
+    ],
+    "319": [
+      1,
+      1
+    ],
+    "321": [
+      1,
+      1
+    ],
+    "322": [
+      1,
+      1
+    ],
+    "323": [
+      1,
+      1
+    ],
+    "325": [
+      1,
+      1
+    ],
+    "326": [
+      1,
+      1
+    ],
+    "328": [
+      1,
+      1
+    ],
+    "329": [
+      1,
+      1
+    ],
+    "330": [
+      1,
+      1
+    ],
+    "331": [
+      2,
+      5
+    ],
+    "332": [
+      1,
+      1
+    ],
+    "333": [
+      2,
+      5
+    ],
+    "334": [
+      1,
+      1
+    ],
+    "335": [
+      1,
+      1
+    ],
+    "336": [
+      1,
+      1
+    ],
+    "337": [
+      1,
+      1
+    ],
+    "338": [
+      1,
+      1
+    ],
+    "339": [
+      1,
+      1
+    ],
+    "340": [
+      1,
+      1
+    ],
+    "341": [
+      1,
+      1
+    ],
+    "343": [
+      1,
+      1
+    ],
+    "344": [
+      1,
+      1
+    ],
+    "347": [
+      1,
+      1
+    ],
+    "348": [
+      1,
+      1
+    ],
+    "349": [
+      1,
+      1
+    ],
+    "350": [
+      2,
+      5
+    ],
+    "352": [
+      1,
+      1
+    ],
+    "355": [
+      1,
+      1
+    ],
+    "356": [
+      1,
+      1
+    ],
+    "359": [
+      1,
+      1
+    ],
+    "360": [
+      1,
+      1
+    ],
+    "361": [
+      1,
+      1
+    ],
+    "364": [
+      1,
+      1
+    ],
+    "365": [
+      1,
+      1
+    ],
+    "366": [
+      1,
+      1
+    ],
+    "367": [
+      1,
+      1
+    ],
+    "368": [
+      1,
+      1
+    ],
+    "369": [
+      1,
+      1
+    ],
+    "370": [
+      1,
+      1
+    ],
+    "371": [
+      1,
+      1
+    ],
+    "372": [
+      1,
+      1
+    ],
+    "374": [
+      1,
+      1
+    ],
+    "379": [
+      1,
+      1
+    ],
+    "380": [
+      1,
+      1
+    ],
+    "383": [
+      1,
+      1
+    ],
+    "384": [
+      1,
+      1
+    ],
+    "385": [
+      1,
+      1
+    ],
+    "387": [
+      1,
+      1
+    ],
+    "388": [
+      1,
+      1
+    ],
+    "389": [
+      1,
+      1
+    ],
+    "390": [
+      1,
+      1
+    ],
+    "392": [
+      1,
+      1
+    ],
+    "393": [
+      1,
+      1
+    ],
+    "394": [
+      1,
+      1
+    ],
+    "396": [
+      1,
+      1
+    ],
+    "397": [
+      1,
+      1
+    ],
+    "398": [
+      1,
+      1
+    ],
+    "399": [
+      1,
+      1
+    ],
+    "400": [
+      1,
+      1
+    ],
+    "401": [
+      1,
+      1
+    ],
+    "402": [
+      1,
+      1
+    ],
+    "403": [
+      1,
+      1
+    ],
+    "404": [
+      1,
+      1
+    ],
+    "405": [
+      1,
+      1
+    ],
+    "406": [
+      1,
+      1
+    ],
+    "407": [
+      1,
+      1
+    ],
+    "408": [
+      1,
+      1
+    ],
+    "409": [
+      1,
+      1
+    ],
+    "410": [
+      1,
+      1
+    ],
+    "411": [
+      1,
+      1
+    ],
+    "412": [
+      1,
+      1
+    ],
+    "413": [
+      1,
+      1
+    ],
+    "414": [
+      1,
+      1
+    ],
+    "415": [
+      1,
+      1
+    ],
+    "416": [
+      1,
+      1
+    ],
+    "417": [
+      1,
+      1
+    ],
+    "418": [
+      1,
+      1
+    ],
+    "419": [
+      1,
+      1
+    ],
+    "420": [
+      1,
+      1
+    ],
+    "421": [
+      1,
+      1
+    ],
+    "422": [
+      1,
+      1
+    ],
+    "423": [
+      1,
+      1
+    ],
+    "424": [
+      1,
+      1
+    ],
+    "425": [
+      1,
+      1
+    ],
+    "427": [
+      1,
+      1
+    ],
+    "428": [
+      1,
+      1
+    ],
+    "430": [
+      1,
+      1
+    ],
+    "432": [
+      1,
+      1
+    ],
+    "433": [
+      1,
+      1
+    ],
+    "434": [
+      1,
+      1
+    ],
+    "435": [
+      1,
+      1
+    ],
+    "436": [
+      1,
+      1
+    ],
+    "437": [
+      1,
+      1
+    ],
+    "438": [
+      1,
+      1
+    ],
+    "439": [
+      1,
+      1
+    ],
+    "440": [
+      1,
+      1
+    ],
+    "441": [
+      1,
+      1
+    ],
+    "442": [
+      1,
+      1
+    ],
+    "444": [
+      1,
+      1
+    ],
+    "446": [
+      1,
+      1
+    ],
+    "447": [
+      1,
+      1
+    ],
+    "450": [
+      1,
+      1
+    ],
+    "451": [
+      1,
+      1
+    ],
+    "452": [
+      1,
+      1
+    ],
+    "453": [
+      1,
+      1
+    ],
+    "457": [
+      1,
+      1
+    ],
+    "458": [
+      2,
+      2
+    ],
+    "469": [
+      1,
+      1
+    ],
+    "470": [
+      1,
+      1
+    ],
+    "471": [
+      1,
+      1
+    ],
+    "472": [
+      1,
+      1
+    ],
+    "473": [
+      1,
+      1
+    ],
+    "474": [
+      1,
+      1
+    ],
+    "476": [
+      1,
+      1
+    ],
+    "478": [
+      1,
+      1
+    ],
+    "479": [
+      1,
+      1
+    ],
+    "480": [
+      1,
+      1
+    ],
+    "482": [
+      1,
+      1
+    ],
+    "483": [
+      1,
+      1
+    ],
+    "484": [
+      1,
+      1
+    ],
+    "486": [
+      1,
+      1
+    ],
+    "487": [
+      1,
+      1
+    ],
+    "488": [
+      1,
+      1
+    ],
+    "489": [
+      1,
+      1
+    ],
+    "490": [
+      1,
+      1
+    ],
+    "491": [
+      1,
+      1
+    ],
+    "492": [
+      1,
+      1
+    ],
+    "493": [
+      1,
+      1
+    ],
+    "494": [
+      1,
+      1
+    ],
+    "495": [
+      1,
+      1
+    ],
+    "496": [
+      1,
+      1
+    ],
+    "499": [
+      1,
+      1
+    ],
+    "500": [
+      1,
+      1
+    ],
+    "501": [
+      1,
+      1
+    ],
+    "502": [
+      1,
+      1
+    ],
+    "503": [
+      1,
+      1
+    ],
+    "504": [
+      1,
+      1
+    ],
+    "505": [
+      1,
+      1
+    ],
+    "506": [
+      1,
+      1
+    ],
+    "508": [
+      1,
+      1
+    ],
+    "509": [
+      1,
+      1
+    ],
+    "511": [
+      1,
+      1
+    ],
+    "512": [
+      1,
+      1
+    ],
+    "513": [
+      1,
+      1
+    ],
+    "515": [
+      1,
+      1
+    ],
+    "517": [
+      1,
+      1
+    ],
+    "521": [
+      1,
+      1
+    ],
+    "522": [
+      1,
+      1
+    ],
+    "523": [
+      1,
+      1
+    ],
+    "524": [
+      1,
+      1
+    ],
+    "525": [
+      1,
+      1
+    ],
+    "527": [
+      1,
+      1
+    ],
+    "528": [
+      1,
+      1
+    ],
+    "529": [
+      1,
+      1
+    ],
+    "532": [
+      1,
+      1
+    ],
+    "533": [
+      1,
+      1
+    ],
+    "534": [
+      1,
+      1
+    ],
+    "535": [
+      1,
+      1
+    ],
+    "538": [
+      1,
+      1
+    ],
+    "539": [
+      1,
+      1
+    ],
+    "541": [
+      2,
+      5
+    ],
+    "542": [
+      1,
+      1
+    ],
+    "552": [
+      1,
+      1
+    ],
+    "555": [
+      1,
+      1
+    ],
+    "556": [
+      1,
+      1
+    ],
+    "560": [
+      1,
+      1
+    ],
+    "562": [
+      1,
+      1
+    ],
+    "564": [
+      1,
+      1
+    ],
+    "565": [
+      1,
+      1
+    ],
+    "566": [
+      1,
+      1
+    ],
+    "567": [
+      1,
+      1
+    ],
+    "568": [
+      1,
+      1
+    ],
+    "570": [
+      1,
+      1
+    ],
+    "571": [
+      1,
+      1
+    ],
+    "572": [
+      1,
+      1
+    ],
+    "573": [
+      1,
+      1
+    ],
+    "575": [
+      1,
+      1
+    ],
+    "576": [
+      1,
+      1
+    ],
+    "577": [
+      1,
+      1
+    ],
+    "580": [
+      1,
+      1
+    ],
+    "581": [
+      1,
+      1
+    ],
+    "582": [
+      1,
+      1
+    ],
+    "583": [
+      1,
+      1
+    ],
+    "585": [
+      1,
+      1
+    ],
+    "586": [
+      1,
+      1
+    ],
+    "587": [
+      1,
+      1
+    ],
+    "588": [
+      1,
+      1
+    ],
+    "594": [
+      2,
+      5
+    ],
+    "595": [
+      1,
+      1
+    ],
+    "596": [
+      1,
+      1
+    ],
+    "597": [
+      1,
+      1
+    ],
+    "598": [
+      1,
+      1
+    ],
+    "602": [
+      1,
+      1
+    ],
+    "604": [
+      1,
+      1
+    ],
+    "605": [
+      1,
+      1
+    ],
+    "608": [
+      1,
+      1
+    ],
+    "609": [
+      1,
+      1
+    ],
+    "611": [
+      1,
+      1
+    ],
+    "617": [
+      1,
+      1
+    ],
+    "660": [
+      1,
+      1
+    ],
+    "661": [
+      1,
+      1
+    ],
+    "662": [
+      1,
+      1
+    ],
+    "663": [
+      1,
+      1
+    ],
+    "664": [
+      1,
+      1
+    ],
+    "665": [
+      1,
+      1
+    ],
+    "667": [
+      1,
+      1
+    ],
+    "668": [
+      1,
+      1
+    ],
+    "669": [
+      1,
+      1
+    ],
+    "672": [
+      1,
+      1
+    ],
+    "675": [
+      1,
+      1
+    ],
+    "676": [
+      1,
+      1
+    ],
+    "678": [
+      1,
+      1
+    ],
+    "679": [
+      1,
+      1
+    ],
+    "680": [
+      1,
+      1
+    ],
+    "681": [
+      1,
+      1
+    ],
+    "682": [
+      1,
+      1
+    ],
+    "683": [
+      1,
+      1
+    ],
+    "684": [
+      1,
+      1
+    ],
+    "688": [
+      1,
+      1
+    ],
+    "689": [
+      1,
+      1
+    ],
+    "690": [
+      1,
+      1
+    ],
+    "691": [
+      1,
+      1
+    ],
+    "693": [
+      1,
+      1
+    ],
+    "694": [
+      1,
+      1
+    ],
+    "706": [
+      1,
+      1
+    ],
+    "707": [
+      1,
+      1
+    ],
+    "709": [
+      1,
+      1
+    ],
+    "710": [
+      1,
+      1
+    ],
+    "715": [
+      1,
+      1
+    ],
+    "716": [
+      1,
+      1
+    ],
+    "745": [
+      1,
+      1
+    ],
+    "746": [
+      1,
+      1
+    ],
+    "747": [
+      1,
+      1
+    ],
+    "748": [
+      1,
+      1
+    ],
+    "750": [
+      1,
+      1
+    ],
+    "751": [
+      2,
+      2
+    ],
+    "752": [
+      1,
+      1
+    ],
+    "753": [
+      1,
+      1
+    ],
+    "756": [
+      1,
+      1
+    ],
+    "775": [
+      1,
+      1
+    ],
+    "776": [
+      1,
+      1
+    ],
+    "777": [
+      1,
+      1
+    ],
+    "778": [
+      1,
+      1
+    ],
+    "779": [
+      1,
+      1
+    ],
+    "780": [
+      1,
+      1
+    ],
+    "783": [
+      1,
+      1
+    ],
+    "784": [
+      1,
+      1
+    ],
+    "786": [
+      1,
+      1
+    ],
+    "787": [
+      1,
+      1
+    ],
+    "788": [
+      1,
+      1
+    ],
+    "789": [
+      1,
+      1
+    ],
+    "791": [
+      1,
+      1
+    ],
+    "794": [
+      1,
+      1
+    ],
+    "796": [
+      1,
+      1
+    ],
+    "797": [
+      1,
+      1
+    ],
+    "798": [
+      1,
+      1
+    ],
+    "799": [
+      2,
+      5
+    ],
+    "800": [
+      1,
+      1
+    ],
+    "801": [
+      1,
+      1
+    ],
+    "802": [
+      1,
+      1
+    ],
+    "803": [
+      1,
+      1
+    ],
+    "804": [
+      1,
+      1
+    ],
+    "805": [
+      1,
+      1
+    ],
+    "806": [
+      1,
+      1
+    ],
+    "807": [
+      1,
+      1
+    ],
+    "808": [
+      1,
+      1
+    ],
+    "809": [
+      1,
+      1
+    ],
+    "810": [
+      1,
+      1
+    ],
+    "811": [
+      1,
+      1
+    ],
+    "812": [
+      1,
+      1
+    ],
+    "813": [
+      1,
+      3
+    ],
+    "814": [
+      2,
+      2
+    ],
+    "815": [
+      1,
+      1
+    ],
+    "826": [
+      1,
+      1
+    ],
+    "827": [
+      1,
+      1
+    ],
+    "828": [
+      1,
+      1
+    ],
+    "830": [
+      1,
+      1
+    ],
+    "833": [
+      1,
+      1
+    ],
+    "834": [
+      1,
+      1
+    ],
+    "836": [
+      1,
+      1
+    ],
+    "838": [
+      1,
+      1
+    ],
+    "839": [
+      1,
+      1
+    ],
+    "841": [
+      1,
+      1
+    ],
+    "842": [
+      1,
+      1
+    ],
+    "843": [
+      1,
+      1
+    ],
+    "844": [
+      1,
+      1
+    ],
+    "845": [
+      1,
+      1
+    ],
+    "853": [
+      1,
+      1
+    ],
+    "854": [
+      1,
+      1
+    ],
+    "855": [
+      1,
+      1
+    ],
+    "857": [
+      1,
+      1
+    ],
+    "858": [
+      1,
+      1
+    ],
+    "860": [
+      1,
+      10
+    ],
+    "861": [
+      1,
+      1
+    ],
+    "862": [
+      1,
+      1
+    ],
+    "863": [
+      1,
+      1
+    ],
+    "864": [
+      1,
+      1
+    ],
+    "866": [
+      1,
+      1
+    ],
+    "869": [
+      1,
+      1
+    ],
+    "870": [
+      1,
+      1
+    ],
+    "871": [
+      1,
+      1
+    ],
+    "872": [
+      1,
+      1
+    ],
+    "873": [
+      1,
+      1
+    ],
+    "874": [
+      1,
+      1
+    ],
+    "880": [
+      1,
+      1
+    ],
+    "881": [
+      1,
+      1
+    ],
+    "882": [
+      1,
+      1
+    ],
+    "883": [
+      1,
+      1
+    ],
+    "884": [
+      1,
+      1
+    ],
+    "885": [
+      1,
+      1
+    ],
+    "886": [
+      1,
+      1
+    ],
+    "888": [
+      2,
+      2
+    ],
+    "889": [
+      1,
+      1
+    ],
+    "890": [
+      1,
+      1
+    ],
+    "891": [
+      1,
+      1
+    ],
+    "892": [
+      1,
+      1
+    ],
+    "893": [
+      1,
+      1
+    ],
+    "894": [
+      1,
+      1
+    ],
+    "895": [
+      1,
+      1
+    ],
+    "902": [
+      1,
+      1
+    ],
+    "903": [
+      1,
+      1
+    ],
+    "905": [
+      1,
+      1
+    ],
+    "907": [
+      1,
+      1
+    ],
+    "912": [
+      1,
+      1
+    ],
+    "913": [
+      1,
+      1
+    ],
+    "914": [
+      1,
+      1
+    ],
+    "915": [
+      1,
+      1
+    ],
+    "916": [
+      1,
+      1
+    ],
+    "917": [
+      1,
+      1
+    ],
+    "918": [
+      1,
+      1
+    ]
+  },
+  "abilities": {
+    "1": "Stench",
+    "2": "Drizzle",
+    "3": "Speed Boost",
+    "4": "Battle Armor",
+    "5": "Sturdy",
+    "6": "Damp",
+    "7": "Limber",
+    "8": "Sand Veil",
+    "9": "Static",
+    "10": "Volt Absorb",
+    "11": "Water Absorb",
+    "12": "Oblivious",
+    "13": "Cloud Nine",
+    "14": "Compound Eyes",
+    "15": "Insomnia",
+    "17": "Immunity",
+    "18": "Flash Fire",
+    "19": "Shield Dust",
+    "20": "Own Tempo",
+    "21": "Suction Cups",
+    "22": "Intimidate",
+    "23": "Shadow Tag",
+    "24": "Rough Skin",
+    "26": "Levitate",
+    "27": "Effect Spore",
+    "28": "Synchronize",
+    "29": "Clear Body",
+    "30": "Natural Cure",
+    "31": "Lightning Rod",
+    "33": "Swift Swim",
+    "34": "Chlorophyll",
+    "35": "Illuminate",
+    "36": "Trace",
+    "37": "Huge Power",
+    "38": "Poison Point",
+    "39": "Inner Focus",
+    "40": "Magma Armor",
+    "43": "Soundproof",
+    "44": "Rain Dish",
+    "45": "Sand Stream",
+    "46": "Pressure",
+    "47": "Thick Fat",
+    "48": "Early Bird",
+    "49": "Flame Body",
+    "50": "Run Away",
+    "51": "Keen Eye",
+    "52": "Hyper Cutter",
+    "53": "Pickup",
+    "55": "Hustle",
+    "56": "Cute Charm",
+    "57": "Plus",
+    "58": "Minus",
+    "59": "Forecast",
+    "60": "Sticky Hold",
+    "61": "Shed Skin",
+    "62": "Guts",
+    "63": "Marvel Scale",
+    "64": "Liquid Ooze",
+    "65": "Overgrow",
+    "66": "Blaze",
+    "67": "Torrent",
+    "68": "Swarm",
+    "69": "Rock Head",
+    "70": "Drought",
+    "72": "Vital Spirit",
+    "73": "White Smoke",
+    "74": "Pure Power",
+    "75": "Shell Armor",
+    "77": "Tangled Feet",
+    "78": "Motor Drive",
+    "79": "Rivalry",
+    "80": "Steadfast",
+    "81": "Snow Cloak",
+    "82": "Gluttony",
+    "83": "Anger Point",
+    "84": "Unburden",
+    "85": "Heatproof",
+    "87": "Dry Skin",
+    "89": "Iron Fist",
+    "90": "Poison Heal",
+    "91": "Adaptability",
+    "92": "Skill Link",
+    "93": "Hydration",
+    "94": "Solar Power",
+    "95": "Quick Feet",
+    "97": "Sniper",
+    "98": "Magic Guard",
+    "99": "No Guard",
+    "100": "Stall",
+    "101": "Technician",
+    "102": "Leaf Guard",
+    "103": "Klutz",
+    "104": "Mold Breaker",
+    "105": "Super Luck",
+    "106": "Aftermath",
+    "107": "Anticipation",
+    "108": "Forewarn",
+    "109": "Unaware",
+    "111": "Filter",
+    "113": "Scrappy",
+    "115": "Ice Body",
+    "116": "Solid Rock",
+    "117": "Snow Warning",
+    "119": "Frisk",
+    "120": "Reckless",
+    "124": "Pickpocket",
+    "125": "Sheer Force",
+    "126": "Contrary",
+    "127": "Unnerve",
+    "128": "Defiant",
+    "130": "Cursed Body",
+    "131": "Healer",
+    "132": "Friend Guard",
+    "133": "Weak Armor",
+    "134": "Heavy Metal",
+    "135": "Light Metal",
+    "136": "Multiscale",
+    "139": "Harvest",
+    "140": "Telepathy",
+    "141": "Moody",
+    "142": "Overcoat",
+    "143": "Poison Touch",
+    "144": "Regenerator",
+    "145": "Big Pecks",
+    "146": "Sand Rush",
+    "148": "Analytic",
+    "149": "Illusion",
+    "150": "Imposter",
+    "151": "Infiltrator",
+    "152": "Mummy",
+    "153": "Moxie",
+    "154": "Justified",
+    "155": "Rattled",
+    "156": "Magic Bounce",
+    "157": "Sap Sipper",
+    "158": "Prankster",
+    "159": "Sand Force",
+    "165": "Aroma Veil",
+    "166": "Flower Veil",
+    "167": "Cheek Pouch",
+    "168": "Protean",
+    "169": "Fur Coat",
+    "170": "Magician",
+    "171": "Bulletproof",
+    "172": "Competitive",
+    "173": "Strong Jaw",
+    "174": "Refrigerate",
+    "175": "Sweet Veil",
+    "176": "Stance Change",
+    "177": "Gale Wings",
+    "178": "Mega Launcher",
+    "179": "Grass Pelt",
+    "180": "Symbiosis",
+    "181": "Tough Claws",
+    "182": "Pixilate",
+    "183": "Gooey",
+    "184": "Aerilate",
+    "185": "Parental Bond",
+    "187": "Fairy Aura",
+    "192": "Stamina",
+    "194": "Emergency Exit",
+    "196": "Merciless",
+    "198": "Stakeout",
+    "199": "Water Bubble",
+    "201": "Berserk",
+    "202": "Slush Rush",
+    "203": "Long Reach",
+    "204": "Liquid Voice",
+    "207": "Surge Surfer",
+    "209": "Disguise",
+    "212": "Corrosion",
+    "214": "Queenly Majesty",
+    "215": "Innards Out",
+    "218": "Fluffy",
+    "222": "Receiver",
+    "226": "Electric Surge",
+    "227": "Psychic Surge",
+    "229": "Grassy Surge",
+    "236": "Libero",
+    "240": "Mirror Armor",
+    "242": "Stalwart",
+    "244": "Punk Rock",
+    "245": "Sand Spit",
+    "247": "Ripen",
+    "250": "Mimicry",
+    "251": "Screen Cleaner",
+    "252": "Steely Spirit",
+    "254": "Wandering Spirit",
+    "258": "Hunger Switch",
+    "259": "Quick Draw",
+    "260": "Unseen Fist",
+    "261": "Curious Medicine",
+    "269": "Seed Sower",
+    "270": "Thermal Exchange",
+    "272": "Purifying Salt",
+    "275": "Guard Dog",
+    "278": "Zero to Hero",
+    "280": "Electromorphosis",
+    "283": "Good as Gold",
+    "290": "Opportunist",
+    "291": "Cud Chew",
+    "292": "Sharpness",
+    "293": "Supreme Overlord",
+    "295": "Toxic Debris",
+    "296": "Armor Tail",
+    "297": "Earth Eater",
+    "299": "Hospitality",
+    "306": "Supersweet Syrup",
+    "311": "Piercing Drill",
+    "312": "Dragonize",
+    "313": "Eelevate",
+    "315": "Mega Sol",
+    "316": "Fire Mane",
+    "318": "Spicy Spray",
+    "319": "Aura Guard"
+  },
+  "items": [
+    {
+      "name": "Abomasite",
+      "label": "暴雪王进化石"
+    },
+    {
+      "name": "Absolite",
+      "label": "阿勃梭鲁进化石"
+    },
+    {
+      "name": "Absolite Z",
+      "label": "阿勃梭鲁进化石Ｚ"
+    },
+    {
+      "name": "Aerodactylite",
+      "label": "化石翼龙进化石"
+    },
+    {
+      "name": "Aggronite",
+      "label": "波士可多拉进化石"
+    },
+    {
+      "name": "Air Balloon",
+      "label": "气球"
+    },
+    {
+      "name": "Alakazite",
+      "label": "胡地进化石"
+    },
+    {
+      "name": "Altarianite",
+      "label": "七夕青鸟进化石"
+    },
+    {
+      "name": "Ampharosite",
+      "label": "电龙进化石"
+    },
+    {
+      "name": "Aspear Berry",
+      "label": "利木果"
+    },
+    {
+      "name": "Audinite",
+      "label": "差不多娃娃进化石"
+    },
+    {
+      "name": "Babiri Berry",
+      "label": "霹霹果"
+    },
+    {
+      "name": "Banettite",
+      "label": "诅咒娃娃进化石"
+    },
+    {
+      "name": "Barbaracite",
+      "label": "龟足巨铠进化石"
+    },
+    {
+      "name": "Baxcalibrite",
+      "label": "戟脊龙进化石"
+    },
+    {
+      "name": "Beedrillite",
+      "label": "大针蜂进化石"
+    },
+    {
+      "name": "Big Root",
+      "label": "大根茎"
+    },
+    {
+      "name": "Binding Band",
+      "label": "紧绑束带"
+    },
+    {
+      "name": "Black Belt",
+      "label": "黑带"
+    },
+    {
+      "name": "Black Glasses",
+      "label": "黑色眼镜"
+    },
+    {
+      "name": "Blastoisinite",
+      "label": "水箭龟进化石"
+    },
+    {
+      "name": "Blazikenite",
+      "label": "火焰鸡进化石"
+    },
+    {
+      "name": "Bright Powder",
+      "label": "光粉"
+    },
+    {
+      "name": "Cameruptite",
+      "label": "喷火驼进化石"
+    },
+    {
+      "name": "Chandelurite",
+      "label": "水晶灯火灵进化石"
+    },
+    {
+      "name": "Charcoal",
+      "label": "木炭"
+    },
+    {
+      "name": "Charizardite X",
+      "label": "喷火龙进化石Ｘ"
+    },
+    {
+      "name": "Charizardite Y",
+      "label": "喷火龙进化石Ｙ"
+    },
+    {
+      "name": "Charti Berry",
+      "label": "草蚕果"
+    },
+    {
+      "name": "Cheri Berry",
+      "label": "樱子果"
+    },
+    {
+      "name": "Chesnaughtite",
+      "label": "布里卡隆进化石"
+    },
+    {
+      "name": "Chesto Berry",
+      "label": "零余果"
+    },
+    {
+      "name": "Chilan Berry",
+      "label": "灯浆果"
+    },
+    {
+      "name": "Chimechite",
+      "label": "风铃铃进化石"
+    },
+    {
+      "name": "Choice Scarf",
+      "label": "讲究围巾"
+    },
+    {
+      "name": "Chople Berry",
+      "label": "莲蒲果"
+    },
+    {
+      "name": "Clefablite",
+      "label": "皮可西进化石"
+    },
+    {
+      "name": "Coba Berry",
+      "label": "棱瓜果"
+    },
+    {
+      "name": "Colbur Berry",
+      "label": "刺耳果"
+    },
+    {
+      "name": "Crabominite",
+      "label": "好胜毛蟹进化石"
+    },
+    {
+      "name": "Damp Rock",
+      "label": "潮湿岩石"
+    },
+    {
+      "name": "Delphoxite",
+      "label": "妖火红狐进化石"
+    },
+    {
+      "name": "Dragalgite",
+      "label": "毒藻龙进化石"
+    },
+    {
+      "name": "Dragon Fang",
+      "label": "龙之牙"
+    },
+    {
+      "name": "Dragoninite",
+      "label": "快龙进化石"
+    },
+    {
+      "name": "Drampanite",
+      "label": "老翁龙进化石"
+    },
+    {
+      "name": "Eelektrossite",
+      "label": "麻麻鳗鱼王进化石"
+    },
+    {
+      "name": "Eject Button",
+      "label": "逃脱按键"
+    },
+    {
+      "name": "Electric Seed",
+      "label": "电气种子"
+    },
+    {
+      "name": "Emboarite",
+      "label": "炎武王进化石"
+    },
+    {
+      "name": "Excadrite",
+      "label": "龙头地鼠进化石"
+    },
+    {
+      "name": "Expert Belt",
+      "label": "达人带"
+    },
+    {
+      "name": "Fairy Feather",
+      "label": "妖精之羽"
+    },
+    {
+      "name": "Falinksite",
+      "label": "列阵兵进化石"
+    },
+    {
+      "name": "Feraligite",
+      "label": "大力鳄进化石"
+    },
+    {
+      "name": "Floettite",
+      "label": "花叶蒂进化石"
+    },
+    {
+      "name": "Focus Band",
+      "label": "气势头带"
+    },
+    {
+      "name": "Focus Sash",
+      "label": "气势披带"
+    },
+    {
+      "name": "Froslassite",
+      "label": "雪妖女进化石"
+    },
+    {
+      "name": "Galladite",
+      "label": "艾路雷朵进化石"
+    },
+    {
+      "name": "Garchompite",
+      "label": "烈咬陆鲨进化石"
+    },
+    {
+      "name": "Garchompite Z",
+      "label": "烈咬陆鲨进化石Ｚ"
+    },
+    {
+      "name": "Gardevoirite",
+      "label": "沙奈朵进化石"
+    },
+    {
+      "name": "Gengarite",
+      "label": "耿鬼进化石"
+    },
+    {
+      "name": "Glalitite",
+      "label": "冰鬼护进化石"
+    },
+    {
+      "name": "Glimmoranite",
+      "label": "晶光花进化石"
+    },
+    {
+      "name": "Golisopite",
+      "label": "具甲武者进化石"
+    },
+    {
+      "name": "Golurkite",
+      "label": "泥偶巨人进化石"
+    },
+    {
+      "name": "Grassy Seed",
+      "label": "青草种子"
+    },
+    {
+      "name": "Greninjite",
+      "label": "甲贺忍蛙进化石"
+    },
+    {
+      "name": "Gyaradosite",
+      "label": "暴鲤龙进化石"
+    },
+    {
+      "name": "Haban Berry",
+      "label": "莓榴果"
+    },
+    {
+      "name": "Hard Stone",
+      "label": "硬石头"
+    },
+    {
+      "name": "Hawluchanite",
+      "label": "摔角鹰人进化石"
+    },
+    {
+      "name": "Heat Rock",
+      "label": "炽热岩石"
+    },
+    {
+      "name": "Heracronite",
+      "label": "赫拉克罗斯进化石"
+    },
+    {
+      "name": "Houndoominite",
+      "label": "黑鲁加进化石"
+    },
+    {
+      "name": "Icy Rock",
+      "label": "冰冷岩石"
+    },
+    {
+      "name": "Iron Ball",
+      "label": "黑色铁球"
+    },
+    {
+      "name": "Kangaskhanite",
+      "label": "袋兽进化石"
+    },
+    {
+      "name": "Kasib Berry",
+      "label": "佛柑果"
+    },
+    {
+      "name": "Kebia Berry",
+      "label": "通通果"
+    },
+    {
+      "name": "King's Rock",
+      "label": "王者之证"
+    },
+    {
+      "name": "Leek",
+      "label": "大葱"
+    },
+    {
+      "name": "Leftovers",
+      "label": "吃剩的东西"
+    },
+    {
+      "name": "Leppa Berry",
+      "label": "苹野果"
+    },
+    {
+      "name": "Life Orb",
+      "label": "生命宝珠"
+    },
+    {
+      "name": "Light Ball",
+      "label": "电气球"
+    },
+    {
+      "name": "Light Clay",
+      "label": "光之黏土"
+    },
+    {
+      "name": "Lopunnite",
+      "label": "长耳兔进化石"
+    },
+    {
+      "name": "Lucarionite",
+      "label": "路卡利欧进化石"
+    },
+    {
+      "name": "Lucarionite Z",
+      "label": "路卡利欧进化石Ｚ"
+    },
+    {
+      "name": "Lum Berry",
+      "label": "木子果"
+    },
+    {
+      "name": "Magnet",
+      "label": "磁铁"
+    },
+    {
+      "name": "Malamarite",
+      "label": "乌贼王进化石"
+    },
+    {
+      "name": "Manectite",
+      "label": "雷电兽进化石"
+    },
+    {
+      "name": "Mawilite",
+      "label": "大嘴娃进化石"
+    },
+    {
+      "name": "Medichamite",
+      "label": "恰雷姆进化石"
+    },
+    {
+      "name": "Meganiumite",
+      "label": "大竺葵进化石"
+    },
+    {
+      "name": "Mental Herb",
+      "label": "心灵香草"
+    },
+    {
+      "name": "Meowsticite",
+      "label": "超能妙喵进化石"
+    },
+    {
+      "name": "Metagrossite",
+      "label": "巨金怪进化石"
+    },
+    {
+      "name": "Metal Coat",
+      "label": "金属膜"
+    },
+    {
+      "name": "Metronome",
+      "label": "节拍器"
+    },
+    {
+      "name": "Miracle Seed",
+      "label": "奇迹种子"
+    },
+    {
+      "name": "Misty Seed",
+      "label": "薄雾种子"
+    },
+    {
+      "name": "Muscle Band",
+      "label": "力量头带"
+    },
+    {
+      "name": "Mystic Water",
+      "label": "神秘水滴"
+    },
+    {
+      "name": "Never-Melt Ice",
+      "label": "不融冰"
+    },
+    {
+      "name": "Normal Gem",
+      "label": "一般宝石"
+    },
+    {
+      "name": "Occa Berry",
+      "label": "巧可果"
+    },
+    {
+      "name": "Oran Berry",
+      "label": "橙橙果"
+    },
+    {
+      "name": "Passho Berry",
+      "label": "千香果"
+    },
+    {
+      "name": "Payapa Berry",
+      "label": "福禄果"
+    },
+    {
+      "name": "Pecha Berry",
+      "label": "桃桃果"
+    },
+    {
+      "name": "Persim Berry",
+      "label": "柿仔果"
+    },
+    {
+      "name": "Pidgeotite",
+      "label": "大比鸟进化石"
+    },
+    {
+      "name": "Pinsirite",
+      "label": "凯罗斯进化石"
+    },
+    {
+      "name": "Poison Barb",
+      "label": "毒针"
+    },
+    {
+      "name": "Psychic Seed",
+      "label": "精神种子"
+    },
+    {
+      "name": "Pyroarite",
+      "label": "火炎狮进化石"
+    },
+    {
+      "name": "Quick Claw",
+      "label": "先制之爪"
+    },
+    {
+      "name": "Raichunite X",
+      "label": "雷丘进化石Ｘ"
+    },
+    {
+      "name": "Raichunite Y",
+      "label": "雷丘进化石Ｙ"
+    },
+    {
+      "name": "Rawst Berry",
+      "label": "莓莓果"
+    },
+    {
+      "name": "Red Card",
+      "label": "红牌"
+    },
+    {
+      "name": "Rindo Berry",
+      "label": "罗子果"
+    },
+    {
+      "name": "Rocky Helmet",
+      "label": "凸凸头盔"
+    },
+    {
+      "name": "Roseli Berry",
+      "label": "洛玫果"
+    },
+    {
+      "name": "Sablenite",
+      "label": "勾魂眼进化石"
+    },
+    {
+      "name": "Salamencite",
+      "label": "暴飞龙进化石"
+    },
+    {
+      "name": "Sceptilite",
+      "label": "蜥蜴王进化石"
+    },
+    {
+      "name": "Scizorite",
+      "label": "巨钳螳螂进化石"
+    },
+    {
+      "name": "Scolipite",
+      "label": "蜈蚣王进化石"
+    },
+    {
+      "name": "Scope Lens",
+      "label": "焦点镜"
+    },
+    {
+      "name": "Scovillainite",
+      "label": "狠辣椒进化石"
+    },
+    {
+      "name": "Scraftinite",
+      "label": "头巾混混进化石"
+    },
+    {
+      "name": "Sharp Beak",
+      "label": "锐利鸟嘴"
+    },
+    {
+      "name": "Sharpedonite",
+      "label": "巨牙鲨进化石"
+    },
+    {
+      "name": "Shed Shell",
+      "label": "美丽空壳"
+    },
+    {
+      "name": "Shell Bell",
+      "label": "贝壳之铃"
+    },
+    {
+      "name": "Shuca Berry",
+      "label": "腰木果"
+    },
+    {
+      "name": "Silk Scarf",
+      "label": "丝绸围巾"
+    },
+    {
+      "name": "Silver Powder",
+      "label": "银粉"
+    },
+    {
+      "name": "Sitrus Berry",
+      "label": "文柚果"
+    },
+    {
+      "name": "Skarmorite",
+      "label": "盔甲鸟进化石"
+    },
+    {
+      "name": "Slowbronite",
+      "label": "呆壳兽进化石"
+    },
+    {
+      "name": "Smooth Rock",
+      "label": "沙沙岩石"
+    },
+    {
+      "name": "Soft Sand",
+      "label": "柔软沙子"
+    },
+    {
+      "name": "Spell Tag",
+      "label": "咒术之符"
+    },
+    {
+      "name": "Staraptite",
+      "label": "姆克鹰进化石"
+    },
+    {
+      "name": "Starminite",
+      "label": "宝石海星进化石"
+    },
+    {
+      "name": "Steelixite",
+      "label": "大钢蛇进化石"
+    },
+    {
+      "name": "Swampertite",
+      "label": "巨沼怪进化石"
+    },
+    {
+      "name": "Tanga Berry",
+      "label": "扁樱果"
+    },
+    {
+      "name": "Terrain Extender",
+      "label": "大地膜"
+    },
+    {
+      "name": "Twisted Spoon",
+      "label": "弯曲的汤匙"
+    },
+    {
+      "name": "Tyranitarite",
+      "label": "班基拉斯进化石"
+    },
+    {
+      "name": "Venusaurite",
+      "label": "妙蛙花进化石"
+    },
+    {
+      "name": "Victreebelite",
+      "label": "大食花进化石"
+    },
+    {
+      "name": "Wacan Berry",
+      "label": "烛木果"
+    },
+    {
+      "name": "White Herb",
+      "label": "白色香草"
+    },
+    {
+      "name": "Wide Lens",
+      "label": "广角镜"
+    },
+    {
+      "name": "Wise Glasses",
+      "label": "博识眼镜"
+    },
+    {
+      "name": "Yache Berry",
+      "label": "番荔果"
+    },
+    {
+      "name": "Zoom Lens",
+      "label": "对焦镜"
+    }
+  ],
+  "natures": [
+    {
+      "name": "Adamant",
+      "plus": "atk",
+      "minus": "spa"
+    },
+    {
+      "name": "Bashful",
+      "plus": "spa",
+      "minus": "spa"
+    },
+    {
+      "name": "Bold",
+      "plus": "def",
+      "minus": "atk"
+    },
+    {
+      "name": "Brave",
+      "plus": "atk",
+      "minus": "spe"
+    },
+    {
+      "name": "Calm",
+      "plus": "spd",
+      "minus": "atk"
+    },
+    {
+      "name": "Careful",
+      "plus": "spd",
+      "minus": "spa"
+    },
+    {
+      "name": "Docile",
+      "plus": "def",
+      "minus": "def"
+    },
+    {
+      "name": "Gentle",
+      "plus": "spd",
+      "minus": "def"
+    },
+    {
+      "name": "Hardy",
+      "plus": "atk",
+      "minus": "atk"
+    },
+    {
+      "name": "Hasty",
+      "plus": "spe",
+      "minus": "def"
+    },
+    {
+      "name": "Impish",
+      "plus": "def",
+      "minus": "spa"
+    },
+    {
+      "name": "Jolly",
+      "plus": "spe",
+      "minus": "spa"
+    },
+    {
+      "name": "Lax",
+      "plus": "def",
+      "minus": "spd"
+    },
+    {
+      "name": "Lonely",
+      "plus": "atk",
+      "minus": "def"
+    },
+    {
+      "name": "Mild",
+      "plus": "spa",
+      "minus": "def"
+    },
+    {
+      "name": "Modest",
+      "plus": "spa",
+      "minus": "atk"
+    },
+    {
+      "name": "Naive",
+      "plus": "spe",
+      "minus": "spd"
+    },
+    {
+      "name": "Naughty",
+      "plus": "atk",
+      "minus": "spd"
+    },
+    {
+      "name": "Quiet",
+      "plus": "spa",
+      "minus": "spe"
+    },
+    {
+      "name": "Quirky",
+      "plus": "spd",
+      "minus": "spd"
+    },
+    {
+      "name": "Rash",
+      "plus": "spa",
+      "minus": "spd"
+    },
+    {
+      "name": "Relaxed",
+      "plus": "def",
+      "minus": "spe"
+    },
+    {
+      "name": "Sassy",
+      "plus": "spd",
+      "minus": "spe"
+    },
+    {
+      "name": "Serious",
+      "plus": "spe",
+      "minus": "spe"
+    },
+    {
+      "name": "Timid",
+      "plus": "spe",
+      "minus": "atk"
+    }
+  ]
+}
