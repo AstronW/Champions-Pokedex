@@ -1,6 +1,7 @@
 package dev.champions.dex
 
 import android.content.Context
+import org.json.JSONObject
 import android.content.Intent
 import android.util.LruCache
 import android.widget.Toast
@@ -127,6 +128,11 @@ fun parseWiki(html: String): List<WikiBlock> {
 
 private object WikiCache {
     val pages = LruCache<String, List<WikiBlock>>(48)
+    @Volatile private var bodies: JSONObject? = null
+
+    /** All article bodies live in one asset; it is read once, on first use. */
+    fun html(context: Context, key: String): String =
+        (bodies ?: context.applicationContext.assets.open("wiki.json").bufferedReader().use { JSONObject(it.readText()) }.also { bodies = it }).getString(key)
 }
 
 /** Loads and parses one page off the main thread; null while loading, empty list on failure. */
@@ -137,7 +143,7 @@ fun rememberWiki(page: WikiPage?): List<WikiBlock>? {
     val state by produceState(cached, page?.key) {
         if (page == null || value != null) return@produceState
         value = withContext(Dispatchers.Default) {
-            runCatching { parseWiki(context.assets.open("wiki/${page.file}").bufferedReader().use { it.readText() }) }.getOrElse { emptyList() }
+            runCatching { parseWiki(WikiCache.html(context, page.key)) }.getOrElse { emptyList() }
         }.also { WikiCache.pages.put(page.key, it) }
     }
     return state
@@ -207,6 +213,8 @@ fun LazyListScope.wikiSection(key: String, dex: Dex, onOpen: (String) -> Unit) {
                     "move" -> dex.movesById.containsKey(target.substringAfter(':').toIntOrNull())
                     "ability" -> dex.abilitiesById.containsKey(target.substringAfter(':').toIntOrNull())
                     "pokemon" -> dex.pokemonById.containsKey(target.substringAfter(':'))
+                    "status" -> dex.mechanics.statusesByKey.containsKey(target)
+                    "category" -> dex.mechanics.categoriesById.containsKey(target.substringAfter(':'))
                     else -> false
                 }
                 if (exists) onOpen(target)

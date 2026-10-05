@@ -30,48 +30,9 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import org.json.JSONArray
 import org.json.JSONObject
 import kotlin.math.ceil
 import kotlin.math.roundToInt
-
-private val calcStats = listOf("hp", "atk", "def", "spa", "spd", "spe")
-private const val PointTotal = 66
-
-internal fun calculatorSide(p: Pokemon) = JSONObject().apply {
-    put("id", p.id); put("ability", p.abilities.first()); put("nature", "Serious"); put("item", "")
-    put("sp", JSONArray(List(6) { "0" })); put("boosts", JSONArray(List(6) { 0 }))
-    put("hp", "100"); put("status", ""); put("gender", when(p.sex) { 2 -> "N"; 3 -> "F"; else -> "M" }); put("abilityOn", false); put("alliesFainted", "0")
-}
-
-internal fun calculatorMoveFor(dex: Dex, pokemonId: String, preferredId: Int?): Int? {
-    val moves = dex.learnsets[pokemonId].orEmpty().mapNotNull { dex.movesById[it] }
-        .filter { it.available && it.category != 2 }
-    return moves.firstOrNull { it.id == preferredId }?.id ?: moves.firstOrNull()?.id
-}
-
-/** Typical spreads: the attacker invests in its attacking stat and speed, the defender in HP and the matching defence (66 points each). */
-internal fun applyDefaultSpreads(dex: Dex, q: JSONObject) {
-    val physical = dex.movesById[q.optInt("move", -1)]?.category != 1
-    q.getJSONObject("attacker").put("nature", if (physical) "Adamant" else "Modest")
-        .put("sp", JSONArray(listOf(2, if (physical) 32 else 0, 0, if (physical) 0 else 32, 0, 32).map { "$it" }))
-    q.getJSONObject("defender").put("nature", if (physical) "Impish" else "Calm")
-        .put("sp", JSONArray(listOf(32, 0, if (physical) 32 else 2, 0, if (physical) 2 else 32, 0).map { "$it" }))
-}
-
-internal fun defaultCalculation(dex: Dex, initialId: String?): String {
-    val attacker = dex.pokemonById[initialId] ?: dex.pokemonById["0006000"] ?: dex.pokemon.first()
-    val defender = dex.pokemonById["0003000"] ?: dex.pokemon.last()
-    val move = calculatorMoveFor(dex, attacker.id, 53)
-    return JSONObject().apply {
-        put("attacker", calculatorSide(attacker)); put("defender", calculatorSide(defender)); put("move", move ?: JSONObject.NULL)
-        put("critical", false); put("hits", 0); put("field", JSONObject().put("gameType", "Singles"))
-        applyDefaultSpreads(dex, this)
-    }.toString()
-}
-
-private fun JSONObject.points(i: Int) = getJSONArray("sp").optString(i).toIntOrNull() ?: 0
-private fun JSONObject.pointTotal() = (0..5).sumOf { points(it) }
 
 /** KO summary from the damage range against current HP. */
 internal fun koText(min: Int, max: Int, hp: Int, ohko: Double): String = when {
@@ -91,9 +52,8 @@ fun CalculatorScreen(dex: Dex, model: DexViewModel, modifier: Modifier = Modifie
     var more by rememberSaveable { mutableStateOf(false) }
     var panel by rememberSaveable { mutableIntStateOf(0) }
     val request = remember(input) { JSONObject(input) }
-    val context = LocalContext.current
-    val catalog by produceState<JSONObject?>(null) {
-        value = withContext(Dispatchers.IO) { context.assets.open("calculator/catalog.json").bufferedReader().use { JSONObject(it.readText()) } }
+    val catalog by produceState<CalculatorCatalog?>(null, model) {
+        value = model.loadCalculatorCatalog()
     }
     var output by remember { mutableStateOf<Pair<String, JSONObject>?>(null) }
     val calculationInput = input
@@ -109,32 +69,20 @@ fun CalculatorScreen(dex: Dex, model: DexViewModel, modifier: Modifier = Modifie
     val result = output?.takeIf { it.first == input }?.second
     fun edit(block: (JSONObject) -> Unit) { input = JSONObject(input).also(block).toString() }
     fun editSide(key: String, block: (JSONObject) -> Unit) = edit { block(it.getJSONObject(key)) }
-    fun limitToLearnedMoves(q: JSONObject, id: String) {
-        val move = calculatorMoveFor(dex, id, q.optInt("move", -1))
-        if (move != q.optInt("move", -1)) { q.put("move", move ?: JSONObject.NULL); q.put("hits", 0) }
-    }
     fun swap() {
-        edit { val a = it.getJSONObject("attacker"); it.put("attacker", it.getJSONObject("defender")); it.put("defender", a)
-            val f = it.getJSONObject("field"); val side = f.optJSONObject("attackerSide") ?: JSONObject()
-            f.put("attackerSide", f.optJSONObject("defenderSide") ?: JSONObject()); f.put("defenderSide", side) }
+        edit(::swapCalculatorSides)
         allMoves = true
     }
     val attacker = dex.pokemonById[request.getJSONObject("attacker").getString("id")]!!
     val defender = dex.pokemonById[request.getJSONObject("defender").getString("id")]!!
     val selectedMove = dex.movesById[request.optInt("move", -1)]
-    val learned = dex.learnsets[attacker.id].orEmpty().toSet()
-    val moves = remember(dex, attacker.id, allMoves) { dex.moves.filter { it.available && it.category != 2 && (allMoves || it.id in learned) } }
+    val learned = remember(dex, attacker.id) { dex.learnsets[attacker.id].orEmpty().toSet() }
+    val moves = remember(dex, learned, allMoves) { dex.attackingMoves.filter { allMoves || it.id in learned } }
+    val moveOptions = remember(moves) { moves.map { SelectOption(it.id.toString(), it.name, "${it.english} · ${it.categoryLabel} · 威力 ${it.powerLabel}") } }
     val physical = selectedMove?.category != 1
     val pokemonOptions = remember(dex) { dex.pokemon.map { SelectOption(it.id, it.displayName, "${it.number()} · ${it.english} ${it.formEnglish}") } }
-    fun choose(key: String, id: String) = edit { q ->
-        q.put(key, calculatorSide(dex.pokemonById[id]!!))
-        if (key == "attacker" && !allMoves) limitToLearnedMoves(q, id)
-    }
-    /** Form switch keeps the spread, item and conditions; ability and gender follow the new form. */
-    fun chooseForm(key: String, id: String) = edit { q ->
-        val p = dex.pokemonById[id]!!; val fresh = calculatorSide(p)
-        q.getJSONObject(key).put("id", id).put("ability", fresh.getInt("ability")).put("gender", fresh.getString("gender")).put("abilityOn", false)
-        if (key == "attacker" && !allMoves) limitToLearnedMoves(q, id)
+    fun choose(key: String, id: String, preserveSpread: Boolean = false) = edit { q ->
+        selectCalculatorPokemon(q, dex, key, id, preserveSpread, allMoves)
     }
     val compact = LocalConfiguration.current.screenHeightDp < 500
     Column(modifier.fillMaxSize()) {
@@ -147,11 +95,11 @@ fun CalculatorScreen(dex: Dex, model: DexViewModel, modifier: Modifier = Modifie
                 contentPadding = PaddingValues(start = 18.dp, end = 18.dp, top = 6.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 item(key = "attacker") {
                     SideCard("攻击方", pal.a(700), "attacker", attacker, request.getJSONObject("attacker"), result?.optJSONObject("attackerStats"), physical, dex, catalog, pokemonOptions,
-                        { change -> editSide("attacker", change) }, { choose("attacker", it) }, { chooseForm("attacker", it) }, { onOpen(attacker.key) })
+                        { change -> editSide("attacker", change) }, { choose("attacker", it) }, { choose("attacker", it, true) }, { onOpen(attacker.key) })
                 }
                 item(key = "move") {
                     DexCard(color = pal.a(100), padding = PaddingValues(horizontal = 16.dp, vertical = 14.dp)) {
-                        SelectField("招式", selectedMove?.name ?: "未选择攻击招式", moves.map { SelectOption(it.id.toString(), it.name, "${it.english} · ${it.categoryLabel} · 威力 ${it.powerLabel}") },
+                        SelectField("招式", selectedMove?.name ?: "未选择攻击招式", moveOptions,
                             enabled = moves.isNotEmpty(), bold = true, tag = "pick-move") { edit { q -> q.put("move", it.toInt()); q.put("hits", 0) } }
                         if (selectedMove != null) Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                             TypeTag(selectedMove.type, vertical = 3.dp, horizontal = 10.dp)
@@ -162,11 +110,11 @@ fun CalculatorScreen(dex: Dex, model: DexViewModel, modifier: Modifier = Modifie
                         Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
                             ToggleTile("全部开放攻击招式", allMoves, {
                                 allMoves = !allMoves
-                                if (!allMoves) edit { limitToLearnedMoves(it, attacker.id) }
+                                if (!allMoves) edit { limitToLearnedMoves(it, dex, attacker.id) }
                             }, Modifier.weight(1f))
-                            val hits = catalog?.optJSONObject("moveHits")?.optJSONArray(selectedMove?.id?.toString() ?: "")
-                            if (hits != null && hits.getInt(1) > 1) {
-                                val options = listOf(SelectOption("0", "自动（招式 / 特性默认）")) + (hits.getInt(0)..hits.getInt(1)).map { SelectOption(it.toString(), "$it 次") }
+                            val hits = catalog?.moveHits?.get(selectedMove?.id)
+                            if (hits != null && hits.last > 1) {
+                                val options = listOf(SelectOption("0", "自动（招式 / 特性默认）")) + hits.map { SelectOption(it.toString(), "$it 次") }
                                 SelectField(null, if (request.getInt("hits") == 0) "命中次数 · 自动" else "命中 ${request.getInt("hits")} 次", options, Modifier.weight(1f)) { v -> edit { it.put("hits", v.toInt()) } }
                             }
                         }
@@ -174,7 +122,7 @@ fun CalculatorScreen(dex: Dex, model: DexViewModel, modifier: Modifier = Modifie
                 }
                 item(key = "defender") {
                     SideCard("防守方", pal.g(700), "defender", defender, request.getJSONObject("defender"), result?.optJSONObject("defenderStats"), physical, dex, catalog, pokemonOptions,
-                        { change -> editSide("defender", change) }, { choose("defender", it) }, { chooseForm("defender", it) }, { onOpen(defender.key) })
+                        { change -> editSide("defender", change) }, { choose("defender", it) }, { choose("defender", it, true) }, { onOpen(defender.key) })
                 }
                 item(key = "field") { FieldCard(request, physical) { block -> edit(block) } }
                 if (result != null && !result.has("error")) item(key = "rolls") {
@@ -198,8 +146,7 @@ fun CalculatorScreen(dex: Dex, model: DexViewModel, modifier: Modifier = Modifie
                             }
                             Text(if (more) "收起" else "展开", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = pal.accent)
                         }
-                        val cat = catalog
-                        if (more && cat != null) {
+                        if (more) {
                             PillSegment(listOf("攻击方", "防守方", "场地"), panel, { panel = it }, container = pal.bg, height = 32.dp, fontSize = 12.sp)
                             if (panel < 2) {
                                 val key = if (panel == 0) "attacker" else "defender"
@@ -263,7 +210,7 @@ private fun CalcResult(attacker: Pokemon, defender: Pokemon, move: Move?, noMove
 }
 
 @Composable
-private fun SideCard(title: String, titleColor: Color, key: String, p: Pokemon, side: JSONObject, stats: JSONObject?, physical: Boolean, dex: Dex, catalog: JSONObject?,
+private fun SideCard(title: String, titleColor: Color, key: String, p: Pokemon, side: JSONObject, stats: JSONObject?, physical: Boolean, dex: Dex, catalog: CalculatorCatalog?,
                      pokemonOptions: List<SelectOption>, onEdit: ((JSONObject) -> Unit) -> Unit, onSelect: (String) -> Unit, onForm: (String) -> Unit, onOpen: () -> Unit) {
     val attacking = key == "attacker"
     val statIndex = if (attacking) (if (physical) 1 else 3) else (if (physical) 2 else 4)
@@ -275,27 +222,23 @@ private fun SideCard(title: String, titleColor: Color, key: String, p: Pokemon, 
                 SelectField(null, p.displayName, pokemonOptions, bold = true, container = pal.bg, tag = "pick-$key", onChoose = onSelect)
             }
         }
-        val variants = dex.forms[p.no].orEmpty().sortedBy { it.formId }
+        val variants = dex.forms[p.no].orEmpty()
         if (variants.size > 1) PillSegment(variants.map { it.formLabel }, variants.indexOfFirst { it.id == p.id }, { onForm(variants[it].id) },
             container = pal.bg, height = 32.dp, fontSize = 12.sp, scrollable = variants.size > 3)
         if (catalog == null) { LinearProgressIndicator(Modifier.fillMaxWidth(), color = pal.accent, trackColor = pal.n(300)); return@DexCard }
         // Natures are chosen as two independent adjustments (raised / lowered stat). The engine still receives the
         // matching nature name; until both are chosen (and differ) the neutral nature applies.
-        val natures = catalog.getJSONArray("natures")
-        val natureEffects = (0 until natures.length()).associate { i -> natures.getJSONObject(i).let { it.getString("name") to (it.getString("plus") to it.getString("minus")) } }
-        val (natPlus, natMinus) = natureEffects[side.getString("nature")] ?: ("atk" to "atk")
+        val (natPlus, natMinus) = catalog.natureEffects[side.getString("nature")] ?: ("atk" to "atk")
         val up = if (side.has("up")) side.getString("up") else if (natPlus != natMinus) natPlus else ""
         val down = if (side.has("down")) side.getString("down") else if (natPlus != natMinus) natMinus else ""
         fun adjust(newUp: String, newDown: String) = onEdit { s ->
-            val name = natureEffects.entries.firstOrNull { (_, e) -> e.first == newUp && e.second == newDown && newUp != newDown }?.key ?: "Serious"
-            s.put("up", newUp).put("down", newDown).put("nature", name)
+            s.put("up", newUp).put("down", newDown).put("nature", catalog.natureFor(newUp, newDown))
         }
         fun adjustOptions(sign: String, exclude: String) = listOf(SelectOption("", "无")) +
             (1..5).map { calcStats[it] }.filter { it != exclude }.map { SelectOption(it, "$sign${StatLabels[calcStats.indexOf(it)]}") }
         fun label(sign: String, stat: String) = if (stat.isEmpty()) "无" else "$sign${StatLabels[calcStats.indexOf(stat)]}"
-        val items = catalog.getJSONArray("items")
-        val itemOptions = listOf(SelectOption("", "无道具")) + (0 until items.length()).map { items.getJSONObject(it).let { i -> SelectOption(i.getString("name"), i.getString("label"), i.getString("name")) } }
-        val abilityOptions = p.abilities.distinct().mapNotNull { dex.abilitiesById[it] }.map { SelectOption(it.id.toString(), it.name, it.english) }
+        val itemOptions = remember(catalog) { listOf(SelectOption("", "无道具")) + catalog.items.map { SelectOption(it.name, it.label, it.name) } }
+        val abilityOptions = remember(dex, p.abilities) { p.abilities.distinct().mapNotNull { dex.abilitiesById[it] }.map { SelectOption(it.id.toString(), it.name, it.english) } }
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 SelectField("提升 ×1.1", label("+", up), adjustOptions("+", down), Modifier.weight(1f)) { adjust(it, down) }

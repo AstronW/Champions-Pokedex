@@ -34,17 +34,17 @@ fun DetailScreen(key: String, dex: Dex, model: DexViewModel, onBack: () -> Unit,
         key.startsWith("pokemon:") -> dex.pokemonById[key.substringAfter(':')]?.let { PokemonDetail(it, dex, model, onBack, onOpen) }
         key.startsWith("move:") -> dex.movesById[key.substringAfter(':').toIntOrNull()]?.let { MoveDetail(it, dex, model, onBack, onOpen) }
         key.startsWith("ability:") -> dex.abilitiesById[key.substringAfter(':').toIntOrNull()]?.let { AbilityDetail(it, dex, model, onBack, onOpen) }
+        key.startsWith("status:") -> dex.mechanics.statusesByKey[key]?.let { StatusDetail(it, dex, onBack, onOpen) }
+        key.startsWith("category:") -> dex.mechanics.categoriesById[key.substringAfter(':')]?.let { CategoryDetail(it, dex, onBack, onOpen) }
+        key.startsWith("categories:") -> CategoryListScreen(key.substringAfter(':'), dex, onBack, onOpen)
     }
 }
-
-/** Short on-screen label for a form: its form name, or the species name for the regular form. */
-val Pokemon.formLabel get() = form.ifBlank { name }
 
 private fun signed(v: Int) = if (v > 0) "+$v" else "−${-v}"
 
 @Composable
 fun PokemonDetail(entry: Pokemon, dex: Dex, model: DexViewModel, onBack: () -> Unit, onOpen: (String) -> Unit) {
-    val variants = remember(entry.no) { dex.forms[entry.no].orEmpty().sortedBy { it.formId } }
+    val variants = dex.forms[entry.no].orEmpty()
     // Switching form stays on this entry, so the layout (and the stat card) keeps its position.
     var selected by rememberSaveable { mutableStateOf(entry.id) }
     var tab by rememberSaveable { mutableIntStateOf(0) }
@@ -53,7 +53,7 @@ fun PokemonDetail(entry: Pokemon, dex: Dex, model: DexViewModel, onBack: () -> U
     val filter = rememberMoveFilter()
     val p = dex.pokemonById[selected] ?: entry
     val base = variants.firstOrNull() ?: p
-    val learnset = remember(p.id) { dex.learnsets[p.id].orEmpty().mapNotNull { dex.movesById[it] } }
+    val learnset = dex.learnedMoves[p.id].orEmpty()
     val moves = remember(learnset, filter.key) { filterMoves(learnset, "", filter.type, filter.category, filter.includeUnavailable, filter.sort) }
     val toast = LocalToast.current
     val compact = LocalConfiguration.current.screenHeightDp < 500
@@ -172,30 +172,6 @@ private fun BodyTile(label: String, value: String, modifier: Modifier) {
     }
 }
 
-/** A labelled group of type tags; [suffix] adds e.g. a member count after the type name. */
-data class TypeGroup(val label: String, val color: androidx.compose.ui.graphics.Color, val types: List<Int>, val suffix: (Int) -> String = { "" })
-
-/** Shared layout for type-matchup summaries (Pokémon detail and team analysis). */
-@Composable
-fun TypeGroupsCard(title: String, groups: List<TypeGroup>, note: String, empty: String? = null) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        SectionHeading(title)
-        DexCard(padding = PaddingValues(horizontal = 16.dp, vertical = 14.dp), spacing = 12.dp) {
-            val shown = groups.filter { it.types.isNotEmpty() }
-            if (shown.isEmpty() && empty != null) Text(empty, fontSize = 12.sp, color = pal.n(700))
-            shown.forEach { g ->
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(g.label, Modifier.width(62.dp).padding(top = 3.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = g.color)
-                    FlowRow(Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(5.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                        g.types.forEach { TypeTag(it, horizontal = 10.dp, vertical = 3.dp, suffix = g.suffix(it)) }
-                    }
-                }
-            }
-            Text(note, fontSize = 11.sp, color = pal.n(700))
-        }
-    }
-}
-
 @Composable
 private fun WeaknessCard(types: List<Int>) {
     val groups = listOf(Triple(4.0, "×4 极弱", pal.a(800)), Triple(2.0, "×2 弱点", pal.a(700)), Triple(.5, "×½ 抵抗", pal.g(700)),
@@ -260,12 +236,10 @@ fun MoveDetail(move: Move, dex: Dex, model: DexViewModel, onBack: () -> Unit, on
                 }
             }
             item(key = "tags") {
-                // Move flags as categories; the row scrolls sideways once more flags are added.
-                val tags = listOfNotNull(if (move.contact) "接触招式" else null, if (!move.available) "当前未开放" else null)
+                val tags = listOfNotNull(if (move.contact) "接触招式" else "非接触招式", if (!move.available) "当前未开放" else null)
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text("分类", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = pal.n(700))
+                    Text("游戏标记", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = pal.n(700))
                     Row(Modifier.weight(1f).horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                        if (tags.isEmpty()) Pill("无", pal.surface, pal.n(600), fontSize = 12.sp)
                         tags.forEach { t -> val closed = t == "当前未开放"; Pill(t, if (closed) pal.a(200) else pal.surface, if (closed) pal.a(800) else pal.n(800), fontSize = 12.sp) }
                     }
                 }
@@ -278,6 +252,7 @@ fun MoveDetail(move: Move, dex: Dex, model: DexViewModel, onBack: () -> Unit, on
                     if (move.power == 1) Text("威力随条件变化，以效果说明为准。", fontSize = 11.sp, color = pal.n(700))
                 }
             }
+            mechanicsSection(move.key, dex, onOpen)
             wikiSection(move.key, dex, onOpen)
             item(key = "usersHead") { SectionHeading("可学会的宝可梦 · ${users.size}") }
             if (users.isEmpty()) item(key = "noUsers") { Text("学习表中没有关联的宝可梦。", fontSize = 13.sp, color = pal.n(700)) }
@@ -307,6 +282,7 @@ fun AbilityDetail(ability: Ability, dex: Dex, model: DexViewModel, onBack: () ->
                     GameText(ability.description)
                 }
             }
+            mechanicsSection(ability.key, dex, onOpen)
             wikiSection(ability.key, dex, onOpen)
             item(key = "holdersHead") { SectionHeading("拥有此特性的宝可梦 · ${holders.size}") }
             if (holders.isEmpty()) item(key = "noHolders") { Text("没有关联的宝可梦。", fontSize = 13.sp, color = pal.n(700)) }

@@ -32,11 +32,11 @@ private fun multiplierLabel(m: Double) = when (m) { 2.0 -> "效果绝佳 ×2"; .
 
 @Composable
 fun TypeChartScreen(onMenu: () -> Unit) {
-    var attack by rememberSaveable { mutableIntStateOf(9) }
+    var attack by rememberSaveable { mutableStateOf<Int?>(null) }
     var defend by rememberSaveable { mutableStateOf<Int?>(null) }
-    fun lit(at: Int, dt: Int?) = at == attack || (dt != null && dt == defend)
+    fun lit(at: Int, dt: Int?) = (attack == null && defend == null) || at == attack || (dt != null && dt == defend)
     Column(Modifier.fillMaxSize()) {
-        AppHeader("18 × 18", DexRoot.TYPES.title, true, onMenu)
+        AppHeader("", DexRoot.TYPES.title, true, onMenu)
         LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(start = 14.dp, end = 14.dp, top = 6.dp, bottom = 32.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             item { Text("行 = 攻击属性，列 = 防守属性。点击格子高亮所在行与列，点击行首只看该攻击属性。", Modifier.fillMaxWidth().padding(horizontal = 4.dp), fontSize = 12.sp, color = pal.n(700)) }
@@ -53,7 +53,7 @@ fun TypeChartScreen(onMenu: () -> Unit) {
                     }
                     TypeNames.indices.forEach { at ->
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(1.5.dp)) {
-                            Text(TypeNames[at].take(1), Modifier.width(20.dp).alpha(if (at == attack) 1f else .45f)
+                            Text(TypeNames[at].take(1), Modifier.width(20.dp).alpha(if (attack == null || at == attack) 1f else .45f)
                                 .clickable(role = Role.RadioButton, onClickLabel = "攻击 ${TypeNames[at]}") { attack = at; defend = null },
                                 fontSize = 10.sp, fontWeight = FontWeight.Bold, color = typeTone(at).fg, textAlign = TextAlign.Center)
                             TypeNames.indices.forEach { dt ->
@@ -83,7 +83,7 @@ fun TypeChartScreen(onMenu: () -> Unit) {
                     }
                 }
             }
-            item {
+            attack?.let { attack -> item {
                 DexCard(padding = PaddingValues(horizontal = 18.dp, vertical = 16.dp), spacing = 12.dp) {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         TypeTag(attack, fontSize = 13.sp, horizontal = 14.dp, vertical = 4.dp); Text("属性详情", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = pal.n(700))
@@ -110,7 +110,7 @@ fun TypeChartScreen(onMenu: () -> Unit) {
                         }
                     }
                 }
-            }
+            } }
         }
     }
 }

@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 
 /** Scroll back to the top whenever the filter key changes, but not when the key is only restored. */
 @Composable
-private fun ResetScrollOnChange(filterKey: String, reset: () -> Unit) {
+internal fun ResetScrollOnChange(filterKey: String, reset: () -> Unit) {
     var previous by rememberSaveable { mutableStateOf(filterKey) }
     LaunchedEffect(filterKey) {
         // A filtered result may be empty, so request the next layout instead of awaiting it.
@@ -56,7 +56,7 @@ fun PokemonListScreen(dex: Dex, model: DexViewModel, onMenu: () -> Unit, onOpen:
             items(pokemon, key = { it.id }) { p ->
                 val variants = dex.forms[p.no].orEmpty()
                 val badge = when {
-                    allForms || variants.size < 2 || p.formId != variants.minOf { it.formId } -> null
+                    allForms || variants.size < 2 || p.id != variants.first().id -> null
                     variants.any { "超级" in it.form } -> "可超级进化"
                     else -> "${variants.size} 种形态"
                 }
@@ -114,15 +114,21 @@ fun MoveListScreen(dex: Dex, model: DexViewModel, onMenu: () -> Unit, onOpen: (S
     val focus = LocalFocusManager.current
     val moves = remember(dex, query, filter.key, favoritesOnly, model.favorites) {
         // The catalogue lists available moves only; unavailable ones stay reachable from learnsets and links.
-        filterMoves(dex.moves, query, filter.type, filter.category, false, filter.sort)
+        filterMoves(dex.availableMoves, query, filter.type, filter.category, false, filter.sort)
             .filter { !favoritesOnly || it.key in model.favorites }
     }
     val list = rememberLazyListState()
     ResetScrollOnChange(listOf(query, filter.key, favoritesOnly).joinToString("\u0000")) { list.requestScrollToItem(0) }
     val filters = filter.active() + listOfNotNull(if (favoritesOnly) ActiveFilter("仅看收藏") { favoritesOnly = false } else null)
     Column(Modifier.fillMaxSize()) {
-        AppHeader("${dex.moves.count { it.available }} 个招式", DexRoot.MOVES.title, true, onMenu)
-        ListControls { SearchField(query, { query = it }, "搜索招式", filters.size) { focus.clearFocus(); sheet = true }; ActiveFilters("${moves.size} 个", filters) }
+        AppHeader("${dex.availableMoves.size} 个招式", DexRoot.MOVES.title, true, onMenu)
+        ListControls {
+            SearchField(query, { query = it }, "搜索招式", filters.size) { focus.clearFocus(); sheet = true }
+            Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                Box(Modifier.weight(1f)) { ActiveFilters("${moves.size} 个", filters) }
+                GhostButton("详细分类") { focus.clearFocus(); onOpen("categories:move") }
+            }
+        }
         LazyColumn(state = list, contentPadding = PaddingValues(start = 18.dp, end = 18.dp, top = 4.dp, bottom = 32.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             if (moves.isEmpty()) item(key = "empty") { EmptyResult(onClear = { query = ""; favoritesOnly = false; filter.reset() }) }
             else item(key = "head") { MoveHeaderRow() }
@@ -138,7 +144,8 @@ fun AbilityListScreen(dex: Dex, model: DexViewModel, onMenu: () -> Unit, onOpen:
     var favoritesOnly by rememberSaveable { mutableStateOf(false) }
     val focus = LocalFocusManager.current
     val abilities = remember(dex, query, favoritesOnly, model.favorites) {
-        dex.abilities.filter { it.searchText.matchesQuery(query) && (!favoritesOnly || it.key in model.favorites) }
+        val search = SearchQuery(query)
+        dex.abilities.filter { search.matches(it.searchText) && (!favoritesOnly || it.key in model.favorites) }
     }
     val list = rememberLazyListState()
     ResetScrollOnChange(listOf(query, favoritesOnly).joinToString("\u0000")) { list.requestScrollToItem(0) }
@@ -148,6 +155,7 @@ fun AbilityListScreen(dex: Dex, model: DexViewModel, onMenu: () -> Unit, onOpen:
             SearchField(query, { query = it }, "搜索特性", null)
             Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
                 Box(Modifier.weight(1f)) { ActiveFilters("${abilities.size} 个", emptyList()) }
+                GhostButton("相关分类") { focus.clearFocus(); onOpen("categories:ability") }
                 ToggleTile("仅看收藏", favoritesOnly, { favoritesOnly = !favoritesOnly }, Modifier.width(96.dp), off = pal.surface)
             }
         }

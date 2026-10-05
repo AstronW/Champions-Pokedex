@@ -30,4 +30,34 @@ class ModelsTest {
         assertEquals("40",dynamic.copy(power=40).powerLabel)
         assertEquals("100%",dynamic.copy(accuracy=100).accuracyLabel)
     }
+
+    @Test fun searchAcceptsWhitespaceAndRequiresEveryTermAcrossTheSameRecord() {
+        val search = SearchQuery("  EXAMPLE\t0006\n")
+        assertTrue(search.matches(charizard.searchText))
+        assertFalse(search.matches(heat.searchText))
+        assertTrue(SearchQuery("\t  \n").matches(""))
+        assertTrue(SearchQuery("洛托姆 加热").matches(heat.searchText))
+        assertFalse(SearchQuery("洛托姆 加热").matches(regular.searchText))
+        assertEquals(listOf(charizard), filterPokemon(dex, " EXAMPLE 0006 ", null, false, false, emptySet(), SortOrder.NUMBER))
+    }
+
+    @Test fun indexesKeepGameFormAndLearnsetOrdering() {
+        val attack = Move(53,"喷射火焰","Flamethrower","",true,9,1,90,100,15,0,false)
+        val status = attack.copy(id=144,category=2)
+        val closed = attack.copy(id=999,available=false)
+        val indexed = dex.copy(pokemon=listOf(heat, charizard, regular), moves=listOf(attack,status,closed),
+            learnsets=mapOf(heat.id to listOf(closed.id, status.id, attack.id)))
+        assertEquals(listOf(regular, heat), indexed.forms[479])
+        assertEquals(listOf(regular, charizard), indexed.species)
+        assertEquals(listOf(attack, status), indexed.availableMoves)
+        assertEquals(listOf(attack), indexed.attackingMoves)
+        assertEquals(listOf(closed, status, attack), indexed.learnedMoves[heat.id])
+    }
+
+    @Test fun typeMatchupsDoNotDoubleCountRepeatedSingleTypes() {
+        assertEquals(2.0, effectiveness(10, listOf(9, 9)), 0.0)
+        assertEquals(4.0, effectiveness(5, listOf(9, 2)), 0.0)
+        assertEquals(0.25, effectiveness(11, listOf(9, 2)), 0.0)
+        assertEquals(0.0, effectiveness(12, listOf(10, 4)), 0.0)
+    }
 }

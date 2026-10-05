@@ -22,20 +22,25 @@ def write_json(path, value):
 
 class WikiRenderer:
     """Render the actual finite set of remaining Wiki constructs; never execute source HTML."""
-    def __init__(self, entities, aliases):
+    def __init__(self, entities, aliases, local_titles=None):
         self.names = {(e['kind'], e['name_zh']): e['key'] for e in entities if e['name_zh'] and e['kind'] in ['pokemon','move','ability']}
         self.aliases = aliases
+        self.local_titles = local_titles or {}
         self.unknown = collections.Counter()
 
     def link(self, title, label, kind=None):
         title = CC.convert(title.strip()).replace('_',' ')
         if title.lower().startswith(('category:', '分类:', 'file:', 'image:', '文件:')): return ''
+        title, _, anchor = title.partition('#')
         name = self.aliases.get(f'{kind}:{title}', title)
-        key = self.names.get((kind, name)) if kind else None
+        # Status aliases resolve by page ID, independently of move names (e.g. 替身).
+        key = self.local_titles.get(f'{name}（状态）') if kind == 'status' else None
+        if not key: key = self.names.get((kind, name)) if kind else None
         if not key:
             match = re.fullmatch(r'(.+)[（(](招式|特性|道具)[）)]', title)
             if match: key = self.names.get(({'招式':'move','特性':'ability','道具':'item'}[match[2]],match[1]))
-        href = 'dex://entity/' + key if key else 'https://wiki.52poke.com/zh-hans/' + quote(title, safe='')
+        if not key and kind is None: key = self.local_titles.get(title)
+        href = 'dex://entity/' + key if key else 'https://wiki.52poke.com/zh-hans/' + quote(title, safe='') + ('#'+quote(anchor, safe='') if anchor else '')
         return f'<a href="{html.escape(href, quote=True)}">{label}</a>'
 
     def render(self, source):
@@ -61,6 +66,10 @@ class WikiRenderer:
                 elif tag == 'gen' and vals: result.append('第'+html.escape(vals[0])+'世代')
                 elif tag == 'game' and vals: result.append('《'+html.escape('/'.join({'SV':'朱／紫'}.get(v,v) for v in vals))+'》')
                 elif tag == 'sup/md': result.append('<sup>'+('宝可梦超不可思议迷宫' if vals==['SMD'] else '宝可梦不可思议迷宫')+'</sup>')
+                elif tag == 'n' and vals: result.append(self.render(vals[0]))
+                elif tag in ['暂译','天气信息框']: continue
+                elif re.fullmatch(r'sup/\d+', tag) and vals:
+                    result.append('<sup>'+html.escape('/'.join(vals))+'</sup>')
                 else:
                     self.unknown[str(n.name)] += 1
                     result.append(html.escape(CC.convert(str(n))))
@@ -74,6 +83,54 @@ class WikiRenderer:
                 else: result.append(html.escape(CC.convert(str(n))))
             else: result.append(html.escape(CC.convert(str(n))))
         return ''.join(result)
+
+
+def status_excerpt(body):
+    """Prefer the upstream effect; weather pages describe battle effects in a separate section."""
+    if body['effect_expanded']: return body['effect_expanded'], body['effect_section']
+    code = mw.parse(body['body_original'])
+    sections = code.get_sections(include_headings=False, levels=[2], matches=lambda s: str(s).strip() == '影响对战')
+    if sections: return str(sections[0]), '影响对战'
+    return str(code.get_sections(include_headings=False, include_lead=True, flat=True)[0]), '概述'
+
+
+def import_mechanics(output, entities):
+    # Keep upstream relationship/scope/unknown-value semantics and source revisions intact.
+    names = {'categories':'wiki_move_categories.csv', 'relations':'wiki_category_entities.csv',
+             'flags':'wiki_special_flags.csv', 'targets':'wiki_move_targets.csv',
+             'references':'wiki_status_references.csv', 'issues':'wiki_mechanics_issues.csv'}
+    mechanics = {key: rows(output/name) for key, name in names.items()}
+    write_json(ROOT/'data/mechanics-records.json', mechanics)
+    runtime_fields = {
+        'categories': ['category_key','name_zh','group_zh','revision_id','source_url'],
+        'relations': ['category_key','entity_key','relation','section'],
+        'flags': ['entity_key','field','value','text_zh','value_origin'],
+        'targets': ['entity_key','target_text_zh','wiki_target','game_target'],
+        'references': ['entity_key','body_key','source_field','source_section'],
+    }
+    for name, fields in runtime_fields.items():
+        mechanics[name] = [{key: r[key] for key in fields} for r in mechanics[name]]
+    bodies = read_json(output/'wiki_status_bodies.json')
+    by_key = {e['key']: e for e in entities}
+    local_titles = {CC.convert(c['category_key']): 'category:'+c['category_key'] for c in mechanics['categories']}
+    statuses = []
+    for b in bodies:
+        key = 'status:wiki-'+b['page_id']
+        for title in [b['title'], *b['requested_titles']]: local_titles[CC.convert(title)] = key
+        game = [by_key[k] for k in b['existing_status_keys']]
+        text, section = status_excerpt(b)
+        statuses.append({'key':key, 'bodyKey':b['body_key'], 'name':CC.convert(b['title']),
+                         'kind':b['definition_kind'], 'aliases':list(dict.fromkeys(CC.convert(t) for t in b['requested_titles'])),
+                         'game': [{'key':e['key'], 'name':e['name_zh'], 'english':e['name_en'],
+                                   'description':e['description_zh'], 'source':e['source']} for e in game],
+                         'section':section, 'revision':b['revision_id'], 'url':b['source_url'],
+                         'hash':b['source_hash'], 'text':text})
+    mechanics['statuses'] = statuses
+    # Full source pages stay lossless in the audit artifact; the app renders selected sections.
+    write_json(ROOT/'data/status-sources.json', bodies)
+    sources = read_json(output/'wiki_mechanics_sources.json')
+    write_json(ROOT/'data/mechanics-sources.json', sources)
+    return mechanics, local_titles
 
 def slug(text): return text.lower().replace('é','e').replace('’','').replace("'",'').replace(' ', '-')
 
@@ -131,22 +188,26 @@ def import_data(champout, sprites, explicit_output=None):
     entities=read_json(output/'entities.json')
     pages={p['entity_key']:p for p in read_json(output/'pages.json')}
     config=read_json(output/'effective_config.json')
-    renderer=WikiRenderer(entities, config['reference_aliases'])
     assets=ROOT/'app/src/main/assets'; assets.mkdir(parents=True,exist_ok=True)
-    (assets/'wiki').mkdir(exist_ok=True)
     (assets/'pokemon').mkdir(exist_ok=True)
     (assets/'types').mkdir(exist_ok=True)
+    mechanics, local_titles = import_mechanics(output, entities)
+    renderer=WikiRenderer(entities, config['reference_aliases'], local_titles)
     api=rows(ROOT/'data/pokeapi/pokemon.csv'); api_index={r['identifier']:r for r in api}
     sprite_root=sprites/'sprites/pokemon/versions/generation-ix/champions'
-    audit=[]; wiki=[]
+    audit=[]; wiki=[]; wiki_bodies={}
     for e in entities:
         if e['kind'] not in ['move','ability']: continue
         page=pages.get(e['key'])
         if not page or page['status']!='ok': continue
         body=renderer.render(page['expanded'])
-        filename=e['key'].replace(':','_')+'.html'
-        (assets/'wiki'/filename).write_text(body,encoding='utf-8')
-        wiki.append({'key':e['key'],'file':filename,'title':page['title'],'revision':page['revision_id'],'hash':page['source_hash'], 'url':'https://wiki.52poke.com/w/index.php?oldid='+page['revision_id']})
+        wiki_bodies[e['key']]=body
+        wiki.append({'key':e['key'],'title':page['title'],'revision':page['revision_id'],'hash':page['source_hash'], 'url':'https://wiki.52poke.com/w/index.php?oldid='+page['revision_id']})
+    for s in mechanics['statuses']:
+        wiki_bodies[s['key']]=renderer.render(s.pop('text'))
+        wiki.append({'key':s['key'], 'title':s['name'], 'revision':s['revision'], 'hash':s['hash'], 'url':s['url']})
+    write_json(assets/'wiki.json', wiki_bodies)
+    write_json(assets/'mechanics.json', mechanics)
     pokemon=[]
     for r in rows(output/'pokemon.csv'):
         identifier=sprite_identifier(r,api)
@@ -175,7 +236,7 @@ def import_data(champout, sprites, explicit_output=None):
     data={'version':version,'types':TYPE_NAMES,'pokemon':pokemon,'moves':moves,'abilities':abilities,'learnsets':learns,'wiki':wiki}
     write_json(assets/'dex.json',data)
     write_json(ROOT/'data/sprite-map.json',audit)
-    write_json(ROOT/'data/import-report.json',{'version':version,'learnsets':sum(map(len,learns.values())),'wikiPages':len(wiki),'unhandledTemplates':renderer.unknown,'inputManifest':manifest,'metadataHashes':{p.name:digest(p) for p in (ROOT/'data/pokeapi').glob('*.csv')}})
+    write_json(ROOT/'data/import-report.json',{'version':version,'learnsets':sum(map(len,learns.values())),'wikiPages':len(wiki),'mechanics':{k:len(v) for k,v in mechanics.items()},'unhandledTemplates':renderer.unknown,'inputManifest':manifest,'metadataHashes':{p.name:digest(p) for p in (ROOT/'data/pokeapi').glob('*.csv')}})
     # Calculator resources have their own provenance and are rebuilt after this import.
     write_json(ROOT/'data/bundle-sha256.json',{p.relative_to(assets).as_posix():digest(p) for p in sorted(assets.rglob('*')) if p.is_file() and p.relative_to(assets).parts[0] != 'calculator'})
     print(json.dumps(version,ensure_ascii=False,indent=2))

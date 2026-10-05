@@ -41,16 +41,21 @@ class DexRepository(private val context: Context) {
         }
         val learns = j.getJSONObject("learnsets")
         val wiki = j.getJSONArray("wiki").mapObjects {
-            WikiPage(it.getString("key"), it.getString("file"), it.getString("title"), it.getString("revision"), it.getString("url"))
+            WikiPage(it.getString("key"), it.getString("title"), it.getString("revision"), it.getString("url"))
         }.associateBy { it.key }
         val version = j.getJSONObject("version")
+        val mechanics = context.assets.open("mechanics.json").bufferedReader().use { parseMechanics(JSONObject(it.readText())) }
         Dex(pokemon, moves.sortedBy { it.id }, abilities.sortedBy { it.id }, learns.keys().asSequence().associateWith { learns.getJSONArray(it).ints() }, wiki,
-            version.getInt("species"), version.getString("champout"), version.getString("pipeline"), version.getString("spritesCommit"))
+            version.getInt("species"), version.getString("champout"), version.getString("pipeline"), version.getString("spritesCommit"), mechanics)
     }
 }
 
 class DexViewModel(application: Application) : AndroidViewModel(application) {
     val calculatorEngine = CalculatorEngine { path -> application.assets.open(path).bufferedReader().use { it.readText() } }
+    private val calculatorCatalog by lazy {
+        application.assets.open("calculator/catalog.json").bufferedReader().use { CalculatorCatalog(JSONObject(it.readText())) }
+    }
+    internal suspend fun loadCalculatorCatalog(): CalculatorCatalog = withContext(Dispatchers.IO) { calculatorCatalog }
     private val prefs = application.getSharedPreferences("dex_preferences", Context.MODE_PRIVATE)
     var dex by mutableStateOf<Dex?>(null); private set
     var error by mutableStateOf<String?>(null); private set

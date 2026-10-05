@@ -105,6 +105,7 @@ fun DexApp(model: DexViewModel) {
                                 DexRoot.POKEMON -> PokemonListScreen(dex, model, ::openDrawer, ::open)
                                 DexRoot.MOVES -> MoveListScreen(dex, model, ::openDrawer, ::open)
                                 DexRoot.ABILITIES -> AbilityListScreen(dex, model, ::openDrawer, ::open)
+                                DexRoot.STATUSES -> StatusListScreen(dex, ::openDrawer, ::open)
                                 DexRoot.TYPES -> TypeChartScreen(::openDrawer)
                                 DexRoot.CALCULATOR -> CalculatorScreen(dex, model, onNav = ::openDrawer, isRoot = true, onOpen = ::open)
                                 DexRoot.SPEED -> SpeedScreen(dex, model, ::openDrawer, ::open)
@@ -150,8 +151,8 @@ private fun ToastHost(message: String?, modifier: Modifier) {
 
 @Composable
 private fun NavigationDrawerContent(dex: Dex, model: DexViewModel, current: DexRoot, onPick: (DexRoot) -> Unit, onSettings: () -> Unit) {
-    val counts = mapOf(DexRoot.POKEMON to "${dex.speciesCount}", DexRoot.MOVES to "${dex.moves.count { it.available }}",
-        DexRoot.ABILITIES to "${dex.abilities.size}", DexRoot.TEAM to "${model.team.count { it != null }}/6",
+    val counts = mapOf(DexRoot.POKEMON to "${dex.speciesCount}", DexRoot.MOVES to "${dex.availableMoves.size}",
+        DexRoot.ABILITIES to "${dex.abilities.size}", DexRoot.STATUSES to "${dex.mechanics.statuses.size}", DexRoot.TEAM to "${model.team.count { it != null }}/6",
         DexRoot.FAVORITES to "${model.favorites.size}")
     ModalDrawerSheet(Modifier.width(304.dp), drawerShape = RoundedCornerShape(topEnd = 44.dp, bottomEnd = 44.dp), drawerContainerColor = pal.bg, drawerContentColor = pal.text) {
         Column(Modifier.fillMaxHeight().verticalScroll(rememberScrollState()).padding(start = 16.dp, end = 16.dp, top = 40.dp, bottom = 28.dp),

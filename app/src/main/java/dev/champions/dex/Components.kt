@@ -228,7 +228,7 @@ fun AppHeader(kicker: String, title: String, isRoot: Boolean, onNav: () -> Unit,
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         RoundIconButton(if (isRoot) "导航" else "返回", onNav) { Glyph(if (isRoot) GlyphKind.MENU else GlyphKind.BACK, color = pal.text) }
         Column(Modifier.weight(1f)) {
-            Text(kicker, fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp, color = pal.a(700), maxLines = 1, overflow = TextOverflow.Ellipsis)
+            if (kicker.isNotEmpty()) Text(kicker, fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp, color = pal.a(700), maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(title, style = MaterialTheme.typography.headlineSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         actions()
@@ -333,7 +333,10 @@ fun FilterSheet(title: String, categories: List<String>?, category: Int, onCateg
 @Composable
 fun PokemonPickerSheet(title: String, dex: Dex, onPick: (Pokemon) -> Unit, onDismiss: () -> Unit) {
     var query by rememberSaveable { mutableStateOf("") }
-    val list = remember(query) { dex.pokemon.filter { it.searchText.matchesQuery(query) } }
+    val list = remember(dex, query) {
+        val search = SearchQuery(query)
+        dex.pokemon.filter { search.matches(it.searchText) }
+    }
     DexSheet(onDismiss) {
         Column(Modifier.fillMaxWidth().fillMaxHeight(.85f).padding(horizontal = 18.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -354,7 +357,9 @@ fun PokemonPickerSheet(title: String, dex: Dex, onPick: (Pokemon) -> Unit, onDis
     }
 }
 
-data class SelectOption(val id: String, val label: String, val detail: String = "")
+data class SelectOption(val id: String, val label: String, val detail: String = "") {
+    val searchText = "$label $detail $id".lowercase()
+}
 
 /** Pill select field; opens a sheet with all options, searchable when long. */
 @Composable
@@ -373,7 +378,10 @@ fun SelectField(label: String?, value: String, options: List<SelectOption>, modi
     }
     if (open) {
         var query by rememberSaveable { mutableStateOf("") }
-        val shown = remember(query, options) { options.filter { "${it.label} ${it.detail} ${it.id}".lowercase().matchesQuery(query) } }
+        val shown = remember(query, options) {
+            val search = SearchQuery(query)
+            options.filter { search.matches(it.searchText) }
+        }
         DexSheet({ open = false }) {
             Column(Modifier.fillMaxWidth().then(if (options.size > 12) Modifier.fillMaxHeight(.85f) else Modifier).padding(horizontal = 18.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -397,7 +405,7 @@ fun SelectField(label: String?, value: String, options: List<SelectOption>, modi
 
 // —— List rows ——
 
-private val DexRowShape = RoundedCornerShape(topStart = 999.dp, bottomStart = 999.dp, topEnd = 32.dp, bottomEnd = 32.dp)
+private val DexRowShape = RoundedCornerShape(24.dp)
 
 fun Pokemon.number() = "#" + no.toString().padStart(4, '0')
 
@@ -474,17 +482,6 @@ fun AbilityRow(name: String, description: String, trailing: String?, favorite: B
     }
 }
 
-/** Compact Pokémon row used under move/ability details and in pickers. */
-@Composable
-fun PokemonLine(p: Pokemon, onClick: () -> Unit, trailing: @Composable () -> Unit = { Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) { p.types.distinct().forEach { TypeTag(it, horizontal = 8.dp) } } }) {
-    Row(Modifier.fillMaxWidth().clip(PillShape).background(pal.surface).clickable(onClick = onClick).padding(start = 8.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
-        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-        Blob(p, 52.dp)
-        Text(p.displayName, Modifier.weight(1f), fontSize = 15.sp, fontWeight = FontWeight.Bold, maxLines = 2)
-        trailing()
-    }
-}
-
 /** Animated horizontal bar. */
 @Composable
 fun Bar(fraction: Float, color: Color, modifier: Modifier = Modifier, height: Dp = 10.dp, track: Color = pal.n(200), fromEnd: Boolean = false) {
@@ -504,6 +501,31 @@ fun EmptyResult(text: String = "暂时没有匹配结果", onClear: (() -> Unit)
         Spacer(Modifier.height(16.dp))
         Text(text, fontSize = 14.sp, color = pal.n(700))
         if (onClear != null) Box(Modifier.padding(top = 8.dp)) { GhostButton("清除筛选", onClear) }
+    }
+}
+
+
+/** A labelled group of type tags; [suffix] adds e.g. a member count after the type name. */
+data class TypeGroup(val label: String, val color: Color, val types: List<Int>, val suffix: (Int) -> String = { "" })
+
+/** Shared layout for type-matchup summaries (Pokémon detail and team analysis). */
+@Composable
+fun TypeGroupsCard(title: String, groups: List<TypeGroup>, note: String, empty: String? = null) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        SectionHeading(title)
+        DexCard(padding = PaddingValues(horizontal = 16.dp, vertical = 14.dp), spacing = 12.dp) {
+            val shown = groups.filter { it.types.isNotEmpty() }
+            if (shown.isEmpty() && empty != null) Text(empty, fontSize = 12.sp, color = pal.n(700))
+            shown.forEach { g ->
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(g.label, Modifier.width(62.dp).padding(top = 3.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = g.color)
+                    FlowRow(Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(5.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                        g.types.forEach { TypeTag(it, horizontal = 10.dp, vertical = 3.dp, suffix = g.suffix(it)) }
+                    }
+                }
+            }
+            Text(note, fontSize = 11.sp, color = pal.n(700))
+        }
     }
 }
 

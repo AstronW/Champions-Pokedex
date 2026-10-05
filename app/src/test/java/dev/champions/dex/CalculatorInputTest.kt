@@ -30,8 +30,78 @@ class CalculatorInputTest {
         val regional = ditto.copy(name="雷丘",form="阿罗拉的样子")
         val mega = ditto.copy(name="妙蛙花",form="超级妙蛙花")
         assertEquals("雷丘 · 阿罗拉的样子",regional.displayName)
-        assertTrue(regional.displayName.matchesQuery("雷丘"))
+        assertTrue(SearchQuery("雷丘").matches(regional.displayName))
         assertEquals("超级妙蛙花",mega.displayName)
         assertEquals("百变怪",ditto.displayName)
+    }
+
+    @Test fun formSelectionKeepsTheSpreadAndConditionsButRefreshesFormSpecificFields() {
+        val mega = charizard.copy(id="0006001", formId=1, abilities=listOf(181), sex=3)
+        val withMega = dex.copy(pokemon=dex.pokemon + mega, learnsets=dex.learnsets + (mega.id to listOf(flame.id)))
+        val request = JSONObject(defaultCalculation(withMega, charizard.id)).put("hits", 3)
+        val side = request.getJSONObject("attacker")
+            .put("item", "Life Orb").put("hp", "75").put("status", "brn")
+            .put("up", "spa").put("down", "atk").put("abilityOn", true).put("alliesFainted", "2")
+        side.getJSONArray("boosts").put(3, 2)
+        val preserved = listOf("sp", "boosts", "nature", "up", "down", "item", "hp", "status", "alliesFainted")
+            .associateWith { side.get(it).toString() }
+
+        selectCalculatorPokemon(request, withMega, "attacker", mega.id, preserveSpread=true, allMoves=false)
+
+        preserved.forEach { (key, value) -> assertEquals(key, value, side.get(key).toString()) }
+        assertEquals(mega.id, side.getString("id"))
+        assertEquals(181, side.getInt("ability"))
+        assertEquals("F", side.getString("gender"))
+        assertFalse(side.getBoolean("abilityOn"))
+        assertEquals(flame.id, request.getInt("move"))
+        assertEquals(3, request.getInt("hits"))
+    }
+
+    @Test fun selectingANewSpeciesResetsItsSideAndClearsAnUnavailableAttack() {
+        val request = JSONObject(defaultCalculation(dex, charizard.id)).put("hits", 3)
+        request.getJSONObject("attacker").put("item", "Life Orb").put("hp", "50")
+        val defender = request.getJSONObject("defender").toString()
+
+        selectCalculatorPokemon(request, dex, "attacker", ditto.id, preserveSpread=false, allMoves=false)
+
+        assertEquals(calculatorSide(ditto).toString(), request.getJSONObject("attacker").toString())
+        assertEquals(defender, request.getJSONObject("defender").toString())
+        assertTrue(request.isNull("move"))
+        assertEquals(0, request.getInt("hits"))
+    }
+
+    @Test fun hypotheticalMovesSurviveSelectionUntilTheLearnsetConstraintReturns() {
+        val request = JSONObject(defaultCalculation(dex, charizard.id)).put("hits", 3)
+        selectCalculatorPokemon(request, dex, "attacker", ditto.id, preserveSpread=false, allMoves=true)
+        assertEquals(flame.id, request.getInt("move"))
+        assertEquals(3, request.getInt("hits"))
+        limitToLearnedMoves(request, dex, ditto.id)
+        assertTrue(request.isNull("move"))
+        assertEquals(0, request.getInt("hits"))
+    }
+
+    @Test fun selectingADefenderDoesNotChangeTheAttack() {
+        val request = JSONObject(defaultCalculation(dex, charizard.id)).put("hits", 3)
+        val attacker = request.getJSONObject("attacker").toString()
+        selectCalculatorPokemon(request, dex, "defender", ditto.id, preserveSpread=false, allMoves=false)
+        assertEquals(attacker, request.getJSONObject("attacker").toString())
+        assertEquals(flame.id, request.getInt("move"))
+        assertEquals(3, request.getInt("hits"))
+    }
+
+    @Test fun swappingTwiceRestoresPokemonAndTheirSideConditions() {
+        val request = JSONObject(defaultCalculation(dex, charizard.id))
+        val field = request.getJSONObject("field").put("weather", "Rain")
+            .put("attackerSide", JSONObject().put("isHelpingHand", true))
+            .put("defenderSide", JSONObject().put("isLightScreen", true))
+        val before = request.toString()
+        swapCalculatorSides(request)
+        assertEquals(ditto.id, request.getJSONObject("attacker").getString("id"))
+        assertEquals(charizard.id, request.getJSONObject("defender").getString("id"))
+        assertTrue(field.getJSONObject("attackerSide").getBoolean("isLightScreen"))
+        assertTrue(field.getJSONObject("defenderSide").getBoolean("isHelpingHand"))
+        assertEquals("Rain", field.getString("weather"))
+        swapCalculatorSides(request)
+        assertEquals(before, request.toString())
     }
 }

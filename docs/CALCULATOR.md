@@ -28,6 +28,8 @@
 
 `CalculatorEngine.kt` 使用 Rhino 1.7.15.1 解释模式，禁止 Java 类访问，只传 JSON 字符串。解释器串行访问；Compose 使用后台 dispatcher，参数变化后清除旧结果，取消旧任务回传。输入及列表状态通过现有 SaveableStateProvider 随栏目/返回栈条目保存。
 
+`CalculatorData.kt` 集中默认配置、宝可梦/形态选择、学习表约束和双方交换规则，供界面及单元测试共用。`CalculatorCatalog` 将性格、道具及多段命中范围解析为只读元数据，在 ViewModel 内按需加载一次；控件复用选项列表，输入变化时不再重复解析整张表。图鉴的形态顺序、已开放招式和学习表索引由 `Dex` 统一建立，属性相性由 `TypeChart.kt` 提供，主题仅管理显示样式。内核使用的原始 JSON 合同不变。
+
 `scripts/calculator/adapter.js` 负责图鉴适配、输入约束和结果格式；生成的 `engine.js`、`adapter.js`、`catalog.json` 不手改。`provenance.json` 记录上游提交、实际参与打包的逐文件源码哈希、图鉴/道具来源哈希及输出哈希。`build.ps1` 在构建前核对数据版本，避免更新图鉴后沿用旧映射。
 
 ```powershell
