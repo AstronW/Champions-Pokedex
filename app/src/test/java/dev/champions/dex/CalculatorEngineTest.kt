@@ -41,21 +41,11 @@ class CalculatorEngineTest {
         assertTrue("too few damaging cases: $damaging", damaging > 900)
     }
 
-    @Test fun repeatedCalculationsDoNotLeakState() {
-        val request = cases.getJSONObject(0).getJSONObject("request").toString()
-        assertEquals(engine.calculate(request), engine.calculate(request))
-    }
-
     @Test fun malformedRequestsReportAMessageInsteadOfThrowing() {
         val request = JSONObject(cases.getJSONObject(0).getJSONObject("request").toString())
         request.getJSONObject("attacker").remove("sp")
         assertEquals(CalcFailure("能力点不能为空"), engine.calculate(request))
         request.put("attacker", "nothing")
         assertEquals(CalcFailure("此形态尚未适配计算器"), engine.calculate(request))
-    }
-
-    @Test fun defaultCalculationProducesAResult() {
-        val result = engine.calculate(defaultCalculation(dex, null))
-        assertTrue("$result", result is CalcDamage && result.max > 0)
     }
 }

@@ -63,7 +63,7 @@ adb -s emulator-5580 install -r app/build/outputs/apk/androidTest/debug/app-debu
 # 全量
 adb -s emulator-5580 shell am instrument -w dev.champions.dex.test/androidx.test.runner.AndroidJUnitRunner
 # 只跑一个类（与改动相称时优先）
-adb -s emulator-5580 shell am instrument -w -e class dev.champions.dex.TeamFlowTest dev.champions.dex.test/androidx.test.runner.AndroidJUnitRunner
+adb -s emulator-5580 shell am instrument -w -e class dev.champions.dex.NavigationFlowTest dev.champions.dex.test/androidx.test.runner.AndroidJUnitRunner
 ```
 
 真实页面检查（安装 `dist/` 中的 Preview APK）：

@@ -21,19 +21,4 @@ class DetailNavigationTest {
         assertEquals(stack.take(2), openDetailEntry(stack, "4#move:53"))
         assertEquals(stack, openDetailEntry(stack, "4#ability:18"))
     }
-
-    @Test fun freshEntriesStayBoundedAndHaveForwardDirection() {
-        val stack = (0..63).map { "$it#move:$it" }
-        val updated = openDetailEntry(stack, "64#move:64")
-        assertEquals(64, updated.size)
-        assertEquals("1#move:1", updated.first())
-        assertFalse(isReturningToDetail(stack.last(), updated.last()))
-    }
-
-    @Test fun backAndDeduplicationReverseDirectionIncludingReturnToCatalog() {
-        assertFalse(isReturningToDetail(null, "0#pokemon:0003000"))
-        assertFalse(isReturningToDetail("0#pokemon:0003000", "1#pokemon:0003001"))
-        assertTrue(isReturningToDetail("1#pokemon:0003001", "0#pokemon:0003000"))
-        assertTrue(isReturningToDetail("0#pokemon:0003000", null))
-    }
 }

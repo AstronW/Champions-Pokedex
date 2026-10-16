@@ -1,5 +1,22 @@
 # 验证记录
 
+## 2026-10-16 删减测试
+
+APK 未变（测试代码不进 APK，与下一节同一个体验版）。只保留守住真实逻辑与项目硬性规则的测试：计算结果与上游逐例一致、页面状态按返回栈条目保存并经历重建与旋转、特殊数值不当普通值显示、旧队伍数据可读、Wiki 正文不丢字。删去复述数据、只断言文字存在、与其他测试重复的用例。
+
+- 单元测试 39 → 17：删除 `CalculatorCatalogTest`、`MechanicsTest` 整个文件；`CalculatorEngineTest` 去掉重复计算与默认计算 2 项；`CalculatorInputTest` 只留百变怪无招式、切换形态保留配置、交换两侧 3 项；`DetailNavigationTest` 留切换形态不累积返回步与重访 2 项；`ModelsTest` 留属性筛选、搜索、特殊数值、属性相性 4 项；`TeamTest` 留超级进化映射、旧队伍解码、特性道具受伤倍率、特性改变招式属性 4 项；`WikiParserTest` 留表格解析与全部条目不丢字 2 项。
+- 设备交互测试 26 → 6，耗时约 79 秒 → 20 秒：删除 `MechanicsFlowTest`、`TeamFlowTest` 整个文件；`CalculatorFlowTest` 留天气结果经导航、重建、横屏保持与非法能力点不留旧结果 2 项；`DexFlowTest` 留搜索—详情—招式—返回与列表滚动位置保持 2 项；`NavigationFlowTest` 留形态切换返回栈与入场动画中返回 2 项。被删的两项会把应用外观改成“暗色”，上次记录里外观残留的问题随之消失。
+- `CalculatorFlowTest` 删去不再使用的 `choose`、`pick`、`title` 与对应导入；技能文档中单类运行的示例改为 `NavigationFlowTest`。
+
+|检查|结果|
+|---|---|
+|Kotlin 单元测试|17 项通过|
+|Android 交互|全量 6 项通过（`emulator-5554`），一次通过|
+
+仅操作 `emulator-5554`，crash buffer 为空。
+
+---
+
 ## 2026-10-16 暗色配色与统一属性组件
 
 体验版：`dist/ChampionsDex-0.1.0-preview.apk`，12,506,854 字节。SHA-256：`3bfeb89a8eb2eb762afd0a91bd865facfb8e627f6c18e8d3a6d3faca2e02a78d`。图鉴数据、Wiki、图片与计算内核未改动。

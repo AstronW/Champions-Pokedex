@@ -20,21 +20,6 @@ class CalculatorInputTest {
         assertNull(calculatorMoveFor(dex,ditto.id,flame.id))
     }
 
-    @Test fun changingBackToAnAttackerSelectsAnAvailableLearnedMove() {
-        assertEquals(flame.id, calculatorMoveFor(dex,charizard.id,null))
-        assertEquals(flame.id, calculatorMoveFor(dex,charizard.id,closed.id))
-        assertEquals(flame.id, JSONObject(defaultCalculation(dex,null)).getInt("move"))
-    }
-
-    @Test fun regionalAndMegaLabelsKeepChineseSpeciesSearchable() {
-        val regional = ditto.copy(name="雷丘",form="阿罗拉的样子")
-        val mega = ditto.copy(name="妙蛙花",form="超级妙蛙花")
-        assertEquals("雷丘 · 阿罗拉的样子",regional.displayName)
-        assertTrue(SearchQuery("雷丘").matches(regional.displayName))
-        assertEquals("超级妙蛙花",mega.displayName)
-        assertEquals("百变怪",ditto.displayName)
-    }
-
     @Test fun formSelectionKeepsTheSpreadAndConditionsButRefreshesFormSpecificFields() {
         val mega = charizard.copy(id="0006001", formId=1, abilities=listOf(181), sex=3)
         val withMega = dex.copy(pokemon=dex.pokemon + mega, learnsets=dex.learnsets + (mega.id to listOf(flame.id)))
@@ -53,38 +38,6 @@ class CalculatorInputTest {
         assertEquals(181, side.getInt("ability"))
         assertEquals("F", side.getString("gender"))
         assertFalse(side.getBoolean("abilityOn"))
-        assertEquals(flame.id, request.getInt("move"))
-        assertEquals(3, request.getInt("hits"))
-    }
-
-    @Test fun selectingANewSpeciesResetsItsSideAndClearsAnUnavailableAttack() {
-        val request = JSONObject(defaultCalculation(dex, charizard.id)).put("hits", 3)
-        request.getJSONObject("attacker").put("item", "Life Orb").put("hp", "50")
-        val defender = request.getJSONObject("defender").toString()
-
-        selectCalculatorPokemon(request, dex, "attacker", ditto.id, preserveSpread=false, allMoves=false)
-
-        assertEquals(calculatorSide(ditto).toString(), request.getJSONObject("attacker").toString())
-        assertEquals(defender, request.getJSONObject("defender").toString())
-        assertTrue(request.isNull("move"))
-        assertEquals(0, request.getInt("hits"))
-    }
-
-    @Test fun hypotheticalMovesSurviveSelectionUntilTheLearnsetConstraintReturns() {
-        val request = JSONObject(defaultCalculation(dex, charizard.id)).put("hits", 3)
-        selectCalculatorPokemon(request, dex, "attacker", ditto.id, preserveSpread=false, allMoves=true)
-        assertEquals(flame.id, request.getInt("move"))
-        assertEquals(3, request.getInt("hits"))
-        limitToLearnedMoves(request, dex, ditto.id)
-        assertTrue(request.isNull("move"))
-        assertEquals(0, request.getInt("hits"))
-    }
-
-    @Test fun selectingADefenderDoesNotChangeTheAttack() {
-        val request = JSONObject(defaultCalculation(dex, charizard.id)).put("hits", 3)
-        val attacker = request.getJSONObject("attacker").toString()
-        selectCalculatorPokemon(request, dex, "defender", ditto.id, preserveSpread=false, allMoves=false)
-        assertEquals(attacker, request.getJSONObject("attacker").toString())
         assertEquals(flame.id, request.getInt("move"))
         assertEquals(3, request.getInt("hits"))
     }

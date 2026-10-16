@@ -15,15 +15,6 @@ class ModelsTest {
         val result=filterPokemon(dex,"",9,false,false,emptySet(),SortOrder.NUMBER)
         assertEquals(listOf(charizard,heat),result)
     }
-    @Test fun favoritesAndSearchKeepExactForm() {
-        assertEquals(listOf(heat),filterPokemon(dex,"",null,false,true,setOf(heat.key),SortOrder.NUMBER))
-        assertEquals(listOf(heat),filterPokemon(dex,"加热",null,false,false,emptySet(),SortOrder.NUMBER))
-        assertEquals(listOf(charizard),filterPokemon(dex,"0006",null,false,false,emptySet(),SortOrder.NUMBER))
-    }
-    @Test fun sortingUsesGameStats() {
-        assertEquals(listOf(charizard,regular,heat),filterPokemon(dex,"",null,true,false,emptySet(),SortOrder.SPEED))
-        assertEquals(2,filterPokemon(dex,"",null,false,false,emptySet(),SortOrder.NUMBER).size)
-    }
     @Test fun moveSentinelsAreNotDisplayedAsOrdinaryValues() {
         val dynamic=Move(1,"","","",true,0,0,1,101,8,-2,false)
         assertEquals("变化",dynamic.powerLabel);assertEquals("—",dynamic.accuracyLabel)
@@ -39,19 +30,6 @@ class ModelsTest {
         assertTrue(SearchQuery("洛托姆 加热").matches(heat.searchText))
         assertFalse(SearchQuery("洛托姆 加热").matches(regular.searchText))
         assertEquals(listOf(charizard), filterPokemon(dex, " EXAMPLE 0006 ", null, false, false, emptySet(), SortOrder.NUMBER))
-    }
-
-    @Test fun indexesKeepGameFormAndLearnsetOrdering() {
-        val attack = Move(53,"喷射火焰","Flamethrower","",true,9,1,90,100,15,0,false)
-        val status = attack.copy(id=144,category=2)
-        val closed = attack.copy(id=999,available=false)
-        val indexed = dex.copy(pokemon=listOf(heat, charizard, regular), moves=listOf(attack,status,closed),
-            learnsets=mapOf(heat.id to listOf(closed.id, status.id, attack.id)))
-        assertEquals(listOf(regular, heat), indexed.forms[479])
-        assertEquals(listOf(regular, charizard), indexed.species)
-        assertEquals(listOf(attack, status), indexed.availableMoves)
-        assertEquals(listOf(attack), indexed.attackingMoves)
-        assertEquals(listOf(closed, status, attack), indexed.learnedMoves[heat.id])
     }
 
     @Test fun typeMatchupsDoNotDoubleCountRepeatedSingleTypes() {

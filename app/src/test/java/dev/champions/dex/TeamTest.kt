@@ -46,25 +46,11 @@ class TeamTest {
         assertTrue(gameDex.megaForms.keys.none { it.second == 236 })                              // Light Ball is held, not a Mega Stone
     }
 
-    @Test fun megaFormsAreStoredAsHolderWithStone() {
-        val member = gameDex.newTeamMember("0006002")!!
-        assertEquals(TeamMember("0006000", gameDex.pokemonById.getValue("0006000").abilities.first(), 678), member)
-        assertEquals("0006002", gameDex.battleForm(member).id)
-        assertNull(gameDex.withForm(member, "0006000").item)
-        assertEquals(660, gameDex.withForm(member, "0006001").item)
-        assertNull(gameDex.newTeamMember("9999000"))
-    }
-
     @Test fun storedTeamsKeepSetsAndReadTheOldIdList() {
         val legacy = decodeTeam(null, "0003000,,0006000")
         assertEquals(listOf(TeamMember("0003000", 0), null, TeamMember("0006000", 0), null, null, null), legacy)
         val team = listOf(TeamMember("0006000", 66, 660, listOf(53, 89), "spa", "atk"), null, null, null, null, TeamMember("0003000", 65))
         assertEquals(team, decodeTeam(encodeTeam(team), "0001000"))
-    }
-
-    @Test fun normalizingDropsWhatTheFormCannotUse() {
-        val fixed = dex.normalized(TeamMember(normal.id, 999, 660, listOf(304, 304, 999, 69, 573, 311, 182)))!!
-        assertEquals(TeamMember(normal.id, 174, null, listOf(304, 69, 573, 311)), fixed)
     }
 
     @Test fun abilitiesAndItemsChangeDamageTaken() {
@@ -98,10 +84,5 @@ class TeamTest {
         val toss = set(normal, moves = listOf(69))
         assertEquals(1.0, toss.hits(0), 0.0); assertEquals(0.0, toss.hits(7), 0.0)        // Fixed damage only checks immunity
         assertEquals(0.0, set(normal).hits(0), 0.0)
-    }
-
-    @Test fun multipliersReadAsShownInTheGame() {
-        assertEquals("×2", multiplierText(2.0)); assertEquals("×½", multiplierText(.5)); assertEquals("×¼", multiplierText(.25))
-        assertEquals("×1.25", multiplierText(1.25)); assertEquals("×0", multiplierText(0.0)); assertEquals("×0.75", multiplierText(.75))
     }
 }

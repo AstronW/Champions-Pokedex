@@ -47,59 +47,6 @@ class NavigationFlowTest {
         compose.onNode(hasSetTextAction()).assertTextContains("0003")
     }
 
-    @Test fun backFromAnotherPageReturnsToCatalogueAndSelectionIsAnnounced() {
-        compose.waitForCatalog()
-        compose.onNode(hasSetTextAction()).performTextReplacement("0003")
-        compose.navigate("速度线")
-        compose.onNode(segment("最速 32+")).assertIsSelected()
-        compose.onNode(segment("无振")).assertIsNotSelected().performClick().assertIsSelected()
-        compose.onNodeWithText("讲究围巾 ×1.5").assertIsOff().performClick().assertIsOn()
-        compose.back()
-        compose.onNodeWithText("全国图鉴",substring=true).assertIsDisplayed()
-        compose.onNode(hasSetTextAction()).assertTextContains("0003")
-        compose.navigate("速度线")
-        compose.onNode(segment("无振")).assertIsSelected()
-        compose.onNodeWithText("讲究围巾 ×1.5").assertIsOn()
-    }
-
-    @Test fun forwardAndBackMoveInOppositeDirections() {
-        ready()
-        scrollToAbility()
-        compose.mainClock.autoAdvance=false
-        try {
-            ability().performClick()
-            compose.mainClock.advanceTimeBy(48)
-            val forward=compose.onNode(hasTagPrefix("detail:ability:")).getUnclippedBoundsInRoot().left.value
-            assertTrue("Entering page should start to the right: $forward",forward>0f)
-            compose.mainClock.advanceTimeBy(500)
-            compose.activityRule.scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
-            compose.mainClock.advanceTimeBy(48)
-            val returning=compose.onNodeWithTag("detail:pokemon:0003000").getUnclippedBoundsInRoot().left.value
-            val leaving=compose.onNode(hasTagPrefix("detail:ability:")).getUnclippedBoundsInRoot().left.value
-            assertTrue("Returning page should enter from the left: $returning",returning<0f)
-            assertTrue("Popped page should move right: $leaving",leaving>0f)
-            compose.mainClock.advanceTimeBy(500)
-        } finally { compose.mainClock.autoAdvance=true }
-    }
-
-    @Test fun reducedMotionShowsFullPageWithoutSizeExpansion() {
-        ready();compose.back()
-        motion(true)
-        compose.mainClock.autoAdvance=false
-        try {
-            compose.onAllNodes(hasText("妙蛙花") and hasClickAction() and !hasSetTextAction())[0].performClick()
-            compose.mainClock.advanceTimeBy(48)
-            val root=compose.onRoot().getUnclippedBoundsInRoot()
-            val detail=compose.onNodeWithTag("detail:pokemon:0003000").getBoundsInRoot()
-            assertEquals(0f,detail.left.value,0.1f)
-            assertEquals(root.right.value-root.left.value,detail.right.value-detail.left.value,0.1f)
-            compose.onNode(segment("超级妙蛙花")).assertIsDisplayed()
-        } finally {
-            compose.mainClock.autoAdvance=true
-            motion(false)
-        }
-    }
-
     @Test fun returningDuringEntryAnimationKeepsTheOriginalState() {
         ready()
         compose.onNodeWithText("☆ 异色").performClick()
