@@ -56,13 +56,11 @@ fun PokemonListScreen(dex: Dex, model: DexViewModel, onMenu: () -> Unit, onOpen:
             if (pokemon.isEmpty()) item(key = "empty", span = { GridItemSpan(maxLineSpan) }) { EmptyResult("没有找到符合条件的宝可梦", ::clear) }
             items(pokemon, key = { it.id }) { p ->
                 val variants = dex.forms[p.no].orEmpty()
-                val badge = when {
-                    allForms || variants.size < 2 || p.id != variants.first().id -> null
-                    variants.any { "超级" in it.form } -> "可超级进化"
-                    else -> "${variants.size} 种形态"
-                }
+                val grouped = !allForms && variants.size >= 2 && p.id == variants.first().id
+                val mega = grouped && variants.any { "超级" in it.form }
+                val badge = if (grouped && !mega) "${variants.size} 种形态" else null
                 val speed = sort == SortOrder.SPEED
-                PokemonRow(p, badge, if (speed) "速度" else "总和", "${if (speed) p.stats[5] else p.total}", p.key in model.favorites,
+                PokemonRow(p, mega, badge, if (speed) "速度" else "总和", "${if (speed) p.stats[5] else p.total}", p.key in model.favorites,
                     { focus.clearFocus(); onOpen(p.key) }, { model.toggleFavorite(p.key) })
             }
         }

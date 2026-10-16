@@ -84,7 +84,7 @@ class DexViewModel(application: Application) : AndroidViewModel(application) {
             catch (e: Exception) { error = "图鉴数据加载失败，请重试。"; return@launch }
             // Every form sprite and type icon is decoded before the catalogue appears, so its first frames and scrolls never wait for images.
             loadProgress = 0f
-            SpriteCache.preload(getApplication(), TypeNames.indices.map { "types/$it.png" } +
+            SpriteCache.preload(getApplication(), TypeNames.indices.map { "types/$it.png" } + MegaSymbol +
                 loaded.pokemon.filter { it.sprite.isNotBlank() }.map { "pokemon/${it.sprite}" }) { loadProgress = it }
             team.map { m -> m?.let(loaded::normalized) }.let { if (it != team) saveTeam(it) }
             dex = loaded

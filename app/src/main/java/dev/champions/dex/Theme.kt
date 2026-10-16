@@ -12,6 +12,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.font.Font
@@ -123,3 +124,10 @@ private val toneLight = TypeHue.map { (h, c) -> TypeTone(oklch(.9, c * .5, h.toD
 private val toneDark = TypeHue.map { (h, c) -> TypeTone(oklch(.36, c * .6, h.toDouble()), oklch(.88, c * .75, h.toDouble()), oklch(.64, c, h.toDouble()), oklch(.33, c * .5, h.toDouble())) }
 
 @Composable fun typeTone(type: Int): TypeTone = (if (LocalDark.current) toneDark else toneLight)[type]
+
+/** The flat background of each Champions type icon (assets/types), so a tag behind the icon continues it. */
+val TypeIconColors = listOf(0xFF9FA19F, 0xFFFF8000, 0xFF81B9EF, 0xFF9141CB, 0xFF915121, 0xFFAFA981, 0xFF91A119, 0xFF704170, 0xFF60A1B8,
+    0xFFE62829, 0xFF2980EF, 0xFF3FA129, 0xFFFAC000, 0xFFEF4179, 0xFF3FD8FF, 0xFF5060E1, 0xFF50413F, 0xFFEF70EF).map(::Color)
+
+/** Label colour on [TypeIconColors]: white like the icon's glyph while it keeps 3:1 contrast, else the light theme's ink. */
+val OnTypeIconColors = TypeIconColors.map { c -> if (1.05f / (c.luminance() + .05f) >= 3f) Color.White else LightPalette.text }

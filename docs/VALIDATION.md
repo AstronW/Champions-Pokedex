@@ -1,5 +1,24 @@
 # 验证记录
 
+## 2026-10-16 图鉴列表超级进化标记与属性胶囊配色
+
+体验版：`dist/ChampionsDex-0.1.0-preview.apk`，12,506,854 字节（上次 12,486,384）。SHA-256：`84e84357dff6869c6db7f10faa93118bb798f340c7fa2b0cc257902dbd3698a5`。图鉴数据、Wiki、宝可梦图片与计算内核未改动；新增资源 `assets/Mega_Evolution_symbol.png`（3,946 字节）。
+
+- 图鉴列表：有超级进化形态的物种不再显示“可超级进化”文字胶囊，改为编号旁的超级进化标志（高 18 dp，按原图 56:74 比例，无障碍描述仍为“可超级进化”）；“N 种形态”胶囊不变。该图标加入启动预解码，滚动时不闪烁。`PokemonRow` 新增 `mega` 参数。
+- 属性胶囊：`TypeTag` / `TypeTagRow` 新增 `iconColor` 模式，背景取属性图标自身的底色（`Theme.kt` 中的 `TypeIconColors`，从 `assets/types/*.png` 取样，18 种均为纯色），图标与胶囊连成一体。文字在白色对比度不低于 3:1 时用白色，与图标白色图形一致，否则用亮色主题墨色：一般、格斗、飞行、岩石、虫、钢、电、冰、妖精为墨色，其余为白色。两种主题使用同一组颜色。目前只有图鉴列表启用；详情页、伤害计算与队伍分享图仍用原配色。
+
+|检查|结果|
+|---|---|
+|Kotlin 单元测试|39 项通过|
+|Android 交互|全量 26 项通过（`emulator-5554`），一次通过|
+|Android lint|0 错误；9 条均为原有提示，无新增|
+|构建哈希|按 `build.ps1` 规则用 Python 核对 provenance 中 28 个文件哈希，全部一致（本机无 PowerShell，以 `sh ./gradlew :app:assemblePreview` 构建后复制到 `dist/` 并写 `.sha256`）|
+|Preview 实际页面|图鉴列表亮色竖屏、暗色竖屏、亮色横屏，以及电属性（电龙，浅底墨色文字）；超级进化标志、胶囊底色与图标一致，横屏两列布局正常。截图 `docs/screenshots/{light,dark}-preview-list-mega.png`、`light-preview-list-mega-landscape.png`、`light-preview-list-electric.png`|
+
+仅操作用户指定的 `emulator-5554`（Medium_Phone_API_37.0，用户原有的模拟器，非只读实例），adb 全部指定 serial，没有清除应用数据；crash buffer 为空。交互测试结束后应用外观残留为“暗色”，首轮亮色截图因此作废，在抽屉里改回“跟随系统”后重拍；系统暗色与旋转设置已恢复原值，搜索框已清空。构建期间曾误给 `gradlew` 加执行权限，已还原。数据合同测试（`test_import.py`）需要 champout，未运行，导入脚本未改动。真机、Android 8–9、字体缩放下的列表未验证。工作区原有的 AGP 9.4.1 / Gradle 9.6.0 未提交改动保留并参与本次构建。没有提交 Git。
+
+---
+
 ## 2026-10-16 伤害计算改为 Kotlin 原生实现
 
 体验版：`dist/ChampionsDex-0.1.0-preview.apk`，12,486,384 字节（上次 13,006,578）。SHA-256：`84b83c58c0649cd1cfb0a0f75eac2aababb86c347c105b5d08e899c2777a5bb7`。图鉴数据、Wiki、图片未改动；计算内核由 Rhino 解释的 JavaScript 改为 Kotlin 移植，`catalog.json` 增加上游导出的机制数据。

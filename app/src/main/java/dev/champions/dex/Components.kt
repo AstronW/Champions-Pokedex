@@ -219,14 +219,16 @@ fun TypeIcon(type: Int, modifier: Modifier = Modifier, size: Dp = 20.dp, descrip
  */
 @Composable
 fun TypeTag(type: Int, modifier: Modifier = Modifier, fontSize: TextUnit = 11.sp, icon: Dp = 18.dp, horizontal: Dp = 9.dp, vertical: Dp = 3.dp,
-            onTint: Boolean = false, solid: Boolean = false, suffix: String = "") {
+            onTint: Boolean = false, solid: Boolean = false, iconColor: Boolean = false, suffix: String = "") {
     val tone = typeTone(type)
-    // On a type-tinted surface the tag uses the page colour so it stays readable; a solid tag inverts the type colours.
-    val bg = when { solid -> tone.fg; onTint -> pal.bg.copy(alpha = .75f); else -> tone.bg }
+    // On a type-tinted surface the tag uses the page colour so it stays readable; a solid tag inverts the type colours;
+    // an icon-coloured tag takes the icon's own background so icon and pill read as one capsule.
+    val bg = when { iconColor -> TypeIconColors[type]; solid -> tone.fg; onTint -> pal.bg.copy(alpha = .75f); else -> tone.bg }
+    val fg = when { iconColor -> OnTypeIconColors[type]; solid -> pal.bg; else -> tone.fg }
     Row(modifier.clip(PillShape).background(bg).padding(start = vertical, end = horizontal, top = vertical, bottom = vertical),
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(icon / 4, Alignment.CenterHorizontally)) {
         TypeIcon(type, size = icon, description = null)
-        Text(TypeNames[type] + suffix, Modifier.weight(1f, fill = false), color = if (solid) pal.bg else tone.fg, fontSize = fontSize, lineHeight = fontSize * 1.3f,
+        Text(TypeNames[type] + suffix, Modifier.weight(1f, fill = false), color = fg, fontSize = fontSize, lineHeight = fontSize * 1.3f,
             fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
@@ -234,9 +236,9 @@ fun TypeTag(type: Int, modifier: Modifier = Modifier, fontSize: TextUnit = 11.sp
 /** A Pokémon's types across the whole width: a single type fills it, two types share it equally. */
 @Composable
 fun TypeTagRow(types: List<Int>, modifier: Modifier = Modifier, fontSize: TextUnit = 11.sp, icon: Dp = 18.dp, vertical: Dp = 3.dp, gap: Dp = 4.dp,
-               onTint: Boolean = false) {
+               onTint: Boolean = false, iconColor: Boolean = false) {
     Row(modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(gap)) {
-        types.distinct().forEach { TypeTag(it, Modifier.weight(1f), fontSize, icon, horizontal = vertical, vertical = vertical, onTint = onTint) }
+        types.distinct().forEach { TypeTag(it, Modifier.weight(1f), fontSize, icon, horizontal = vertical, vertical = vertical, onTint = onTint, iconColor = iconColor) }
     }
 }
 
@@ -609,18 +611,22 @@ private val DexRowShape = RoundedCornerShape(24.dp)
 
 fun Pokemon.number() = "#" + no.toString().padStart(4, '0')
 
+const val MegaSymbol = "Mega_Evolution_symbol.png"
+
+/** [mega] marks a species with a Mega form by the Mega Evolution symbol; [badge] is any other note beside the number. */
 @Composable
-fun PokemonRow(p: Pokemon, badge: String?, metricLabel: String, metric: String, favorite: Boolean, onClick: () -> Unit, onFavorite: () -> Unit) {
+fun PokemonRow(p: Pokemon, mega: Boolean, badge: String?, metricLabel: String, metric: String, favorite: Boolean, onClick: () -> Unit, onFavorite: () -> Unit) {
     Row(Modifier.fillMaxWidth().clip(DexRowShape).background(typeTone(p.types.first()).blob).clickable(onClick = onClick).padding(start = 10.dp, end = 12.dp, top = 10.dp, bottom = 10.dp),
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
         PokemonArt(p, Modifier.size(72.dp))
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 Text(p.number(), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = pal.n(700))
+                if (mega) AssetImage(MegaSymbol, "可超级进化", Modifier.height(18.dp).aspectRatio(56f / 74f))
                 if (badge != null) Pill(badge, pal.bg.copy(alpha = .75f), pal.a(800), fontSize = 10.sp)
             }
             Text(p.displayName, fontFamily = HeadingFont, fontWeight = HeadingWeight, fontSize = 19.sp, lineHeight = 21.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            TypeTagRow(p.types, onTint = true)
+            TypeTagRow(p.types, iconColor = true)
         }
         Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(2.dp)) {
             FavoriteButton(favorite, onFavorite, size = 36.dp)
