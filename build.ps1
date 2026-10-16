@@ -31,10 +31,7 @@ try {
     $calcSource = Get-Content app/src/main/assets/calculator/provenance.json -Raw | ConvertFrom-Json
     $calcFiles = @{
         'app/src/main/assets/dex.json' = $calcSource.dexSha256
-        'app/src/main/assets/calculator/engine.js' = $calcSource.engineSha256
-        'app/src/main/assets/calculator/adapter.js' = $calcSource.adapterSha256
         'app/src/main/assets/calculator/catalog.json' = $calcSource.catalogSha256
-        'scripts/calculator/adapter.js' = $calcSource.adapterSha256
         'scripts/calculator/form-aliases.json' = $calcSource.formAliasesSha256
     }
     foreach ($source in $calcSource.sources.PSObject.Properties) {

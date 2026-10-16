@@ -67,9 +67,23 @@ internal fun swapCalculatorSides(request: JSONObject) {
     field.put("attackerSide", field.optJSONObject("defenderSide") ?: JSONObject()).put("defenderSide", attackerSide)
 }
 
-internal data class CalculatorItem(val name: String, val label: String)
+/** Champions item with the upstream effects the formula reads (type boost, resist berry, Fling power, Mega Stone pairs). */
+internal data class CalculatorItem(
+    val name: String, val label: String, val boostType: String? = null, val resistType: String? = null, val fling: Int = 0,
+    val megaStone: Map<String, String> = emptyMap(),
+)
 
-/** Immutable UI metadata parsed once per ViewModel; the engine retains its own raw JSON contract. */
+/** Upstream move fields the formula reads; type, category, priority, contact and fixed power come from the dex. */
+internal data class CalcMoveData(
+    val basePower: Int, val flags: Set<String>, val multihit: IntRange?, val multihitFixed: Boolean, val multiaccuracy: Boolean,
+    val secondaries: Boolean, val recoil: Boolean, val hasCrashDamage: Boolean, val willCrit: Boolean, val ignoreDefensive: Boolean,
+    val breaksProtect: Boolean, val target: String?, val overrideDefensiveStat: String?, val selfBoosts: Map<String, Int>,
+)
+
+private fun JSONObject.strings(): Map<String, String> =
+    keys().asSequence().filterNot { isNull(it) }.associateWith { getString(it) }
+
+/** Immutable calculator data (catalog.json) parsed once per ViewModel: UI options plus the upstream rules for [CalculatorEngine]. */
 internal class CalculatorCatalog(json: JSONObject) {
     val natureEffects: Map<String, Pair<String, String>> = json.getJSONArray("natures").let { values ->
         (0 until values.length()).associate { i ->
@@ -77,10 +91,14 @@ internal class CalculatorCatalog(json: JSONObject) {
             nature.getString("name") to (nature.getString("plus") to nature.getString("minus"))
         }
     }
+    val natureById: Map<String, CalcNature> = natureEffects.entries.associate { (name, stats) ->
+        toId(name) to CalcNature(calcStats.indexOf(stats.first), calcStats.indexOf(stats.second))
+    }
     val items: List<CalculatorItem> = json.getJSONArray("items").let { values ->
         (0 until values.length()).map { i ->
             val item = values.getJSONObject(i)
-            CalculatorItem(item.getString("name"), item.getString("label"))
+            CalculatorItem(item.getString("name"), item.getString("label"), item.optString("boostType").ifEmpty { null },
+                item.optString("resistType").ifEmpty { null }, item.optInt("fling"), item.optJSONObject("megaStone")?.strings().orEmpty())
         }
     }
     val moveHits: Map<Int, IntRange> = json.getJSONObject("moveHits").let { values ->
@@ -89,6 +107,32 @@ internal class CalculatorCatalog(json: JSONObject) {
             id.toInt() to (hits.getInt(0)..hits.getInt(1))
         }
     }
+    /** Dex form ID → upstream species name. */
+    val species: Map<String, String> = json.getJSONObject("species").strings()
+    val moves: Map<Int, String> = json.getJSONObject("moves").strings().mapKeys { it.key.toInt() }
+    val abilities: Map<Int, String> = json.getJSONObject("abilities").strings().mapKeys { it.key.toInt() }
+    val moveData: Map<Int, CalcMoveData> = json.getJSONObject("moveData").let { values ->
+        values.keys().asSequence().associate { id ->
+            val m = values.getJSONObject(id)
+            val hits = m.opt("multihit")
+            val flags = m.optJSONArray("flags")
+            id.toInt() to CalcMoveData(
+                basePower = m.getInt("basePower"),
+                flags = flags?.let { f -> (0 until f.length()).map(f::getString).toSet() }.orEmpty(),
+                multihit = when (hits) { is JSONArray -> hits.getInt(0)..hits.getInt(1); is Number -> hits.toInt()..hits.toInt(); else -> null },
+                multihitFixed = hits is Number, multiaccuracy = m.optBoolean("multiaccuracy"), secondaries = m.optBoolean("secondaries"),
+                recoil = m.optBoolean("recoil"), hasCrashDamage = m.optBoolean("hasCrashDamage"), willCrit = m.optBoolean("willCrit"),
+                ignoreDefensive = m.optBoolean("ignoreDefensive"), breaksProtect = m.optBoolean("breaksProtect"),
+                target = m.optString("target").ifEmpty { null }, overrideDefensiveStat = m.optString("overrideDefensiveStat").ifEmpty { null },
+                selfBoosts = m.optJSONObject("selfBoosts")?.let { b -> b.keys().asSequence().associateWith(b::getInt) }.orEmpty(),
+            )
+        }
+    }
+    val rules = ChampionsRules(json.getJSONObject("types").let { types ->
+        types.keys().asSequence().associateWith { attack ->
+            types.getJSONObject(attack).let { row -> row.keys().asSequence().associateWith(row::getDouble) }
+        }
+    }, items)
 
     fun natureFor(up: String, down: String): String =
         if (up == down) "Serious"

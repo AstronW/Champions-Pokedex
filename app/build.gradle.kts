@@ -32,7 +32,6 @@ android {
     }
 }
 dependencies {
-    implementation("org.mozilla:rhino:1.7.15.1")
     implementation(platform("androidx.compose:compose-bom:2026.08.00"))
     implementation("androidx.activity:activity-compose:1.13.0")
     implementation("androidx.compose.material3:material3")

@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.Process
 import android.util.LruCache
 import androidx.core.content.edit
 import androidx.compose.runtime.getValue
@@ -64,7 +63,6 @@ internal fun parseDex(j: JSONObject, mechanics: Mechanics): Dex {
 }
 
 class DexViewModel(application: Application) : AndroidViewModel(application) {
-    val calculatorEngine = CalculatorEngine { path -> application.assets.open(path).bufferedReader().use { it.readText() } }
     private val calculatorCatalog by lazy {
         application.assets.open("calculator/catalog.json").bufferedReader().use { CalculatorCatalog(JSONObject(it.readText())) }
     }
@@ -90,11 +88,8 @@ class DexViewModel(application: Application) : AndroidViewModel(application) {
                 loaded.pokemon.filter { it.sprite.isNotBlank() }.map { "pokemon/${it.sprite}" }) { loadProgress = it }
             team.map { m -> m?.let(loaded::normalized) }.let { if (it != team) saveTeam(it) }
             dex = loaded
-            // Interpreting the calculator engine takes seconds; it runs below the UI's priority so it never competes with scrolling.
-            launch(Dispatchers.Default) {
-                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND)
-                try { runCatching { calculatorEngine.warmUp() } } finally { Process.setThreadPriority(Process.THREAD_PRIORITY_DEFAULT) }
-            }
+            // The calculator data (a small JSON file) is parsed ahead of time so the calculator opens with a result.
+            launch(Dispatchers.IO) { runCatching { calculatorCatalog } }
         }
     }
     fun toggleFavorite(key: String) {

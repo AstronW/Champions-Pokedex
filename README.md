@@ -23,7 +23,7 @@ Windows 已安装 Android Studio 时：
 ./build.ps1
 # 调试版
 ./build.ps1 -DebugBuild
-# 更新计算器资源（需 Node.js、Python 与邻目录 champout）
+# 更新计算器数据与参考用例（需 Node.js、Python 与邻目录 champout）
 ./build.ps1 -ImportCalculator
 ```
 

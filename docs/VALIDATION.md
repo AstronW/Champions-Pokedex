@@ -1,5 +1,29 @@
 # 验证记录
 
+## 2026-10-16 伤害计算改为 Kotlin 原生实现
+
+体验版：`dist/ChampionsDex-0.1.0-preview.apk`，12,486,384 字节（上次 13,006,578）。SHA-256：`84b83c58c0649cd1cfb0a0f75eac2aababb86c347c105b5d08e899c2777a5bb7`。图鉴数据、Wiki、图片未改动；计算内核由 Rhino 解释的 JavaScript 改为 Kotlin 移植，`catalog.json` 增加上游导出的机制数据。
+
+- 新增 `DamageCalc.kt`：逐行移植上游固定提交的 Champions 规则（`mechanics/champions.ts`、`mechanics/util.ts` 及相关类），用 `Double` 复现 JavaScript 算术与就地修改顺序；照搬上游怪癖（速度上限 999、亲子爱子代为 0 时按无子代处理等）。`CalculatorEngine.kt` 取代 `adapter.js`，校验文案与结果格式不变，结果改为类型化的 `CalcDamage` / `CalcFailure`。
+- APK 移除 `engine.js`、`adapter.js`、Rhino 依赖、Rhino 许可证与 ProGuard 规则；启动不再预热内核。计算在组合中同步完成，去掉 60 ms 防抖与“正在准备计算内核”；首次打开前只解析约 110 KB 的 `catalog.json`，列表显示后在 IO 线程预解析。
+- `scripts/calculator/build.cjs` 改为经 `upstream.cjs` 在 Node 中加载上游源码，只导出数据（招式机制字段、道具效果、属性相性）。本机没有邻目录 champout，导入按新规则在图鉴哈希与上次导入一致时复用已校验的道具中文名；其余 `catalog.json` 字段与旧版逐项相同，仅 `items` 增加效果字段。
+- `test.cjs` 以上游源码加原 `adapter.js` 生成 1238 个参考用例：38 个命名场景（新增亲子爱固定伤害、挣扎、速度上限 999）、1188 个固定种子组合、12 个校验错误。
+
+|检查|结果|
+|---|---|
+|上游覆盖检查|`node scripts/calculator/test.cjs` 通过：396 形态、335 攻击招式，命名用例与直接调用上游 API 一致|
+|Kotlin 单元测试|39 项通过；`CalculatorEngineTest` 1238 个用例逐字段（伤害、逐段随机值、百分比、阈值概率、实数值、段数、错误文案）一致|
+|额外压力对照（未提交）|另一种子、30 轮共 11,929 个用例，强制重跑全部一致|
+|变异检查|分别把生命宝珠 5324 改 5325、`pokeRound` 的 `>` 改 `>=`、速度上限 999 改 10000，对照测试均失败；最后一项起初未被覆盖，补充“Speed cap 999”用例后可检出|
+|构建哈希|按 `build.ps1` 规则用 Python 核对 provenance 中 28 个文件哈希，全部一致（本机无 PowerShell，未直接运行 `build.ps1`）|
+|Android 交互|全量 26 项通过（`emulator-5580`），一次通过|
+|Android lint|0 错误；9 条均为原有提示（上次 10 条，少的是 Rhino 相关依赖提示），无新增|
+|Preview 实际页面|暗色与亮色竖屏伤害计算、伤害分布、改为晴天后结果即时更新、横屏、许可页及返回后状态保留；默认组合 108–128 HP 与晴天 162–192 HP / 12.5% 和 Node 中上游结果一致。截图 `docs/screenshots/*-preview-calculator-*native.png`|
+
+仅操作本次独立启动的只读 `emulator-5580`（Medium_Phone_API_37.0），adb 全部指定 serial；crash buffer 为空。交互测试后应用残留暗色外观设置，清除应用数据后再拍亮色截图；结束时恢复竖屏并关闭模拟器。Linux 上以 `sh ./gradlew` 构建，`gradlew` 无执行权限未修改。真机性能、Android 8–9 未验证。数据合同测试（`test_import.py`）需要 champout，未运行，导入脚本未改动。工作区原有的 AGP 9.4.1 / Gradle 9.6.0 未提交改动保留并参与本次构建。没有提交 Git。
+
+---
+
 ## 2026-10-15 属性克制横屏并排、大字体标题栏
 
 体验版：`dist/ChampionsDex-0.1.0-preview.apk`，13,006,578 字节。SHA-256：`4636b8be4d2b2b373c0e15f33ba21444b0ed3fd9421533799ab0ffb7c3bf19a3`。数据、Wiki、图片与计算内核未改动。

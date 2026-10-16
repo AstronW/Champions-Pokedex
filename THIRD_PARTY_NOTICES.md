@@ -18,11 +18,9 @@ Pokémon 及相关游戏、角色、商标、文本、图像属于其权利人�
 
 ## 软件依赖
 
-伤害计算内核来自 [Smogon damage-calc](https://github.com/smogon/damage-calc)，提交 `eb9af6d94e7ee0ce034d2d6f2d44d4b2d66ff981`，Copyright (c) 2013–2025 Honko and other contributors，MIT。原样源码保存在 `vendor/damage-calc/src`，许可证原文在 `vendor/damage-calc/LICENSE`，并以 `app/src/main/assets/calculator/LICENSE-damage-calc.txt` 随应用分发。
+伤害计算规则移植自 [Smogon damage-calc](https://github.com/smogon/damage-calc)，提交 `eb9af6d94e7ee0ce034d2d6f2d44d4b2d66ff981`，Copyright (c) 2013–2025 Honko and other contributors，MIT。应用内的 `DamageCalc.kt` 是其 Champions 规则的 Kotlin 移植（衍生作品，沿用 MIT），`catalog.json` 含从上游数据表导出的招式、道具与属性数据。原样源码保存在 `vendor/damage-calc/src`，许可证原文在 `vendor/damage-calc/LICENSE`，并以 `app/src/main/assets/calculator/LICENSE-damage-calc.txt` 随应用分发。
 
-Rhino 1.7.15.1：MPL-2.0，未修改源码；[对应版本源码](https://github.com/mozilla/rhino/tree/Rhino1_7_15_1_Release)。许可证和发行通知在 `app/src/main/assets/calculator/LICENSE-Rhino.txt`，应用计算器底部可阅读。使用解释模式；没有启用 Rhino 的 JavaBean 转换与 Java 类互操作。
-
-计算器构建期 TypeScript 4.9.5：Apache-2.0。测试期 JSON-java 20240303：Public Domain。
+计算器导入与参考用例生成期 TypeScript 4.9.5：Apache-2.0（不随应用分发）。测试期 JSON-java 20240303：Public Domain。
 
 AndroidX / Jetpack Compose：Apache-2.0。Kotlin：Apache-2.0。
 构建期 Python 包 mwparserfromhell：MIT；opencc-python-reimplemented：Apache-2.0。

@@ -14,11 +14,12 @@ description: Champions 图鉴（PokeDex）项目的改动—生成—构建—�
 | 改动 | 正确的修改位置 | 重新生成 / 检查 |
 |---|---|---|
 | 图鉴数据、Wiki 转换、图片映射 | `scripts/import_data.py`（合同在 `scripts/test_import.py`）、`data/` 中的人工规则 | `./build.ps1 -ImportData`（同时刷新计算器资源，需要 Python、Node） |
-| 计算器映射、适配层 | `scripts/calculator/adapter.js`、`scripts/calculator/form-aliases.json` | `./build.ps1 -ImportCalculator` |
+| 计算器数据导出、形态映射 | `scripts/calculator/build.cjs`、`scripts/calculator/form-aliases.json` | `./build.ps1 -ImportCalculator`（同时刷新参考用例） |
+| 计算规则、输入校验与结果格式 | `DamageCalc.kt`（上游 Champions 规则移植）、`CalculatorEngine.kt` | Kotlin 单元测试逐例对照 `scripts/calculator/fixtures.json` |
 | 界面与应用逻辑 | `app/src/main/java/dev/champions/dex/*.kt` | Gradle 单元测试、lint、相关的设备交互测试 |
 | 只改文档 | `docs/`、`README.md` | 无需构建 |
 
-以下生成物不能手改，改了也会被下一次导入覆盖，或者被 `build.ps1` 的哈希检查拦下：`app/src/main/assets/dex.json`、`wiki.json`、`mechanics.json`、`assets/calculator/*`（含 `provenance.json`）、`data/bundle-sha256.json`、`data/import-report.json`。要改结果，就去改生成它的规则，然后重新生成。
+以下生成物不能手改，改了也会被下一次导入覆盖，或者被 `build.ps1` 的哈希检查拦下：`app/src/main/assets/dex.json`、`wiki.json`、`mechanics.json`、`assets/calculator/*`（含 `provenance.json`）、`scripts/calculator/fixtures.json`、`data/bundle-sha256.json`、`data/import-report.json`。要改结果，就去改生成它的规则，然后重新生成。
 
 上游目录（`../champout`、`../sprites`、`../damage-calc`）和旧编辑数据库只读。源数据过期时导入器会停止，这时请用户在 champout 里重新 `prepare`，不要绕过校验。
 
@@ -29,7 +30,7 @@ description: Champions 图鉴（PokeDex）项目的改动—生成—构建—�
 ```powershell
 # 数据合同
 python -m unittest discover -s scripts -p test_import.py -v
-# Kotlin 单元测试（含 Node/Rhino 计算对照）、lint、设备测试 APK
+# Kotlin 单元测试（含原生计算与上游参考用例逐例对照）、lint、设备测试 APK
 ./gradlew.bat :app:testDebugUnitTest :app:lintDebug :app:assembleDebugAndroidTest
 # 优化体验版 → dist/ChampionsDex-0.1.0-preview.apk 及 .sha256
 ./build.ps1

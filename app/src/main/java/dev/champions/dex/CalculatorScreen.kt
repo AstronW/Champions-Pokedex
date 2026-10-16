@@ -41,7 +41,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import kotlin.math.ceil
@@ -79,18 +78,9 @@ fun CalculatorScreen(dex: Dex, model: DexViewModel, modifier: Modifier = Modifie
     val catalog by produceState<CalculatorCatalog?>(null, model) {
         value = model.loadCalculatorCatalog()
     }
-    var output by remember { mutableStateOf<Pair<String, JSONObject>?>(null) }
-    val calculationInput = input
-    LaunchedEffect(calculationInput) {
-        if (request.isNull("move")) { output = null; return@LaunchedEffect }
-        delay(60)
-        val result = withContext(Dispatchers.Default) {
-            try { JSONObject(model.calculatorEngine.calculate(calculationInput)) }
-            catch (_: Exception) { JSONObject().put("error", "计算器加载失败，请重新打开页面。") }
-        }
-        output = calculationInput to result
-    }
-    val result = output?.takeIf { it.first == input }?.second
+    val engine = remember(dex, catalog) { catalog?.let { CalculatorEngine(dex, it) } }
+    // The native engine takes well under a millisecond, so the result follows every edit directly.
+    val result = remember(request, engine) { if (request.isNull("move")) null else engine?.calculate(request) }
     fun edit(block: (JSONObject) -> Unit) { input = JSONObject(input).also(block).toString() }
     fun editSide(key: String, block: (JSONObject) -> Unit) = edit { block(it.getJSONObject(key)) }
     fun swap() {
@@ -119,7 +109,7 @@ fun CalculatorScreen(dex: Dex, model: DexViewModel, modifier: Modifier = Modifie
             SecondaryButton("交换", ::swap, height = 40.dp, leading = { Glyph(GlyphKind.SWAP, Modifier.size(16.dp), pal.text) })
         }
         val resultCard: @Composable (Modifier) -> Unit = { m ->
-            CalcResult(attacker, defender, selectedMove, noMoves, result, compact, model.calculatorEngine.ready, { sheet = "result" }, m)
+            CalcResult(attacker, defender, selectedMove, noMoves, result, compact, { sheet = "result" }, m)
         }
         // Menus rise over the result card as well, so nothing at the bottom of a menu sits behind it.
         Box(Modifier.weight(1f)) {
@@ -153,7 +143,7 @@ fun CalculatorScreen(dex: Dex, model: DexViewModel, modifier: Modifier = Modifie
                     menu.startsWith(CONFIG) -> {
                         val key = menu.removePrefix(CONFIG); val p = if (key == "attacker") attacker else defender
                         ConfigSheet(if (key == "attacker") "攻击方" else "防守方", if (key == "attacker") pal.a(700) else pal.g(700), p, request.getJSONObject(key),
-                            result?.optJSONObject(if (key == "attacker") "attackerStats" else "defenderStats"), dex, catalog, { change -> editSide(key, change) }, close)
+                            (result as? CalcDamage)?.let { if (key == "attacker") it.attackerStats else it.defenderStats }, dex, catalog, { change -> editSide(key, change) }, close)
                     }
                     menu == "field" -> FieldSheet(request.getJSONObject("field"), { block -> edit { block(it.getJSONObject("field")) } }, close)
                     menu == "move" -> MoveSheet(dex, attacker, defender, request, learned, allMoves, catalog, ::toggleAllMoves, ::edit, close)
@@ -167,7 +157,7 @@ fun CalculatorScreen(dex: Dex, model: DexViewModel, modifier: Modifier = Modifie
 // —— Result ——
 
 @Composable
-private fun CalcResult(attacker: Pokemon, defender: Pokemon, move: Move?, noMoves: Boolean, result: JSONObject?, compact: Boolean, engineReady: Boolean,
+private fun CalcResult(attacker: Pokemon, defender: Pokemon, move: Move?, noMoves: Boolean, result: CalcOutcome?, compact: Boolean,
                        onDetails: () -> Unit, modifier: Modifier) {
     val shape = if (compact) RoundedCornerShape(topStart = 28.dp, bottomStart = 28.dp) else SheetShape
     Column(modifier.shadow(14.dp, shape).clip(shape).background(pal.n(100))
@@ -183,11 +173,11 @@ private fun CalcResult(attacker: Pokemon, defender: Pokemon, move: Move?, noMove
         when {
             move == null -> Text(if (noMoves) "此形态没有可用的攻击招式。可在招式菜单开启“全部开放攻击招式”选择假设招式。" else "请选择攻击招式。",
                 Modifier.testTag("calc-no-move"), fontSize = 13.sp, color = pal.n(800))
-            result == null -> { Text(if (engineReady) "正在计算…" else "正在准备计算内核…", fontSize = 13.sp, color = pal.n(800)); LinearProgressIndicator(Modifier.fillMaxWidth(), color = pal.accent, trackColor = pal.surface) }
-            result.has("error") -> Text(result.getString("error"), Modifier.testTag("calc-error"), fontSize = 13.sp, color = pal.a(800))
-            else -> {
-                val min = result.getInt("min"); val max = result.getInt("max"); val maxHp = result.getInt("maxHP"); val hp = result.getInt("currentHP")
-                val lo = result.getDouble("percentMin"); val hi = result.getDouble("percentMax")
+            result == null -> { Text("正在载入计算数据…", fontSize = 13.sp, color = pal.n(800)); LinearProgressIndicator(Modifier.fillMaxWidth(), color = pal.accent, trackColor = pal.surface) }
+            result is CalcFailure -> Text(result.message, Modifier.testTag("calc-error"), fontSize = 13.sp, color = pal.a(800))
+            result is CalcDamage -> {
+                val min = result.min; val max = result.max; val maxHp = result.maxHP; val hp = result.currentHP
+                val lo = result.percentMin; val hi = result.percentMax
                 val percent = @Composable { Text("$lo – $hi%", fontFamily = HeadingFont, fontWeight = HeadingWeight, fontSize = 30.sp, lineHeight = 34.sp, color = pal.text) }
                 val hpText = @Composable { align: TextAlign ->
                     Column(horizontalAlignment = if (align == TextAlign.End) Alignment.End else Alignment.Start) {
@@ -208,7 +198,7 @@ private fun CalcResult(attacker: Pokemon, defender: Pokemon, move: Move?, noMove
                 if (compact) Spacer(Modifier.weight(1f))
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     Column(Modifier.weight(1f)) {
-                        Text(koText(min, max, hp, result.getDouble("ohko")), fontSize = 16.sp, fontWeight = FontWeight.Bold, color = pal.a(800))
+                        Text(koText(min, max, hp, result.ohko), fontSize = 16.sp, fontWeight = FontWeight.Bold, color = pal.a(800))
                         Text("剩余 HP ${(hp - max).coerceAtLeast(0)}–${(hp - min).coerceAtLeast(0)}", fontSize = 11.sp, color = pal.n(700))
                     }
                     SecondaryButton("伤害分布", onDetails, height = 40.dp)
@@ -448,7 +438,7 @@ private fun AnimatedVisibilityScope.PokemonSheet(title: String, color: Color, cu
 }
 
 @Composable
-private fun AnimatedVisibilityScope.ConfigSheet(title: String, color: Color, p: Pokemon, side: JSONObject, stats: JSONObject?, dex: Dex, catalog: CalculatorCatalog?,
+private fun AnimatedVisibilityScope.ConfigSheet(title: String, color: Color, p: Pokemon, side: JSONObject, stats: List<Int>?, dex: Dex, catalog: CalculatorCatalog?,
                         onEdit: ((JSONObject) -> Unit) -> Unit, onClose: () -> Unit) {
     var tab by rememberSaveable { mutableIntStateOf(0) }
     MenuPanel(title, color, "配置 · ${p.displayName}", true, onClose) {
@@ -487,7 +477,7 @@ private fun AnimatedVisibilityScope.ConfigSheet(title: String, color: Color, p: 
                     Column {
                         calcStats.indices.forEach { i ->
                             val points = side.points(i); val label = StatLabels[i]
-                            val actual = stats?.optInt(calcStats[i])?.takeIf { it > 0 } ?: actualStat(p.stats[i], points.coerceIn(0, 32), i, natureFactor(i))
+                            val actual = stats?.getOrNull(i)?.takeIf { it > 0 } ?: actualStat(p.stats[i], points.coerceIn(0, 32), i, natureFactor(i))
                             Row(Modifier.fillMaxWidth().heightIn(min = 54.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                 Text(label, Modifier.width(44.dp), fontSize = 14.sp, fontWeight = FontWeight.Bold)
                                 Text("实数值 $actual", Modifier.weight(1f), fontSize = 12.sp, color = pal.n(700))
@@ -651,14 +641,12 @@ private fun AnimatedVisibilityScope.MoveSheet(dex: Dex, attacker: Pokemon, defen
 }
 
 @Composable
-private fun AnimatedVisibilityScope.ResultSheet(result: JSONObject?, onLicense: () -> Unit, onReset: () -> Unit, onClose: () -> Unit) {
+private fun AnimatedVisibilityScope.ResultSheet(result: CalcOutcome?, onLicense: () -> Unit, onReset: () -> Unit, onClose: () -> Unit) {
     MenuPanel("计算结果", pal.n(700), "伤害分布与说明", false, onClose) {
         item(key = "rolls") {
-            if (result == null || result.has("error")) Text("暂无可用的计算结果。", fontSize = 13.sp, color = pal.n(800))
+            if (result !is CalcDamage) Text("暂无可用的计算结果。", fontSize = 13.sp, color = pal.n(800))
             else Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                val rows = result.getJSONArray("rolls")
-                repeat(rows.length()) { i ->
-                    val r = rows.getJSONArray(i); val values = (0 until r.length()).map { r.getInt(it) }
+                result.rolls.forEachIndexed { i, values ->
                     Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(pal.surface).padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                         SheetLabel("第 ${i + 1} 段 · ${values.size} 个等概率随机值（HP）")
                         values.chunked(4).forEach { row ->
@@ -705,14 +693,14 @@ private fun NumberField(label: String, value: String, modifier: Modifier, change
 fun CalculatorLicense(onBack: () -> Unit) {
     val context = LocalContext.current
     val license by produceState("") { value = withContext(Dispatchers.IO) {
-        listOf("LICENSE-damage-calc.txt", "LICENSE-Rhino.txt").joinToString("\n\n") { file -> context.assets.open("calculator/$file").bufferedReader().use { it.readText() } }
+        context.assets.open("calculator/LICENSE-damage-calc.txt").bufferedReader().use { it.readText() }
     } }
     Column {
         AppHeader("伤害计算", "计算内核与开源许可", false, onBack)
         LazyColumn(contentPadding = PaddingValues(start = 22.dp, end = 22.dp, top = 6.dp, bottom = 32.dp)) {
             item {
-                Text("Smogon damage-calc · Champions\n版本 eb9af6d94e7e\n\n计算规则沿用该版本，不代表所有机制已经过 Champions 实机验证。\n\nRhino 1.7.15.1 · MPL 2.0", fontSize = 13.sp, lineHeight = 20.sp)
-                GhostButton("Rhino 对应版本源码 ↗") { openWeb(context, "https://github.com/mozilla/rhino/tree/Rhino1_7_15_1_Release") }
+                Text("Smogon damage-calc · Champions\n版本 eb9af6d94e7e\n\n计算规则以 Kotlin 原生移植自该版本，逐项对照原版结果；不代表所有机制已经过 Champions 实机验证。", fontSize = 13.sp, lineHeight = 20.sp)
+                GhostButton("damage-calc 对应版本源码 ↗") { openWeb(context, "https://github.com/smogon/damage-calc/tree/eb9af6d94e7ee0ce034d2d6f2d44d4b2d66ff981") }
                 Text(license, fontSize = 12.sp, lineHeight = 17.sp, color = pal.n(800))
             }
         }

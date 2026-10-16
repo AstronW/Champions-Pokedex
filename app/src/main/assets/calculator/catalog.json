@@ -911,6 +911,2089 @@
     "917": "Psychic Noise",
     "918": "Upper Hand"
   },
+  "moveData": {
+    "1": {
+      "basePower": 40
+    },
+    "7": {
+      "basePower": 75,
+      "flags": [
+        "punch"
+      ],
+      "secondaries": true
+    },
+    "8": {
+      "basePower": 75,
+      "flags": [
+        "punch"
+      ],
+      "secondaries": true
+    },
+    "9": {
+      "basePower": 75,
+      "flags": [
+        "punch"
+      ],
+      "secondaries": true
+    },
+    "12": {
+      "basePower": 0
+    },
+    "14": {
+      "basePower": 0
+    },
+    "18": {
+      "basePower": 0,
+      "flags": [
+        "wind"
+      ]
+    },
+    "19": {
+      "basePower": 90
+    },
+    "20": {
+      "basePower": 15
+    },
+    "25": {
+      "basePower": 120
+    },
+    "32": {
+      "basePower": 0
+    },
+    "34": {
+      "basePower": 85,
+      "secondaries": true
+    },
+    "35": {
+      "basePower": 15
+    },
+    "37": {
+      "basePower": 120
+    },
+    "38": {
+      "basePower": 120,
+      "recoil": true
+    },
+    "42": {
+      "basePower": 25,
+      "multihit": [
+        2,
+        5
+      ]
+    },
+    "44": {
+      "basePower": 60,
+      "flags": [
+        "bite"
+      ],
+      "secondaries": true
+    },
+    "46": {
+      "basePower": 0,
+      "flags": [
+        "sound"
+      ]
+    },
+    "47": {
+      "basePower": 0,
+      "flags": [
+        "sound"
+      ]
+    },
+    "50": {
+      "basePower": 0
+    },
+    "53": {
+      "basePower": 90,
+      "secondaries": true
+    },
+    "56": {
+      "basePower": 110
+    },
+    "57": {
+      "basePower": 90,
+      "target": "allAdjacent"
+    },
+    "58": {
+      "basePower": 90,
+      "secondaries": true
+    },
+    "59": {
+      "basePower": 110,
+      "flags": [
+        "wind"
+      ],
+      "secondaries": true,
+      "target": "allAdjacentFoes"
+    },
+    "63": {
+      "basePower": 150
+    },
+    "65": {
+      "basePower": 80
+    },
+    "67": {
+      "basePower": 0
+    },
+    "68": {
+      "basePower": 0
+    },
+    "69": {
+      "basePower": 0
+    },
+    "73": {
+      "basePower": 0
+    },
+    "74": {
+      "basePower": 0
+    },
+    "76": {
+      "basePower": 120
+    },
+    "77": {
+      "basePower": 0
+    },
+    "78": {
+      "basePower": 0
+    },
+    "79": {
+      "basePower": 0
+    },
+    "80": {
+      "basePower": 120
+    },
+    "81": {
+      "basePower": 0,
+      "target": "allAdjacentFoes"
+    },
+    "83": {
+      "basePower": 35
+    },
+    "85": {
+      "basePower": 90,
+      "secondaries": true
+    },
+    "86": {
+      "basePower": 0
+    },
+    "87": {
+      "basePower": 110,
+      "secondaries": true
+    },
+    "89": {
+      "basePower": 100,
+      "target": "allAdjacent"
+    },
+    "90": {
+      "basePower": 0
+    },
+    "91": {
+      "basePower": 80
+    },
+    "92": {
+      "basePower": 0
+    },
+    "94": {
+      "basePower": 90,
+      "secondaries": true
+    },
+    "95": {
+      "basePower": 0
+    },
+    "97": {
+      "basePower": 0
+    },
+    "98": {
+      "basePower": 40
+    },
+    "101": {
+      "basePower": 0
+    },
+    "103": {
+      "basePower": 0,
+      "flags": [
+        "sound"
+      ]
+    },
+    "104": {
+      "basePower": 0
+    },
+    "105": {
+      "basePower": 0
+    },
+    "107": {
+      "basePower": 0
+    },
+    "109": {
+      "basePower": 0
+    },
+    "113": {
+      "basePower": 0
+    },
+    "114": {
+      "basePower": 0
+    },
+    "115": {
+      "basePower": 0
+    },
+    "116": {
+      "basePower": 0
+    },
+    "120": {
+      "basePower": 200,
+      "target": "allAdjacent"
+    },
+    "126": {
+      "basePower": 110,
+      "secondaries": true
+    },
+    "127": {
+      "basePower": 80,
+      "secondaries": true
+    },
+    "133": {
+      "basePower": 0
+    },
+    "136": {
+      "basePower": 130,
+      "hasCrashDamage": true
+    },
+    "137": {
+      "basePower": 0
+    },
+    "141": {
+      "basePower": 80
+    },
+    "143": {
+      "basePower": 140,
+      "secondaries": true
+    },
+    "144": {
+      "basePower": 0
+    },
+    "151": {
+      "basePower": 0
+    },
+    "152": {
+      "basePower": 100
+    },
+    "153": {
+      "basePower": 250,
+      "target": "allAdjacent"
+    },
+    "156": {
+      "basePower": 0
+    },
+    "157": {
+      "basePower": 75,
+      "secondaries": true,
+      "target": "allAdjacentFoes"
+    },
+    "161": {
+      "basePower": 80,
+      "secondaries": true
+    },
+    "162": {
+      "basePower": 0
+    },
+    "163": {
+      "basePower": 80,
+      "flags": [
+        "slicing"
+      ]
+    },
+    "164": {
+      "basePower": 0
+    },
+    "165": {
+      "basePower": 50
+    },
+    "168": {
+      "basePower": 60
+    },
+    "173": {
+      "basePower": 50,
+      "flags": [
+        "sound"
+      ],
+      "secondaries": true
+    },
+    "174": {
+      "basePower": 0
+    },
+    "175": {
+      "basePower": 0
+    },
+    "178": {
+      "basePower": 0,
+      "target": "allAdjacentFoes"
+    },
+    "179": {
+      "basePower": 0
+    },
+    "180": {
+      "basePower": 0
+    },
+    "182": {
+      "basePower": 0
+    },
+    "183": {
+      "basePower": 40,
+      "flags": [
+        "punch"
+      ]
+    },
+    "184": {
+      "basePower": 0
+    },
+    "186": {
+      "basePower": 0
+    },
+    "187": {
+      "basePower": 0
+    },
+    "188": {
+      "basePower": 90,
+      "flags": [
+        "bullet"
+      ],
+      "secondaries": true
+    },
+    "189": {
+      "basePower": 20,
+      "secondaries": true
+    },
+    "191": {
+      "basePower": 0
+    },
+    "192": {
+      "basePower": 120,
+      "flags": [
+        "bullet"
+      ],
+      "secondaries": true
+    },
+    "194": {
+      "basePower": 0
+    },
+    "195": {
+      "basePower": 0,
+      "flags": [
+        "sound"
+      ]
+    },
+    "196": {
+      "basePower": 55,
+      "flags": [
+        "wind"
+      ],
+      "secondaries": true,
+      "target": "allAdjacentFoes"
+    },
+    "197": {
+      "basePower": 0
+    },
+    "198": {
+      "basePower": 30,
+      "multihit": [
+        2,
+        5
+      ]
+    },
+    "199": {
+      "basePower": 0
+    },
+    "200": {
+      "basePower": 120
+    },
+    "201": {
+      "basePower": 0,
+      "flags": [
+        "wind"
+      ]
+    },
+    "202": {
+      "basePower": 75
+    },
+    "203": {
+      "basePower": 0
+    },
+    "204": {
+      "basePower": 0
+    },
+    "207": {
+      "basePower": 0
+    },
+    "208": {
+      "basePower": 0
+    },
+    "211": {
+      "basePower": 70,
+      "secondaries": true
+    },
+    "212": {
+      "basePower": 0
+    },
+    "213": {
+      "basePower": 0
+    },
+    "214": {
+      "basePower": 0
+    },
+    "215": {
+      "basePower": 0,
+      "flags": [
+        "sound"
+      ]
+    },
+    "219": {
+      "basePower": 0
+    },
+    "220": {
+      "basePower": 0
+    },
+    "223": {
+      "basePower": 100,
+      "flags": [
+        "punch"
+      ],
+      "secondaries": true
+    },
+    "224": {
+      "basePower": 120
+    },
+    "226": {
+      "basePower": 0
+    },
+    "227": {
+      "basePower": 0
+    },
+    "229": {
+      "basePower": 50,
+      "secondaries": true
+    },
+    "230": {
+      "basePower": 0,
+      "target": "allAdjacentFoes"
+    },
+    "231": {
+      "basePower": 100,
+      "secondaries": true
+    },
+    "234": {
+      "basePower": 0
+    },
+    "235": {
+      "basePower": 0
+    },
+    "236": {
+      "basePower": 0
+    },
+    "238": {
+      "basePower": 100
+    },
+    "240": {
+      "basePower": 0
+    },
+    "241": {
+      "basePower": 0
+    },
+    "242": {
+      "basePower": 80,
+      "flags": [
+        "bite"
+      ],
+      "secondaries": true
+    },
+    "243": {
+      "basePower": 0
+    },
+    "244": {
+      "basePower": 0
+    },
+    "245": {
+      "basePower": 80
+    },
+    "246": {
+      "basePower": 60,
+      "secondaries": true
+    },
+    "247": {
+      "basePower": 80,
+      "flags": [
+        "bullet"
+      ],
+      "secondaries": true
+    },
+    "248": {
+      "basePower": 120
+    },
+    "250": {
+      "basePower": 35
+    },
+    "251": {
+      "basePower": 0
+    },
+    "252": {
+      "basePower": 40,
+      "secondaries": true
+    },
+    "253": {
+      "basePower": 90,
+      "flags": [
+        "sound"
+      ]
+    },
+    "254": {
+      "basePower": 0
+    },
+    "255": {
+      "basePower": 0
+    },
+    "256": {
+      "basePower": 0
+    },
+    "257": {
+      "basePower": 95,
+      "flags": [
+        "wind"
+      ],
+      "secondaries": true,
+      "target": "allAdjacentFoes"
+    },
+    "259": {
+      "basePower": 0
+    },
+    "260": {
+      "basePower": 0
+    },
+    "261": {
+      "basePower": 0
+    },
+    "262": {
+      "basePower": 0
+    },
+    "263": {
+      "basePower": 70
+    },
+    "264": {
+      "basePower": 150,
+      "flags": [
+        "punch"
+      ]
+    },
+    "266": {
+      "basePower": 0
+    },
+    "268": {
+      "basePower": 0
+    },
+    "269": {
+      "basePower": 0
+    },
+    "270": {
+      "basePower": 0
+    },
+    "271": {
+      "basePower": 0
+    },
+    "272": {
+      "basePower": 0
+    },
+    "273": {
+      "basePower": 0
+    },
+    "275": {
+      "basePower": 0
+    },
+    "276": {
+      "basePower": 120,
+      "selfBoosts": {
+        "atk": -1
+      }
+    },
+    "278": {
+      "basePower": 0
+    },
+    "280": {
+      "basePower": 75
+    },
+    "281": {
+      "basePower": 0
+    },
+    "282": {
+      "basePower": 65
+    },
+    "283": {
+      "basePower": 0
+    },
+    "284": {
+      "basePower": 150,
+      "target": "allAdjacentFoes"
+    },
+    "285": {
+      "basePower": 0
+    },
+    "286": {
+      "basePower": 0
+    },
+    "291": {
+      "basePower": 80
+    },
+    "297": {
+      "basePower": 0
+    },
+    "298": {
+      "basePower": 0,
+      "target": "allAdjacent"
+    },
+    "299": {
+      "basePower": 85,
+      "secondaries": true
+    },
+    "303": {
+      "basePower": 0
+    },
+    "304": {
+      "basePower": 90,
+      "flags": [
+        "sound"
+      ],
+      "target": "allAdjacentFoes"
+    },
+    "305": {
+      "basePower": 50,
+      "flags": [
+        "bite"
+      ],
+      "secondaries": true
+    },
+    "306": {
+      "basePower": 75,
+      "flags": [
+        "slicing"
+      ],
+      "secondaries": true
+    },
+    "307": {
+      "basePower": 150
+    },
+    "308": {
+      "basePower": 150
+    },
+    "309": {
+      "basePower": 90,
+      "flags": [
+        "punch"
+      ],
+      "secondaries": true
+    },
+    "311": {
+      "basePower": 50,
+      "flags": [
+        "bullet"
+      ]
+    },
+    "313": {
+      "basePower": 0
+    },
+    "314": {
+      "basePower": 60,
+      "flags": [
+        "slicing",
+        "wind"
+      ],
+      "target": "allAdjacentFoes"
+    },
+    "315": {
+      "basePower": 130,
+      "selfBoosts": {
+        "spa": -2
+      }
+    },
+    "317": {
+      "basePower": 60,
+      "secondaries": true
+    },
+    "319": {
+      "basePower": 0,
+      "flags": [
+        "sound"
+      ]
+    },
+    "321": {
+      "basePower": 0
+    },
+    "322": {
+      "basePower": 0
+    },
+    "323": {
+      "basePower": 150,
+      "target": "allAdjacentFoes"
+    },
+    "325": {
+      "basePower": 60,
+      "flags": [
+        "punch"
+      ]
+    },
+    "326": {
+      "basePower": 80,
+      "secondaries": true
+    },
+    "328": {
+      "basePower": 35
+    },
+    "329": {
+      "basePower": 0
+    },
+    "330": {
+      "basePower": 90,
+      "secondaries": true,
+      "target": "allAdjacentFoes"
+    },
+    "331": {
+      "basePower": 25,
+      "flags": [
+        "bullet"
+      ],
+      "multihit": [
+        2,
+        5
+      ]
+    },
+    "332": {
+      "basePower": 60,
+      "flags": [
+        "slicing"
+      ]
+    },
+    "333": {
+      "basePower": 25,
+      "multihit": [
+        2,
+        5
+      ]
+    },
+    "334": {
+      "basePower": 0
+    },
+    "335": {
+      "basePower": 0
+    },
+    "336": {
+      "basePower": 0,
+      "flags": [
+        "sound"
+      ]
+    },
+    "337": {
+      "basePower": 80,
+      "flags": [
+        "slicing"
+      ]
+    },
+    "338": {
+      "basePower": 150
+    },
+    "339": {
+      "basePower": 0
+    },
+    "340": {
+      "basePower": 85,
+      "secondaries": true
+    },
+    "341": {
+      "basePower": 55,
+      "secondaries": true
+    },
+    "343": {
+      "basePower": 60
+    },
+    "344": {
+      "basePower": 120,
+      "secondaries": true,
+      "recoil": true
+    },
+    "347": {
+      "basePower": 0
+    },
+    "348": {
+      "basePower": 90,
+      "flags": [
+        "slicing"
+      ]
+    },
+    "349": {
+      "basePower": 0
+    },
+    "350": {
+      "basePower": 25,
+      "flags": [
+        "bullet"
+      ],
+      "multihit": [
+        2,
+        5
+      ]
+    },
+    "352": {
+      "basePower": 60,
+      "flags": [
+        "pulse"
+      ],
+      "secondaries": true
+    },
+    "355": {
+      "basePower": 0
+    },
+    "356": {
+      "basePower": 0
+    },
+    "359": {
+      "basePower": 100,
+      "flags": [
+        "punch"
+      ]
+    },
+    "360": {
+      "basePower": 0,
+      "flags": [
+        "bullet"
+      ]
+    },
+    "361": {
+      "basePower": 0
+    },
+    "364": {
+      "basePower": 30,
+      "breaksProtect": true
+    },
+    "365": {
+      "basePower": 60
+    },
+    "366": {
+      "basePower": 0,
+      "flags": [
+        "wind"
+      ]
+    },
+    "367": {
+      "basePower": 0
+    },
+    "368": {
+      "basePower": 0
+    },
+    "369": {
+      "basePower": 70
+    },
+    "370": {
+      "basePower": 120
+    },
+    "371": {
+      "basePower": 50
+    },
+    "372": {
+      "basePower": 60
+    },
+    "374": {
+      "basePower": 0
+    },
+    "379": {
+      "basePower": 0
+    },
+    "380": {
+      "basePower": 0
+    },
+    "383": {
+      "basePower": 0
+    },
+    "384": {
+      "basePower": 0
+    },
+    "385": {
+      "basePower": 0
+    },
+    "387": {
+      "basePower": 140
+    },
+    "388": {
+      "basePower": 0
+    },
+    "389": {
+      "basePower": 70
+    },
+    "390": {
+      "basePower": 0
+    },
+    "392": {
+      "basePower": 0
+    },
+    "393": {
+      "basePower": 0
+    },
+    "394": {
+      "basePower": 120,
+      "secondaries": true,
+      "recoil": true
+    },
+    "396": {
+      "basePower": 80,
+      "flags": [
+        "bullet",
+        "pulse"
+      ]
+    },
+    "397": {
+      "basePower": 0
+    },
+    "398": {
+      "basePower": 80,
+      "secondaries": true
+    },
+    "399": {
+      "basePower": 80,
+      "flags": [
+        "pulse"
+      ],
+      "secondaries": true
+    },
+    "400": {
+      "basePower": 70,
+      "flags": [
+        "slicing"
+      ]
+    },
+    "401": {
+      "basePower": 90
+    },
+    "402": {
+      "basePower": 80,
+      "flags": [
+        "bullet"
+      ]
+    },
+    "403": {
+      "basePower": 75,
+      "flags": [
+        "slicing"
+      ],
+      "secondaries": true
+    },
+    "404": {
+      "basePower": 80,
+      "flags": [
+        "slicing"
+      ]
+    },
+    "405": {
+      "basePower": 90,
+      "flags": [
+        "sound"
+      ],
+      "secondaries": true
+    },
+    "406": {
+      "basePower": 85,
+      "flags": [
+        "pulse"
+      ]
+    },
+    "407": {
+      "basePower": 100,
+      "secondaries": true
+    },
+    "408": {
+      "basePower": 80
+    },
+    "409": {
+      "basePower": 75,
+      "flags": [
+        "punch"
+      ]
+    },
+    "410": {
+      "basePower": 40
+    },
+    "411": {
+      "basePower": 120,
+      "flags": [
+        "bullet"
+      ],
+      "secondaries": true
+    },
+    "412": {
+      "basePower": 90,
+      "flags": [
+        "bullet"
+      ],
+      "secondaries": true
+    },
+    "413": {
+      "basePower": 120,
+      "recoil": true
+    },
+    "414": {
+      "basePower": 90,
+      "secondaries": true
+    },
+    "415": {
+      "basePower": 0
+    },
+    "416": {
+      "basePower": 150
+    },
+    "417": {
+      "basePower": 0
+    },
+    "418": {
+      "basePower": 40,
+      "flags": [
+        "punch"
+      ]
+    },
+    "419": {
+      "basePower": 60
+    },
+    "420": {
+      "basePower": 40
+    },
+    "421": {
+      "basePower": 70,
+      "flags": [
+        "slicing"
+      ]
+    },
+    "422": {
+      "basePower": 65,
+      "flags": [
+        "bite"
+      ],
+      "secondaries": true
+    },
+    "423": {
+      "basePower": 65,
+      "flags": [
+        "bite"
+      ],
+      "secondaries": true
+    },
+    "424": {
+      "basePower": 65,
+      "flags": [
+        "bite"
+      ],
+      "secondaries": true
+    },
+    "425": {
+      "basePower": 40
+    },
+    "427": {
+      "basePower": 70,
+      "flags": [
+        "slicing"
+      ]
+    },
+    "428": {
+      "basePower": 80,
+      "secondaries": true
+    },
+    "430": {
+      "basePower": 80,
+      "secondaries": true
+    },
+    "432": {
+      "basePower": 0
+    },
+    "433": {
+      "basePower": 0
+    },
+    "434": {
+      "basePower": 130,
+      "selfBoosts": {
+        "spa": -2
+      }
+    },
+    "435": {
+      "basePower": 80,
+      "secondaries": true,
+      "target": "allAdjacent"
+    },
+    "436": {
+      "basePower": 80,
+      "secondaries": true,
+      "target": "allAdjacent"
+    },
+    "437": {
+      "basePower": 130,
+      "selfBoosts": {
+        "spa": -2
+      }
+    },
+    "438": {
+      "basePower": 120
+    },
+    "439": {
+      "basePower": 150,
+      "flags": [
+        "bullet"
+      ]
+    },
+    "440": {
+      "basePower": 70,
+      "flags": [
+        "slicing"
+      ],
+      "secondaries": true
+    },
+    "441": {
+      "basePower": 120,
+      "secondaries": true
+    },
+    "442": {
+      "basePower": 80,
+      "secondaries": true
+    },
+    "444": {
+      "basePower": 100
+    },
+    "446": {
+      "basePower": 0
+    },
+    "447": {
+      "basePower": 0
+    },
+    "450": {
+      "basePower": 60
+    },
+    "451": {
+      "basePower": 50,
+      "secondaries": true
+    },
+    "452": {
+      "basePower": 120,
+      "recoil": true
+    },
+    "453": {
+      "basePower": 40
+    },
+    "457": {
+      "basePower": 150,
+      "recoil": true
+    },
+    "458": {
+      "basePower": 35,
+      "multihit": 2
+    },
+    "469": {
+      "basePower": 0
+    },
+    "470": {
+      "basePower": 0
+    },
+    "471": {
+      "basePower": 0
+    },
+    "472": {
+      "basePower": 0
+    },
+    "473": {
+      "basePower": 80,
+      "overrideDefensiveStat": "def"
+    },
+    "474": {
+      "basePower": 65
+    },
+    "476": {
+      "basePower": 0
+    },
+    "478": {
+      "basePower": 0
+    },
+    "479": {
+      "basePower": 50
+    },
+    "480": {
+      "basePower": 60,
+      "willCrit": true
+    },
+    "482": {
+      "basePower": 95,
+      "secondaries": true,
+      "target": "allAdjacent"
+    },
+    "483": {
+      "basePower": 0
+    },
+    "484": {
+      "basePower": 0
+    },
+    "486": {
+      "basePower": 0,
+      "flags": [
+        "bullet"
+      ]
+    },
+    "487": {
+      "basePower": 0
+    },
+    "488": {
+      "basePower": 50,
+      "secondaries": true
+    },
+    "489": {
+      "basePower": 0
+    },
+    "490": {
+      "basePower": 65,
+      "secondaries": true
+    },
+    "491": {
+      "basePower": 40,
+      "flags": [
+        "bullet"
+      ],
+      "secondaries": true
+    },
+    "492": {
+      "basePower": 95
+    },
+    "493": {
+      "basePower": 0
+    },
+    "494": {
+      "basePower": 0
+    },
+    "495": {
+      "basePower": 0
+    },
+    "496": {
+      "basePower": 60,
+      "flags": [
+        "sound"
+      ]
+    },
+    "499": {
+      "basePower": 50
+    },
+    "500": {
+      "basePower": 20
+    },
+    "501": {
+      "basePower": 0
+    },
+    "502": {
+      "basePower": 0
+    },
+    "503": {
+      "basePower": 80,
+      "secondaries": true
+    },
+    "504": {
+      "basePower": 0
+    },
+    "505": {
+      "basePower": 0,
+      "flags": [
+        "pulse"
+      ]
+    },
+    "506": {
+      "basePower": 65
+    },
+    "508": {
+      "basePower": 0
+    },
+    "509": {
+      "basePower": 60
+    },
+    "511": {
+      "basePower": 0
+    },
+    "512": {
+      "basePower": 55
+    },
+    "513": {
+      "basePower": 0
+    },
+    "515": {
+      "basePower": 0
+    },
+    "517": {
+      "basePower": 100,
+      "secondaries": true
+    },
+    "521": {
+      "basePower": 70
+    },
+    "522": {
+      "basePower": 50,
+      "secondaries": true,
+      "target": "allAdjacentFoes"
+    },
+    "523": {
+      "basePower": 60,
+      "secondaries": true,
+      "target": "allAdjacent"
+    },
+    "524": {
+      "basePower": 60,
+      "willCrit": true
+    },
+    "525": {
+      "basePower": 60
+    },
+    "527": {
+      "basePower": 55,
+      "secondaries": true,
+      "target": "allAdjacentFoes"
+    },
+    "528": {
+      "basePower": 90,
+      "recoil": true
+    },
+    "529": {
+      "basePower": 80
+    },
+    "532": {
+      "basePower": 75
+    },
+    "533": {
+      "basePower": 90,
+      "flags": [
+        "slicing"
+      ],
+      "ignoreDefensive": true
+    },
+    "534": {
+      "basePower": 75,
+      "flags": [
+        "slicing"
+      ],
+      "secondaries": true
+    },
+    "535": {
+      "basePower": 0
+    },
+    "538": {
+      "basePower": 0
+    },
+    "539": {
+      "basePower": 90,
+      "secondaries": true
+    },
+    "541": {
+      "basePower": 25,
+      "multihit": [
+        2,
+        5
+      ]
+    },
+    "542": {
+      "basePower": 110,
+      "flags": [
+        "wind"
+      ],
+      "secondaries": true
+    },
+    "552": {
+      "basePower": 80,
+      "secondaries": true
+    },
+    "555": {
+      "basePower": 55,
+      "flags": [
+        "sound"
+      ],
+      "secondaries": true,
+      "target": "allAdjacentFoes"
+    },
+    "556": {
+      "basePower": 85,
+      "secondaries": true
+    },
+    "560": {
+      "basePower": 100
+    },
+    "562": {
+      "basePower": 120
+    },
+    "564": {
+      "basePower": 0
+    },
+    "565": {
+      "basePower": 50
+    },
+    "566": {
+      "basePower": 90,
+      "breaksProtect": true
+    },
+    "567": {
+      "basePower": 0
+    },
+    "568": {
+      "basePower": 0,
+      "flags": [
+        "sound"
+      ]
+    },
+    "570": {
+      "basePower": 65,
+      "target": "allAdjacent"
+    },
+    "571": {
+      "basePower": 0
+    },
+    "572": {
+      "basePower": 90,
+      "flags": [
+        "wind"
+      ],
+      "target": "allAdjacent"
+    },
+    "573": {
+      "basePower": 70
+    },
+    "575": {
+      "basePower": 0,
+      "flags": [
+        "sound"
+      ]
+    },
+    "576": {
+      "basePower": 0
+    },
+    "577": {
+      "basePower": 50
+    },
+    "580": {
+      "basePower": 0
+    },
+    "581": {
+      "basePower": 0
+    },
+    "582": {
+      "basePower": 0
+    },
+    "583": {
+      "basePower": 90,
+      "secondaries": true
+    },
+    "585": {
+      "basePower": 95,
+      "secondaries": true
+    },
+    "586": {
+      "basePower": 140,
+      "flags": [
+        "sound"
+      ],
+      "target": "allAdjacent"
+    },
+    "587": {
+      "basePower": 0
+    },
+    "588": {
+      "basePower": 0
+    },
+    "594": {
+      "basePower": 15,
+      "multihit": [
+        2,
+        5
+      ]
+    },
+    "595": {
+      "basePower": 75,
+      "secondaries": true
+    },
+    "596": {
+      "basePower": 0
+    },
+    "597": {
+      "basePower": 0
+    },
+    "598": {
+      "basePower": 0
+    },
+    "602": {
+      "basePower": 0
+    },
+    "604": {
+      "basePower": 0
+    },
+    "605": {
+      "basePower": 80,
+      "target": "allAdjacentFoes"
+    },
+    "608": {
+      "basePower": 0
+    },
+    "609": {
+      "basePower": 20,
+      "secondaries": true
+    },
+    "611": {
+      "basePower": 20
+    },
+    "617": {
+      "basePower": 140,
+      "recoil": true
+    },
+    "660": {
+      "basePower": 100
+    },
+    "661": {
+      "basePower": 0
+    },
+    "662": {
+      "basePower": 90,
+      "secondaries": true
+    },
+    "663": {
+      "basePower": 85,
+      "ignoreDefensive": true
+    },
+    "664": {
+      "basePower": 90,
+      "flags": [
+        "sound"
+      ],
+      "secondaries": true,
+      "target": "allAdjacent"
+    },
+    "665": {
+      "basePower": 100,
+      "flags": [
+        "punch"
+      ]
+    },
+    "667": {
+      "basePower": 95
+    },
+    "668": {
+      "basePower": 0
+    },
+    "669": {
+      "basePower": 125,
+      "flags": [
+        "slicing"
+      ]
+    },
+    "672": {
+      "basePower": 0
+    },
+    "675": {
+      "basePower": 80,
+      "secondaries": true
+    },
+    "676": {
+      "basePower": 90,
+      "flags": [
+        "bullet"
+      ]
+    },
+    "678": {
+      "basePower": 0
+    },
+    "679": {
+      "basePower": 80,
+      "secondaries": true
+    },
+    "680": {
+      "basePower": 90,
+      "secondaries": true
+    },
+    "681": {
+      "basePower": 20
+    },
+    "682": {
+      "basePower": 130
+    },
+    "683": {
+      "basePower": 0
+    },
+    "684": {
+      "basePower": 70
+    },
+    "688": {
+      "basePower": 85,
+      "secondaries": true
+    },
+    "689": {
+      "basePower": 0
+    },
+    "690": {
+      "basePower": 120,
+      "flags": [
+        "bullet"
+      ]
+    },
+    "691": {
+      "basePower": 110,
+      "flags": [
+        "sound"
+      ],
+      "target": "allAdjacentFoes"
+    },
+    "693": {
+      "basePower": 60,
+      "target": "allAdjacent"
+    },
+    "694": {
+      "basePower": 0
+    },
+    "706": {
+      "basePower": 85,
+      "flags": [
+        "bite"
+      ]
+    },
+    "707": {
+      "basePower": 75
+    },
+    "709": {
+      "basePower": 40
+    },
+    "710": {
+      "basePower": 85,
+      "secondaries": true
+    },
+    "715": {
+      "basePower": 0
+    },
+    "716": {
+      "basePower": 80,
+      "secondaries": true
+    },
+    "745": {
+      "basePower": 85
+    },
+    "746": {
+      "basePower": 80,
+      "flags": [
+        "bite"
+      ]
+    },
+    "747": {
+      "basePower": 0
+    },
+    "748": {
+      "basePower": 0
+    },
+    "750": {
+      "basePower": 0
+    },
+    "751": {
+      "basePower": 50,
+      "multihit": 2
+    },
+    "752": {
+      "basePower": 0
+    },
+    "753": {
+      "basePower": 0
+    },
+    "756": {
+      "basePower": 0
+    },
+    "775": {
+      "basePower": 0,
+      "flags": [
+        "sound"
+      ]
+    },
+    "776": {
+      "basePower": 80
+    },
+    "777": {
+      "basePower": 0
+    },
+    "778": {
+      "basePower": 80,
+      "secondaries": true
+    },
+    "779": {
+      "basePower": 35
+    },
+    "780": {
+      "basePower": 120,
+      "flags": [
+        "bullet"
+      ],
+      "secondaries": true
+    },
+    "783": {
+      "basePower": 110,
+      "secondaries": true
+    },
+    "784": {
+      "basePower": 60,
+      "secondaries": true,
+      "target": "allAdjacentFoes"
+    },
+    "786": {
+      "basePower": 80,
+      "flags": [
+        "sound"
+      ],
+      "target": "allAdjacentFoes"
+    },
+    "787": {
+      "basePower": 90,
+      "secondaries": true
+    },
+    "788": {
+      "basePower": 90,
+      "secondaries": true
+    },
+    "789": {
+      "basePower": 75,
+      "secondaries": true
+    },
+    "791": {
+      "basePower": 0
+    },
+    "794": {
+      "basePower": 170
+    },
+    "796": {
+      "basePower": 140
+    },
+    "797": {
+      "basePower": 80
+    },
+    "798": {
+      "basePower": 130
+    },
+    "799": {
+      "basePower": 25,
+      "multihit": [
+        2,
+        5
+      ]
+    },
+    "800": {
+      "basePower": 120
+    },
+    "801": {
+      "basePower": 90,
+      "secondaries": true
+    },
+    "802": {
+      "basePower": 100,
+      "target": "allAdjacent"
+    },
+    "803": {
+      "basePower": 55
+    },
+    "804": {
+      "basePower": 70
+    },
+    "805": {
+      "basePower": 50,
+      "flags": [
+        "pulse"
+      ]
+    },
+    "806": {
+      "basePower": 70,
+      "secondaries": true
+    },
+    "807": {
+      "basePower": 70,
+      "secondaries": true,
+      "target": "allAdjacentFoes"
+    },
+    "808": {
+      "basePower": 75
+    },
+    "809": {
+      "basePower": 110
+    },
+    "810": {
+      "basePower": 0,
+      "target": "allAdjacent"
+    },
+    "811": {
+      "basePower": 0
+    },
+    "812": {
+      "basePower": 60
+    },
+    "813": {
+      "basePower": 20,
+      "multihit": 3,
+      "multiaccuracy": true
+    },
+    "814": {
+      "basePower": 40,
+      "multihit": 2
+    },
+    "815": {
+      "basePower": 70,
+      "secondaries": true
+    },
+    "826": {
+      "basePower": 80,
+      "flags": [
+        "sound"
+      ],
+      "secondaries": true
+    },
+    "827": {
+      "basePower": 80,
+      "flags": [
+        "slicing"
+      ],
+      "secondaries": true
+    },
+    "828": {
+      "basePower": 90,
+      "secondaries": true
+    },
+    "830": {
+      "basePower": 65,
+      "flags": [
+        "slicing"
+      ],
+      "secondaries": true
+    },
+    "833": {
+      "basePower": 120
+    },
+    "834": {
+      "basePower": 120,
+      "recoil": true
+    },
+    "836": {
+      "basePower": 120,
+      "secondaries": true
+    },
+    "838": {
+      "basePower": 120,
+      "flags": [
+        "punch"
+      ]
+    },
+    "839": {
+      "basePower": 60,
+      "secondaries": true
+    },
+    "841": {
+      "basePower": 75,
+      "secondaries": true
+    },
+    "842": {
+      "basePower": 0
+    },
+    "843": {
+      "basePower": 90,
+      "secondaries": true
+    },
+    "844": {
+      "basePower": 65,
+      "secondaries": true
+    },
+    "845": {
+      "basePower": 65,
+      "flags": [
+        "slicing"
+      ],
+      "secondaries": true
+    },
+    "853": {
+      "basePower": 120,
+      "hasCrashDamage": true,
+      "secondaries": true
+    },
+    "854": {
+      "basePower": 50
+    },
+    "855": {
+      "basePower": 80,
+      "secondaries": true
+    },
+    "857": {
+      "basePower": 60,
+      "flags": [
+        "punch"
+      ]
+    },
+    "858": {
+      "basePower": 0
+    },
+    "860": {
+      "basePower": 20,
+      "flags": [
+        "slicing"
+      ],
+      "multihit": 10,
+      "multiaccuracy": true
+    },
+    "861": {
+      "basePower": 80
+    },
+    "862": {
+      "basePower": 120
+    },
+    "863": {
+      "basePower": 0
+    },
+    "864": {
+      "basePower": 40,
+      "secondaries": true
+    },
+    "866": {
+      "basePower": 30,
+      "secondaries": true,
+      "target": "allAdjacentFoes"
+    },
+    "869": {
+      "basePower": 85,
+      "flags": [
+        "slicing"
+      ]
+    },
+    "870": {
+      "basePower": 70,
+      "willCrit": true
+    },
+    "871": {
+      "basePower": 80,
+      "flags": [
+        "sound"
+      ],
+      "secondaries": true
+    },
+    "872": {
+      "basePower": 80,
+      "secondaries": true
+    },
+    "873": {
+      "basePower": 90
+    },
+    "874": {
+      "basePower": 120,
+      "target": "allAdjacentFoes",
+      "selfBoosts": {
+        "spa": -2
+      }
+    },
+    "880": {
+      "basePower": 0
+    },
+    "881": {
+      "basePower": 0
+    },
+    "882": {
+      "basePower": 0
+    },
+    "883": {
+      "basePower": 0
+    },
+    "884": {
+      "basePower": 50,
+      "secondaries": true
+    },
+    "885": {
+      "basePower": 50,
+      "secondaries": true
+    },
+    "886": {
+      "basePower": 50,
+      "secondaries": true
+    },
+    "888": {
+      "basePower": 40,
+      "multihit": 2
+    },
+    "889": {
+      "basePower": 50,
+      "flags": [
+        "punch"
+      ]
+    },
+    "890": {
+      "basePower": 120
+    },
+    "891": {
+      "basePower": 90,
+      "flags": [
+        "slicing"
+      ]
+    },
+    "892": {
+      "basePower": 120,
+      "flags": [
+        "punch"
+      ]
+    },
+    "893": {
+      "basePower": 160
+    },
+    "894": {
+      "basePower": 0
+    },
+    "895": {
+      "basePower": 70,
+      "flags": [
+        "slicing"
+      ]
+    },
+    "902": {
+      "basePower": 80,
+      "secondaries": true,
+      "target": "allAdjacentFoes"
+    },
+    "903": {
+      "basePower": 60,
+      "flags": [
+        "bullet"
+      ],
+      "secondaries": true
+    },
+    "905": {
+      "basePower": 130
+    },
+    "907": {
+      "basePower": 80
+    },
+    "912": {
+      "basePower": 0
+    },
+    "913": {
+      "basePower": 0,
+      "flags": [
+        "sound"
+      ]
+    },
+    "914": {
+      "basePower": 80,
+      "flags": [
+        "sound"
+      ],
+      "secondaries": true
+    },
+    "915": {
+      "basePower": 75
+    },
+    "916": {
+      "basePower": 100,
+      "hasCrashDamage": true
+    },
+    "917": {
+      "basePower": 75,
+      "flags": [
+        "sound"
+      ],
+      "secondaries": true
+    },
+    "918": {
+      "basePower": 65,
+      "secondaries": true
+    }
+  },
   "moveHits": {
     "1": [
       1,
@@ -3181,67 +5264,110 @@
   "items": [
     {
       "name": "Abomasite",
-      "label": "暴雪王进化石"
+      "label": "暴雪王进化石",
+      "megaStone": {
+        "Abomasnow": "Abomasnow-Mega"
+      }
     },
     {
       "name": "Absolite",
-      "label": "阿勃梭鲁进化石"
+      "label": "阿勃梭鲁进化石",
+      "megaStone": {
+        "Absol": "Absol-Mega"
+      }
     },
     {
       "name": "Absolite Z",
-      "label": "阿勃梭鲁进化石Ｚ"
+      "label": "阿勃梭鲁进化石Ｚ",
+      "megaStone": {
+        "Absol": "Absol-Mega-Z"
+      }
     },
     {
       "name": "Aerodactylite",
-      "label": "化石翼龙进化石"
+      "label": "化石翼龙进化石",
+      "megaStone": {
+        "Aerodactyl": "Aerodactyl-Mega"
+      }
     },
     {
       "name": "Aggronite",
-      "label": "波士可多拉进化石"
+      "label": "波士可多拉进化石",
+      "megaStone": {
+        "Aggron": "Aggron-Mega"
+      }
     },
     {
       "name": "Air Balloon",
-      "label": "气球"
+      "label": "气球",
+      "fling": 10
     },
     {
       "name": "Alakazite",
-      "label": "胡地进化石"
+      "label": "胡地进化石",
+      "megaStone": {
+        "Alakazam": "Alakazam-Mega"
+      }
     },
     {
       "name": "Altarianite",
-      "label": "七夕青鸟进化石"
+      "label": "七夕青鸟进化石",
+      "megaStone": {
+        "Altaria": "Altaria-Mega"
+      }
     },
     {
       "name": "Ampharosite",
-      "label": "电龙进化石"
+      "label": "电龙进化石",
+      "megaStone": {
+        "Ampharos": "Ampharos-Mega"
+      }
     },
     {
       "name": "Aspear Berry",
-      "label": "利木果"
+      "label": "利木果",
+      "fling": 10
     },
     {
       "name": "Audinite",
-      "label": "差不多娃娃进化石"
+      "label": "差不多娃娃进化石",
+      "megaStone": {
+        "Audino": "Audino-Mega"
+      }
     },
     {
       "name": "Babiri Berry",
-      "label": "霹霹果"
+      "label": "霹霹果",
+      "resistType": "Steel",
+      "fling": 10
     },
     {
       "name": "Banettite",
-      "label": "诅咒娃娃进化石"
+      "label": "诅咒娃娃进化石",
+      "megaStone": {
+        "Banette": "Banette-Mega"
+      }
     },
     {
       "name": "Barbaracite",
-      "label": "龟足巨铠进化石"
+      "label": "龟足巨铠进化石",
+      "megaStone": {
+        "Barbaracle": "Barbaracle-Mega"
+      }
     },
     {
       "name": "Baxcalibrite",
-      "label": "戟脊龙进化石"
+      "label": "戟脊龙进化石",
+      "megaStone": {
+        "Baxcalibur": "Baxcalibur-Mega"
+      }
     },
     {
       "name": "Beedrillite",
-      "label": "大针蜂进化石"
+      "label": "大针蜂进化石",
+      "megaStone": {
+        "Beedrill": "Beedrill-Mega"
+      }
     },
     {
       "name": "Big Root",
@@ -3253,19 +5379,29 @@
     },
     {
       "name": "Black Belt",
-      "label": "黑带"
+      "label": "黑带",
+      "boostType": "Fighting",
+      "fling": 30
     },
     {
       "name": "Black Glasses",
-      "label": "黑色眼镜"
+      "label": "黑色眼镜",
+      "boostType": "Dark",
+      "fling": 30
     },
     {
       "name": "Blastoisinite",
-      "label": "水箭龟进化石"
+      "label": "水箭龟进化石",
+      "megaStone": {
+        "Blastoise": "Blastoise-Mega"
+      }
     },
     {
       "name": "Blazikenite",
-      "label": "火焰鸡进化石"
+      "label": "火焰鸡进化石",
+      "megaStone": {
+        "Blaziken": "Blaziken-Mega"
+      }
     },
     {
       "name": "Bright Powder",
@@ -3273,323 +5409,505 @@
     },
     {
       "name": "Cameruptite",
-      "label": "喷火驼进化石"
+      "label": "喷火驼进化石",
+      "megaStone": {
+        "Camerupt": "Camerupt-Mega"
+      }
     },
     {
       "name": "Chandelurite",
-      "label": "水晶灯火灵进化石"
+      "label": "水晶灯火灵进化石",
+      "megaStone": {
+        "Chandelure": "Chandelure-Mega"
+      }
     },
     {
       "name": "Charcoal",
-      "label": "木炭"
+      "label": "木炭",
+      "boostType": "Fire",
+      "fling": 30
     },
     {
       "name": "Charizardite X",
-      "label": "喷火龙进化石Ｘ"
+      "label": "喷火龙进化石Ｘ",
+      "megaStone": {
+        "Charizard": "Charizard-Mega-X"
+      }
     },
     {
       "name": "Charizardite Y",
-      "label": "喷火龙进化石Ｙ"
+      "label": "喷火龙进化石Ｙ",
+      "megaStone": {
+        "Charizard": "Charizard-Mega-Y"
+      }
     },
     {
       "name": "Charti Berry",
-      "label": "草蚕果"
+      "label": "草蚕果",
+      "resistType": "Rock",
+      "fling": 10
     },
     {
       "name": "Cheri Berry",
-      "label": "樱子果"
+      "label": "樱子果",
+      "fling": 10
     },
     {
       "name": "Chesnaughtite",
-      "label": "布里卡隆进化石"
+      "label": "布里卡隆进化石",
+      "megaStone": {
+        "Chesnaught": "Chesnaught-Mega"
+      }
     },
     {
       "name": "Chesto Berry",
-      "label": "零余果"
+      "label": "零余果",
+      "fling": 10
     },
     {
       "name": "Chilan Berry",
-      "label": "灯浆果"
+      "label": "灯浆果",
+      "resistType": "Normal",
+      "fling": 10
     },
     {
       "name": "Chimechite",
-      "label": "风铃铃进化石"
+      "label": "风铃铃进化石",
+      "megaStone": {
+        "Chimecho": "Chimecho-Mega"
+      }
     },
     {
       "name": "Choice Scarf",
-      "label": "讲究围巾"
+      "label": "讲究围巾",
+      "fling": 10
     },
     {
       "name": "Chople Berry",
-      "label": "莲蒲果"
+      "label": "莲蒲果",
+      "resistType": "Fighting",
+      "fling": 10
     },
     {
       "name": "Clefablite",
-      "label": "皮可西进化石"
+      "label": "皮可西进化石",
+      "megaStone": {
+        "Clefable": "Clefable-Mega"
+      }
     },
     {
       "name": "Coba Berry",
-      "label": "棱瓜果"
+      "label": "棱瓜果",
+      "resistType": "Flying",
+      "fling": 10
     },
     {
       "name": "Colbur Berry",
-      "label": "刺耳果"
+      "label": "刺耳果",
+      "resistType": "Dark",
+      "fling": 10
     },
     {
       "name": "Crabominite",
-      "label": "好胜毛蟹进化石"
+      "label": "好胜毛蟹进化石",
+      "megaStone": {
+        "Crabominable": "Crabominable-Mega"
+      }
     },
     {
       "name": "Damp Rock",
-      "label": "潮湿岩石"
+      "label": "潮湿岩石",
+      "fling": 60
     },
     {
       "name": "Delphoxite",
-      "label": "妖火红狐进化石"
+      "label": "妖火红狐进化石",
+      "megaStone": {
+        "Delphox": "Delphox-Mega"
+      }
     },
     {
       "name": "Dragalgite",
-      "label": "毒藻龙进化石"
+      "label": "毒藻龙进化石",
+      "megaStone": {
+        "Dragalge": "Dragalge-Mega"
+      }
     },
     {
       "name": "Dragon Fang",
-      "label": "龙之牙"
+      "label": "龙之牙",
+      "boostType": "Dragon",
+      "fling": 70
     },
     {
       "name": "Dragoninite",
-      "label": "快龙进化石"
+      "label": "快龙进化石",
+      "megaStone": {
+        "Dragonite": "Dragonite-Mega"
+      }
     },
     {
       "name": "Drampanite",
-      "label": "老翁龙进化石"
+      "label": "老翁龙进化石",
+      "megaStone": {
+        "Drampa": "Drampa-Mega"
+      }
     },
     {
       "name": "Eelektrossite",
-      "label": "麻麻鳗鱼王进化石"
+      "label": "麻麻鳗鱼王进化石",
+      "megaStone": {
+        "Eelektross": "Eelektross-Mega"
+      }
     },
     {
       "name": "Eject Button",
-      "label": "逃脱按键"
+      "label": "逃脱按键",
+      "fling": 30
     },
     {
       "name": "Electric Seed",
-      "label": "电气种子"
+      "label": "电气种子",
+      "fling": 10
     },
     {
       "name": "Emboarite",
-      "label": "炎武王进化石"
+      "label": "炎武王进化石",
+      "megaStone": {
+        "Emboar": "Emboar-Mega"
+      }
     },
     {
       "name": "Excadrite",
-      "label": "龙头地鼠进化石"
+      "label": "龙头地鼠进化石",
+      "megaStone": {
+        "Excadrill": "Excadrill-Mega"
+      }
     },
     {
       "name": "Expert Belt",
-      "label": "达人带"
+      "label": "达人带",
+      "fling": 10
     },
     {
       "name": "Fairy Feather",
-      "label": "妖精之羽"
+      "label": "妖精之羽",
+      "boostType": "Fairy"
     },
     {
       "name": "Falinksite",
-      "label": "列阵兵进化石"
+      "label": "列阵兵进化石",
+      "megaStone": {
+        "Falinks": "Falinks-Mega"
+      }
     },
     {
       "name": "Feraligite",
-      "label": "大力鳄进化石"
+      "label": "大力鳄进化石",
+      "megaStone": {
+        "Feraligatr": "Feraligatr-Mega"
+      }
     },
     {
       "name": "Floettite",
-      "label": "花叶蒂进化石"
+      "label": "花叶蒂进化石",
+      "megaStone": {
+        "Floette-Eternal": "Floette-Mega"
+      }
     },
     {
       "name": "Focus Band",
-      "label": "气势头带"
+      "label": "气势头带",
+      "fling": 10
     },
     {
       "name": "Focus Sash",
-      "label": "气势披带"
+      "label": "气势披带",
+      "fling": 10
     },
     {
       "name": "Froslassite",
-      "label": "雪妖女进化石"
+      "label": "雪妖女进化石",
+      "megaStone": {
+        "Froslass": "Froslass-Mega"
+      }
     },
     {
       "name": "Galladite",
-      "label": "艾路雷朵进化石"
+      "label": "艾路雷朵进化石",
+      "megaStone": {
+        "Gallade": "Gallade-Mega"
+      }
     },
     {
       "name": "Garchompite",
-      "label": "烈咬陆鲨进化石"
+      "label": "烈咬陆鲨进化石",
+      "megaStone": {
+        "Garchomp": "Garchomp-Mega"
+      }
     },
     {
       "name": "Garchompite Z",
-      "label": "烈咬陆鲨进化石Ｚ"
+      "label": "烈咬陆鲨进化石Ｚ",
+      "megaStone": {
+        "Garchomp": "Garchomp-Mega-Z"
+      }
     },
     {
       "name": "Gardevoirite",
-      "label": "沙奈朵进化石"
+      "label": "沙奈朵进化石",
+      "megaStone": {
+        "Gardevoir": "Gardevoir-Mega"
+      }
     },
     {
       "name": "Gengarite",
-      "label": "耿鬼进化石"
+      "label": "耿鬼进化石",
+      "megaStone": {
+        "Gengar": "Gengar-Mega"
+      }
     },
     {
       "name": "Glalitite",
-      "label": "冰鬼护进化石"
+      "label": "冰鬼护进化石",
+      "megaStone": {
+        "Glalie": "Glalie-Mega"
+      }
     },
     {
       "name": "Glimmoranite",
-      "label": "晶光花进化石"
+      "label": "晶光花进化石",
+      "megaStone": {
+        "Glimmora": "Glimmora-Mega"
+      }
     },
     {
       "name": "Golisopite",
-      "label": "具甲武者进化石"
+      "label": "具甲武者进化石",
+      "megaStone": {
+        "Golisopod": "Golisopod-Mega"
+      }
     },
     {
       "name": "Golurkite",
-      "label": "泥偶巨人进化石"
+      "label": "泥偶巨人进化石",
+      "megaStone": {
+        "Golurk": "Golurk-Mega"
+      }
     },
     {
       "name": "Grassy Seed",
-      "label": "青草种子"
+      "label": "青草种子",
+      "fling": 10
     },
     {
       "name": "Greninjite",
-      "label": "甲贺忍蛙进化石"
+      "label": "甲贺忍蛙进化石",
+      "megaStone": {
+        "Greninja": "Greninja-Mega"
+      }
     },
     {
       "name": "Gyaradosite",
-      "label": "暴鲤龙进化石"
+      "label": "暴鲤龙进化石",
+      "megaStone": {
+        "Gyarados": "Gyarados-Mega"
+      }
     },
     {
       "name": "Haban Berry",
-      "label": "莓榴果"
+      "label": "莓榴果",
+      "resistType": "Dragon",
+      "fling": 10
     },
     {
       "name": "Hard Stone",
-      "label": "硬石头"
+      "label": "硬石头",
+      "boostType": "Rock",
+      "fling": 100
     },
     {
       "name": "Hawluchanite",
-      "label": "摔角鹰人进化石"
+      "label": "摔角鹰人进化石",
+      "megaStone": {
+        "Hawlucha": "Hawlucha-Mega"
+      }
     },
     {
       "name": "Heat Rock",
-      "label": "炽热岩石"
+      "label": "炽热岩石",
+      "fling": 60
     },
     {
       "name": "Heracronite",
-      "label": "赫拉克罗斯进化石"
+      "label": "赫拉克罗斯进化石",
+      "megaStone": {
+        "Heracross": "Heracross-Mega"
+      }
     },
     {
       "name": "Houndoominite",
-      "label": "黑鲁加进化石"
+      "label": "黑鲁加进化石",
+      "megaStone": {
+        "Houndoom": "Houndoom-Mega"
+      }
     },
     {
       "name": "Icy Rock",
-      "label": "冰冷岩石"
+      "label": "冰冷岩石",
+      "fling": 40
     },
     {
       "name": "Iron Ball",
-      "label": "黑色铁球"
+      "label": "黑色铁球",
+      "fling": 130
     },
     {
       "name": "Kangaskhanite",
-      "label": "袋兽进化石"
+      "label": "袋兽进化石",
+      "megaStone": {
+        "Kangaskhan": "Kangaskhan-Mega"
+      }
     },
     {
       "name": "Kasib Berry",
-      "label": "佛柑果"
+      "label": "佛柑果",
+      "resistType": "Ghost",
+      "fling": 10
     },
     {
       "name": "Kebia Berry",
-      "label": "通通果"
+      "label": "通通果",
+      "resistType": "Poison",
+      "fling": 10
     },
     {
       "name": "King's Rock",
-      "label": "王者之证"
+      "label": "王者之证",
+      "fling": 30
     },
     {
       "name": "Leek",
-      "label": "大葱"
+      "label": "大葱",
+      "fling": 60
     },
     {
       "name": "Leftovers",
-      "label": "吃剩的东西"
+      "label": "吃剩的东西",
+      "fling": 10
     },
     {
       "name": "Leppa Berry",
-      "label": "苹野果"
+      "label": "苹野果",
+      "fling": 10
     },
     {
       "name": "Life Orb",
-      "label": "生命宝珠"
+      "label": "生命宝珠",
+      "fling": 30
     },
     {
       "name": "Light Ball",
-      "label": "电气球"
+      "label": "电气球",
+      "fling": 30
     },
     {
       "name": "Light Clay",
-      "label": "光之黏土"
+      "label": "光之黏土",
+      "fling": 30
     },
     {
       "name": "Lopunnite",
-      "label": "长耳兔进化石"
+      "label": "长耳兔进化石",
+      "megaStone": {
+        "Lopunny": "Lopunny-Mega"
+      }
     },
     {
       "name": "Lucarionite",
-      "label": "路卡利欧进化石"
+      "label": "路卡利欧进化石",
+      "megaStone": {
+        "Lucario": "Lucario-Mega"
+      }
     },
     {
       "name": "Lucarionite Z",
-      "label": "路卡利欧进化石Ｚ"
+      "label": "路卡利欧进化石Ｚ",
+      "megaStone": {
+        "Lucario": "Lucario-Mega-Z"
+      }
     },
     {
       "name": "Lum Berry",
-      "label": "木子果"
+      "label": "木子果",
+      "fling": 10
     },
     {
       "name": "Magnet",
-      "label": "磁铁"
+      "label": "磁铁",
+      "boostType": "Electric",
+      "fling": 30
     },
     {
       "name": "Malamarite",
-      "label": "乌贼王进化石"
+      "label": "乌贼王进化石",
+      "megaStone": {
+        "Malamar": "Malamar-Mega"
+      }
     },
     {
       "name": "Manectite",
-      "label": "雷电兽进化石"
+      "label": "雷电兽进化石",
+      "megaStone": {
+        "Manectric": "Manectric-Mega"
+      }
     },
     {
       "name": "Mawilite",
-      "label": "大嘴娃进化石"
+      "label": "大嘴娃进化石",
+      "megaStone": {
+        "Mawile": "Mawile-Mega"
+      }
     },
     {
       "name": "Medichamite",
-      "label": "恰雷姆进化石"
+      "label": "恰雷姆进化石",
+      "megaStone": {
+        "Medicham": "Medicham-Mega"
+      }
     },
     {
       "name": "Meganiumite",
-      "label": "大竺葵进化石"
+      "label": "大竺葵进化石",
+      "megaStone": {
+        "Meganium": "Meganium-Mega"
+      }
     },
     {
       "name": "Mental Herb",
-      "label": "心灵香草"
+      "label": "心灵香草",
+      "fling": 10
     },
     {
       "name": "Meowsticite",
-      "label": "超能妙喵进化石"
+      "label": "超能妙喵进化石",
+      "megaStone": {
+        "Meowstic": "Meowstic-M-Mega",
+        "Meowstic-F": "Meowstic-F-Mega"
+      }
     },
     {
       "name": "Metagrossite",
-      "label": "巨金怪进化石"
+      "label": "巨金怪进化石",
+      "megaStone": {
+        "Metagross": "Metagross-Mega"
+      }
     },
     {
       "name": "Metal Coat",
-      "label": "金属膜"
+      "label": "金属膜",
+      "boostType": "Steel",
+      "fling": 30
     },
     {
       "name": "Metronome",
@@ -3597,23 +5915,31 @@
     },
     {
       "name": "Miracle Seed",
-      "label": "奇迹种子"
+      "label": "奇迹种子",
+      "boostType": "Grass",
+      "fling": 30
     },
     {
       "name": "Misty Seed",
-      "label": "薄雾种子"
+      "label": "薄雾种子",
+      "fling": 10
     },
     {
       "name": "Muscle Band",
-      "label": "力量头带"
+      "label": "力量头带",
+      "fling": 10
     },
     {
       "name": "Mystic Water",
-      "label": "神秘水滴"
+      "label": "神秘水滴",
+      "boostType": "Water",
+      "fling": 30
     },
     {
       "name": "Never-Melt Ice",
-      "label": "不融冰"
+      "label": "不融冰",
+      "boostType": "Ice",
+      "fling": 30
     },
     {
       "name": "Normal Gem",
@@ -3621,123 +5947,186 @@
     },
     {
       "name": "Occa Berry",
-      "label": "巧可果"
+      "label": "巧可果",
+      "resistType": "Fire",
+      "fling": 10
     },
     {
       "name": "Oran Berry",
-      "label": "橙橙果"
+      "label": "橙橙果",
+      "fling": 10
     },
     {
       "name": "Passho Berry",
-      "label": "千香果"
+      "label": "千香果",
+      "resistType": "Water",
+      "fling": 10
     },
     {
       "name": "Payapa Berry",
-      "label": "福禄果"
+      "label": "福禄果",
+      "resistType": "Psychic",
+      "fling": 10
     },
     {
       "name": "Pecha Berry",
-      "label": "桃桃果"
+      "label": "桃桃果",
+      "fling": 10
     },
     {
       "name": "Persim Berry",
-      "label": "柿仔果"
+      "label": "柿仔果",
+      "fling": 10
     },
     {
       "name": "Pidgeotite",
-      "label": "大比鸟进化石"
+      "label": "大比鸟进化石",
+      "megaStone": {
+        "Pidgeot": "Pidgeot-Mega"
+      }
     },
     {
       "name": "Pinsirite",
-      "label": "凯罗斯进化石"
+      "label": "凯罗斯进化石",
+      "megaStone": {
+        "Pinsir": "Pinsir-Mega"
+      }
     },
     {
       "name": "Poison Barb",
-      "label": "毒针"
+      "label": "毒针",
+      "boostType": "Poison",
+      "fling": 70
     },
     {
       "name": "Psychic Seed",
-      "label": "精神种子"
+      "label": "精神种子",
+      "fling": 10
     },
     {
       "name": "Pyroarite",
-      "label": "火炎狮进化石"
+      "label": "火炎狮进化石",
+      "megaStone": {
+        "Pyroar": "Pyroar-Mega"
+      }
     },
     {
       "name": "Quick Claw",
-      "label": "先制之爪"
+      "label": "先制之爪",
+      "fling": 80
     },
     {
       "name": "Raichunite X",
-      "label": "雷丘进化石Ｘ"
+      "label": "雷丘进化石Ｘ",
+      "megaStone": {
+        "Raichu": "Raichu-Mega-X"
+      }
     },
     {
       "name": "Raichunite Y",
-      "label": "雷丘进化石Ｙ"
+      "label": "雷丘进化石Ｙ",
+      "megaStone": {
+        "Raichu": "Raichu-Mega-Y"
+      }
     },
     {
       "name": "Rawst Berry",
-      "label": "莓莓果"
+      "label": "莓莓果",
+      "fling": 10
     },
     {
       "name": "Red Card",
-      "label": "红牌"
+      "label": "红牌",
+      "fling": 10
     },
     {
       "name": "Rindo Berry",
-      "label": "罗子果"
+      "label": "罗子果",
+      "resistType": "Grass",
+      "fling": 10
     },
     {
       "name": "Rocky Helmet",
-      "label": "凸凸头盔"
+      "label": "凸凸头盔",
+      "fling": 60
     },
     {
       "name": "Roseli Berry",
-      "label": "洛玫果"
+      "label": "洛玫果",
+      "resistType": "Fairy",
+      "fling": 10
     },
     {
       "name": "Sablenite",
-      "label": "勾魂眼进化石"
+      "label": "勾魂眼进化石",
+      "megaStone": {
+        "Sableye": "Sableye-Mega"
+      }
     },
     {
       "name": "Salamencite",
-      "label": "暴飞龙进化石"
+      "label": "暴飞龙进化石",
+      "megaStone": {
+        "Salamence": "Salamence-Mega"
+      }
     },
     {
       "name": "Sceptilite",
-      "label": "蜥蜴王进化石"
+      "label": "蜥蜴王进化石",
+      "megaStone": {
+        "Sceptile": "Sceptile-Mega"
+      }
     },
     {
       "name": "Scizorite",
-      "label": "巨钳螳螂进化石"
+      "label": "巨钳螳螂进化石",
+      "megaStone": {
+        "Scizor": "Scizor-Mega"
+      }
     },
     {
       "name": "Scolipite",
-      "label": "蜈蚣王进化石"
+      "label": "蜈蚣王进化石",
+      "megaStone": {
+        "Scolipede": "Scolipede-Mega"
+      }
     },
     {
       "name": "Scope Lens",
-      "label": "焦点镜"
+      "label": "焦点镜",
+      "fling": 30
     },
     {
       "name": "Scovillainite",
-      "label": "狠辣椒进化石"
+      "label": "狠辣椒进化石",
+      "megaStone": {
+        "Scovillain": "Scovillain-Mega"
+      }
     },
     {
       "name": "Scraftinite",
-      "label": "头巾混混进化石"
+      "label": "头巾混混进化石",
+      "megaStone": {
+        "Scrafty": "Scrafty-Mega"
+      }
     },
     {
       "name": "Sharp Beak",
-      "label": "锐利鸟嘴"
+      "label": "锐利鸟嘴",
+      "boostType": "Flying",
+      "fling": 50
     },
     {
       "name": "Sharpedonite",
-      "label": "巨牙鲨进化石"
+      "label": "巨牙鲨进化石",
+      "megaStone": {
+        "Sharpedo": "Sharpedo-Mega"
+      }
     },
     {
       "name": "Shed Shell",
-      "label": "美丽空壳"
+      "label": "美丽空壳",
+      "fling": 10
     },
     {
       "name": "Shell Bell",
@@ -3745,103 +6134,155 @@
     },
     {
       "name": "Shuca Berry",
-      "label": "腰木果"
+      "label": "腰木果",
+      "resistType": "Ground",
+      "fling": 10
     },
     {
       "name": "Silk Scarf",
-      "label": "丝绸围巾"
+      "label": "丝绸围巾",
+      "boostType": "Normal",
+      "fling": 10
     },
     {
       "name": "Silver Powder",
-      "label": "银粉"
+      "label": "银粉",
+      "boostType": "Bug",
+      "fling": 10
     },
     {
       "name": "Sitrus Berry",
-      "label": "文柚果"
+      "label": "文柚果",
+      "fling": 10
     },
     {
       "name": "Skarmorite",
-      "label": "盔甲鸟进化石"
+      "label": "盔甲鸟进化石",
+      "megaStone": {
+        "Skarmory": "Skarmory-Mega"
+      }
     },
     {
       "name": "Slowbronite",
-      "label": "呆壳兽进化石"
+      "label": "呆壳兽进化石",
+      "megaStone": {
+        "Slowbro": "Slowbro-Mega"
+      }
     },
     {
       "name": "Smooth Rock",
-      "label": "沙沙岩石"
+      "label": "沙沙岩石",
+      "fling": 10
     },
     {
       "name": "Soft Sand",
-      "label": "柔软沙子"
+      "label": "柔软沙子",
+      "boostType": "Ground",
+      "fling": 10
     },
     {
       "name": "Spell Tag",
-      "label": "咒术之符"
+      "label": "咒术之符",
+      "boostType": "Ghost",
+      "fling": 30
     },
     {
       "name": "Staraptite",
-      "label": "姆克鹰进化石"
+      "label": "姆克鹰进化石",
+      "megaStone": {
+        "Staraptor": "Staraptor-Mega"
+      }
     },
     {
       "name": "Starminite",
-      "label": "宝石海星进化石"
+      "label": "宝石海星进化石",
+      "megaStone": {
+        "Starmie": "Starmie-Mega"
+      }
     },
     {
       "name": "Steelixite",
-      "label": "大钢蛇进化石"
+      "label": "大钢蛇进化石",
+      "megaStone": {
+        "Steelix": "Steelix-Mega"
+      }
     },
     {
       "name": "Swampertite",
-      "label": "巨沼怪进化石"
+      "label": "巨沼怪进化石",
+      "megaStone": {
+        "Swampert": "Swampert-Mega"
+      }
     },
     {
       "name": "Tanga Berry",
-      "label": "扁樱果"
+      "label": "扁樱果",
+      "resistType": "Bug",
+      "fling": 10
     },
     {
       "name": "Terrain Extender",
-      "label": "大地膜"
+      "label": "大地膜",
+      "fling": 60
     },
     {
       "name": "Twisted Spoon",
-      "label": "弯曲的汤匙"
+      "label": "弯曲的汤匙",
+      "boostType": "Psychic",
+      "fling": 30
     },
     {
       "name": "Tyranitarite",
-      "label": "班基拉斯进化石"
+      "label": "班基拉斯进化石",
+      "megaStone": {
+        "Tyranitar": "Tyranitar-Mega"
+      }
     },
     {
       "name": "Venusaurite",
-      "label": "妙蛙花进化石"
+      "label": "妙蛙花进化石",
+      "megaStone": {
+        "Venusaur": "Venusaur-Mega"
+      }
     },
     {
       "name": "Victreebelite",
-      "label": "大食花进化石"
+      "label": "大食花进化石",
+      "megaStone": {
+        "Victreebel": "Victreebel-Mega"
+      }
     },
     {
       "name": "Wacan Berry",
-      "label": "烛木果"
+      "label": "烛木果",
+      "resistType": "Electric",
+      "fling": 10
     },
     {
       "name": "White Herb",
-      "label": "白色香草"
+      "label": "白色香草",
+      "fling": 10
     },
     {
       "name": "Wide Lens",
-      "label": "广角镜"
+      "label": "广角镜",
+      "fling": 10
     },
     {
       "name": "Wise Glasses",
-      "label": "博识眼镜"
+      "label": "博识眼镜",
+      "fling": 10
     },
     {
       "name": "Yache Berry",
-      "label": "番荔果"
+      "label": "番荔果",
+      "resistType": "Ice",
+      "fling": 10
     },
     {
       "name": "Zoom Lens",
-      "label": "对焦镜"
+      "label": "对焦镜",
+      "fling": 10
     }
   ],
   "natures": [
@@ -3970,5 +6411,405 @@
       "plus": "spe",
       "minus": "atk"
     }
-  ]
+  ],
+  "types": {
+    "???": {
+      "Normal": 1,
+      "Grass": 1,
+      "Fire": 1,
+      "Water": 1,
+      "Electric": 1,
+      "Ice": 1,
+      "Flying": 1,
+      "Bug": 1,
+      "Poison": 1,
+      "Ground": 1,
+      "Rock": 1,
+      "Fighting": 1,
+      "Psychic": 1,
+      "Ghost": 1,
+      "Dragon": 1,
+      "Dark": 1,
+      "Steel": 1,
+      "Fairy": 1
+    },
+    "Normal": {
+      "???": 1,
+      "Normal": 1,
+      "Grass": 1,
+      "Fire": 1,
+      "Water": 1,
+      "Electric": 1,
+      "Ice": 1,
+      "Flying": 1,
+      "Bug": 1,
+      "Poison": 1,
+      "Ground": 1,
+      "Rock": 0.5,
+      "Fighting": 1,
+      "Psychic": 1,
+      "Ghost": 0,
+      "Dragon": 1,
+      "Dark": 1,
+      "Steel": 0.5,
+      "Fairy": 1
+    },
+    "Grass": {
+      "???": 1,
+      "Normal": 1,
+      "Grass": 0.5,
+      "Fire": 0.5,
+      "Water": 2,
+      "Electric": 1,
+      "Ice": 1,
+      "Flying": 0.5,
+      "Bug": 0.5,
+      "Poison": 0.5,
+      "Ground": 2,
+      "Rock": 2,
+      "Fighting": 1,
+      "Psychic": 1,
+      "Ghost": 1,
+      "Dragon": 0.5,
+      "Dark": 1,
+      "Steel": 0.5,
+      "Fairy": 1
+    },
+    "Fire": {
+      "???": 1,
+      "Normal": 1,
+      "Grass": 2,
+      "Fire": 0.5,
+      "Water": 0.5,
+      "Electric": 1,
+      "Ice": 2,
+      "Flying": 1,
+      "Bug": 2,
+      "Poison": 1,
+      "Ground": 1,
+      "Rock": 0.5,
+      "Fighting": 1,
+      "Psychic": 1,
+      "Ghost": 1,
+      "Dragon": 0.5,
+      "Dark": 1,
+      "Steel": 2,
+      "Fairy": 1
+    },
+    "Water": {
+      "???": 1,
+      "Normal": 1,
+      "Grass": 0.5,
+      "Fire": 2,
+      "Water": 0.5,
+      "Electric": 1,
+      "Ice": 1,
+      "Flying": 1,
+      "Bug": 1,
+      "Poison": 1,
+      "Ground": 2,
+      "Rock": 2,
+      "Fighting": 1,
+      "Psychic": 1,
+      "Ghost": 1,
+      "Dragon": 0.5,
+      "Dark": 1,
+      "Steel": 1,
+      "Fairy": 1
+    },
+    "Electric": {
+      "???": 1,
+      "Normal": 1,
+      "Grass": 0.5,
+      "Fire": 1,
+      "Water": 2,
+      "Electric": 0.5,
+      "Ice": 1,
+      "Flying": 2,
+      "Bug": 1,
+      "Poison": 1,
+      "Ground": 0,
+      "Rock": 1,
+      "Fighting": 1,
+      "Psychic": 1,
+      "Ghost": 1,
+      "Dragon": 0.5,
+      "Dark": 1,
+      "Steel": 1,
+      "Fairy": 1
+    },
+    "Ice": {
+      "???": 1,
+      "Normal": 1,
+      "Grass": 2,
+      "Fire": 0.5,
+      "Water": 0.5,
+      "Electric": 1,
+      "Ice": 0.5,
+      "Flying": 2,
+      "Bug": 1,
+      "Poison": 1,
+      "Ground": 2,
+      "Rock": 1,
+      "Fighting": 1,
+      "Psychic": 1,
+      "Ghost": 1,
+      "Dragon": 2,
+      "Dark": 1,
+      "Steel": 0.5,
+      "Fairy": 1
+    },
+    "Flying": {
+      "???": 1,
+      "Normal": 1,
+      "Grass": 2,
+      "Fire": 1,
+      "Water": 1,
+      "Electric": 0.5,
+      "Ice": 1,
+      "Flying": 1,
+      "Bug": 2,
+      "Poison": 1,
+      "Ground": 1,
+      "Rock": 0.5,
+      "Fighting": 2,
+      "Psychic": 1,
+      "Ghost": 1,
+      "Dragon": 1,
+      "Dark": 1,
+      "Steel": 0.5,
+      "Fairy": 1
+    },
+    "Bug": {
+      "???": 1,
+      "Normal": 1,
+      "Grass": 2,
+      "Fire": 0.5,
+      "Water": 1,
+      "Electric": 1,
+      "Ice": 1,
+      "Flying": 0.5,
+      "Bug": 1,
+      "Poison": 0.5,
+      "Ground": 1,
+      "Rock": 1,
+      "Fighting": 0.5,
+      "Psychic": 2,
+      "Ghost": 0.5,
+      "Dragon": 1,
+      "Dark": 2,
+      "Steel": 0.5,
+      "Fairy": 0.5
+    },
+    "Poison": {
+      "???": 1,
+      "Normal": 1,
+      "Grass": 2,
+      "Fire": 1,
+      "Water": 1,
+      "Electric": 1,
+      "Ice": 1,
+      "Flying": 1,
+      "Bug": 1,
+      "Poison": 0.5,
+      "Ground": 0.5,
+      "Rock": 0.5,
+      "Fighting": 1,
+      "Psychic": 1,
+      "Ghost": 0.5,
+      "Dragon": 1,
+      "Dark": 1,
+      "Steel": 0,
+      "Fairy": 2
+    },
+    "Ground": {
+      "???": 1,
+      "Normal": 1,
+      "Grass": 0.5,
+      "Fire": 2,
+      "Water": 1,
+      "Electric": 2,
+      "Ice": 1,
+      "Flying": 0,
+      "Bug": 0.5,
+      "Poison": 2,
+      "Ground": 1,
+      "Rock": 2,
+      "Fighting": 1,
+      "Psychic": 1,
+      "Ghost": 1,
+      "Dragon": 1,
+      "Dark": 1,
+      "Steel": 2,
+      "Fairy": 1
+    },
+    "Rock": {
+      "???": 1,
+      "Normal": 1,
+      "Grass": 1,
+      "Fire": 2,
+      "Water": 1,
+      "Electric": 1,
+      "Ice": 2,
+      "Flying": 2,
+      "Bug": 2,
+      "Poison": 1,
+      "Ground": 0.5,
+      "Rock": 1,
+      "Fighting": 0.5,
+      "Psychic": 1,
+      "Ghost": 1,
+      "Dragon": 1,
+      "Dark": 1,
+      "Steel": 0.5,
+      "Fairy": 1
+    },
+    "Fighting": {
+      "???": 1,
+      "Normal": 2,
+      "Grass": 1,
+      "Fire": 1,
+      "Water": 1,
+      "Electric": 1,
+      "Ice": 2,
+      "Flying": 0.5,
+      "Bug": 0.5,
+      "Poison": 0.5,
+      "Ground": 1,
+      "Rock": 2,
+      "Fighting": 1,
+      "Psychic": 0.5,
+      "Ghost": 0,
+      "Dragon": 1,
+      "Dark": 2,
+      "Steel": 2,
+      "Fairy": 0.5
+    },
+    "Psychic": {
+      "???": 1,
+      "Normal": 1,
+      "Grass": 1,
+      "Fire": 1,
+      "Water": 1,
+      "Electric": 1,
+      "Ice": 1,
+      "Flying": 1,
+      "Bug": 1,
+      "Poison": 2,
+      "Ground": 1,
+      "Rock": 1,
+      "Fighting": 2,
+      "Psychic": 0.5,
+      "Ghost": 1,
+      "Dragon": 1,
+      "Dark": 0,
+      "Steel": 0.5,
+      "Fairy": 1
+    },
+    "Ghost": {
+      "???": 1,
+      "Normal": 0,
+      "Grass": 1,
+      "Fire": 1,
+      "Water": 1,
+      "Electric": 1,
+      "Ice": 1,
+      "Flying": 1,
+      "Bug": 1,
+      "Poison": 1,
+      "Ground": 1,
+      "Rock": 1,
+      "Fighting": 1,
+      "Psychic": 2,
+      "Ghost": 2,
+      "Dragon": 1,
+      "Dark": 0.5,
+      "Steel": 1,
+      "Fairy": 1
+    },
+    "Dragon": {
+      "???": 1,
+      "Normal": 1,
+      "Grass": 1,
+      "Fire": 1,
+      "Water": 1,
+      "Electric": 1,
+      "Ice": 1,
+      "Flying": 1,
+      "Bug": 1,
+      "Poison": 1,
+      "Ground": 1,
+      "Rock": 1,
+      "Fighting": 1,
+      "Psychic": 1,
+      "Ghost": 1,
+      "Dragon": 2,
+      "Dark": 1,
+      "Steel": 0.5,
+      "Fairy": 0
+    },
+    "Dark": {
+      "???": 1,
+      "Normal": 1,
+      "Grass": 1,
+      "Fire": 1,
+      "Water": 1,
+      "Electric": 1,
+      "Ice": 1,
+      "Flying": 1,
+      "Bug": 1,
+      "Poison": 1,
+      "Ground": 1,
+      "Rock": 1,
+      "Fighting": 0.5,
+      "Psychic": 2,
+      "Ghost": 2,
+      "Dragon": 1,
+      "Dark": 0.5,
+      "Steel": 1,
+      "Fairy": 0.5
+    },
+    "Steel": {
+      "???": 1,
+      "Normal": 1,
+      "Grass": 1,
+      "Fire": 0.5,
+      "Water": 0.5,
+      "Electric": 0.5,
+      "Ice": 2,
+      "Flying": 1,
+      "Bug": 1,
+      "Poison": 1,
+      "Ground": 1,
+      "Rock": 2,
+      "Fighting": 1,
+      "Psychic": 1,
+      "Ghost": 1,
+      "Dragon": 1,
+      "Dark": 1,
+      "Steel": 0.5,
+      "Fairy": 2
+    },
+    "Fairy": {
+      "???": 1,
+      "Normal": 1,
+      "Grass": 1,
+      "Fire": 0.5,
+      "Water": 1,
+      "Electric": 1,
+      "Ice": 1,
+      "Flying": 1,
+      "Bug": 1,
+      "Poison": 0.5,
+      "Ground": 1,
+      "Rock": 1,
+      "Fighting": 2,
+      "Psychic": 1,
+      "Ghost": 1,
+      "Dragon": 2,
+      "Dark": 2,
+      "Steel": 0.5,
+      "Fairy": 1
+    }
+  }
 }

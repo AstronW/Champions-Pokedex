@@ -7,16 +7,55 @@ import org.junit.Test
 import java.io.File
 
 class CalculatorEngineTest {
-    private val assets = File("src/main/assets")
-    private val engine = CalculatorEngine { File(assets, it).readText() }
+    private val dex = parseDex(JSONObject(File("src/main/assets/dex.json").readText()), Mechanics())
+    private val catalog = CalculatorCatalog(JSONObject(File("src/main/assets/calculator/catalog.json").readText()))
+    private val engine = CalculatorEngine(dex, catalog)
+    /** Produced by the upstream source and the original JavaScript boundary (scripts/calculator/test.cjs). */
+    private val cases = JSONArray(File("../scripts/calculator/fixtures.json").readText())
 
-    @Test fun androidInterpreterMatchesNodeForEveryGoldenCase() {
-        val cases = JSONArray(File("../scripts/calculator/fixtures.json").readText())
+    private fun JSONObject.stats(key: String) = getJSONObject(key).let { s -> calcStats.map(s::getInt) }
+
+    @Test fun nativeEngineMatchesTheUpstreamReferenceForEveryCase() {
+        assertTrue(cases.length() > 1000)
+        var damaging = 0
         for (i in 0 until cases.length()) {
             val case = cases.getJSONObject(i)
-            val result = JSONObject(engine.calculate(case.getJSONObject("request").toString()))
-            assertFalse("${case.getString("name")}: $result", result.has("error"))
-            assertEquals(case.getString("name"), case.getJSONObject("expected").toString(), result.toString())
+            val name = case.getString("name")
+            val expected = case.getJSONObject("expected")
+            val actual = engine.calculate(case.getJSONObject("request").toString())
+            if (expected.has("error")) {
+                assertEquals(name, CalcFailure(expected.getString("error")), actual)
+                continue
+            }
+            assertTrue("$name: $actual", actual is CalcDamage)
+            actual as CalcDamage
+            val rolls = expected.getJSONArray("rolls").let { r -> (0 until r.length()).map { j -> r.getJSONArray(j).let { row -> (0 until row.length()).map(row::getInt) } } }
+            val wanted = CalcDamage(
+                expected.getInt("min"), expected.getInt("max"), expected.getInt("maxHP"), expected.getInt("currentHP"),
+                expected.getDouble("percentMin"), expected.getDouble("percentMax"), expected.getDouble("ohko"), rolls,
+                expected.stats("attackerStats"), expected.stats("defenderStats"), expected.getInt("hits"),
+            )
+            assertEquals(name, wanted, actual)
+            if (actual.max > 0) damaging++
         }
+        assertTrue("too few damaging cases: $damaging", damaging > 900)
+    }
+
+    @Test fun repeatedCalculationsDoNotLeakState() {
+        val request = cases.getJSONObject(0).getJSONObject("request").toString()
+        assertEquals(engine.calculate(request), engine.calculate(request))
+    }
+
+    @Test fun malformedRequestsReportAMessageInsteadOfThrowing() {
+        val request = JSONObject(cases.getJSONObject(0).getJSONObject("request").toString())
+        request.getJSONObject("attacker").remove("sp")
+        assertEquals(CalcFailure("能力点不能为空"), engine.calculate(request))
+        request.put("attacker", "nothing")
+        assertEquals(CalcFailure("此形态尚未适配计算器"), engine.calculate(request))
+    }
+
+    @Test fun defaultCalculationProducesAResult() {
+        val result = engine.calculate(defaultCalculation(dex, null))
+        assertTrue("$result", result is CalcDamage && result.max > 0)
     }
 }
