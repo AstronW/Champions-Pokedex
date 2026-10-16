@@ -20,6 +20,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.champions.dex.components.*
 
 @Composable
 private fun ReferenceChip(label: String, key: String, onOpen: (String) -> Unit) {

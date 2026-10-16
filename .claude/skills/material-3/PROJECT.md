@@ -7,7 +7,7 @@
 | 颜色 | `Theme.kt` 中的 `pal`（`bg`、`surface`、`text`、`accent`、`accent2`、`n()`、`a()`、`g()` 色阶）和 `typeTone(type)`。不启用动态取色，不在页面中硬编码 `Color(0x…)` | 配色成对使用（容器色 + 对应前景色）、文字对比度 4.5:1、`divider` 只作装饰 |
 | 字体 | 标题用 Caprasimo（`HeadingFont`，只用 `HeadingWeight`，不加粗），正文用 Figtree（`BodyFont`），中文回落到系统字体；字号取自 `MaterialTheme.typography` 的项目定义。不改用 Roboto | 字号层级的用途划分、使用 sp 并适配系统字体缩放 |
 | 形状 | 控件用胶囊形 `PillShape`，卡片用 `CardShape`（32dp），列表行 24dp，二级菜单顶部 28dp，`DexSheet` 顶部 40dp | 同类元素保持一致的圆角 |
-| 组件 | 优先复用 `Components.kt` 的组件：`DexCard`、`PrimaryButton`、`SecondaryButton`、`GhostButton`、`PillSegment`、`ToggleTile`、`Pill`、`TypeTag`、`AppHeader`、`SearchField`、`MenuHost`/`MenuPanel`、`DexSheet`、`SelectField`、`RoundIconButton`、`Glyph`、`EmptyResult`。不要为了“符合 MD3”把它们换成 Material 默认组件 | 组件选择原则（例如几个选项用分段控件、多选用开关）和各组件的交互状态 |
+| 组件 | 优先复用 `components/`（包 `dev.champions.dex.components`）的组件：`DexCard`、`PrimaryButton`、`SecondaryButton`、`GhostButton`、`PillSegment`、`ToggleTile`、`Pill`、`TypeTag`、`AppHeader`、`SearchField`、`MenuHost`/`MenuPanel`、`DexSheet`、`SelectField`、`RoundIconButton`、`Glyph`、`EmptyResult`。不要为了“符合 MD3”把它们换成 Material 默认组件 | 组件选择原则（例如几个选项用分段控件、多选用开关）和各组件的交互状态 |
 | 导航 | 左上角菜单打开侧边栏（`ModalNavigationDrawer`），详情页使用自有返回栈。每个页面的状态用 `SaveableStateProvider` 按返回栈条目保存。不改成底部导航栏或 Navigation Compose | 横屏和大屏的布局思路 |
 | 动效 | 先读取 `LocalReduceMotion`，开启“减少动态效果”时时长为 0。页面从右侧滑入，菜单从底部滑入，时长约 250–280ms | 进入用减速曲线、退出用加速曲线 |
 | 布局 | 横屏判断沿用 `LocalConfiguration.current.screenHeightDp < 500`（compact）。计算器结果在竖屏时位于底部，横屏时位于右侧 | 窗口尺寸断点（600 / 840dp）、宽屏限制内容最大宽度、间距取 4dp 的倍数 |

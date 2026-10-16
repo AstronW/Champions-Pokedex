@@ -53,6 +53,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import kotlin.math.roundToInt
+import dev.champions.dex.components.*
 
 /** Preview of the team image with its two outlets: the system share sheet, or a copy kept on the device. */
 @Composable

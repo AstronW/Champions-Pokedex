@@ -1,5 +1,27 @@
 # 验证记录
 
+## 2026-10-16 拆分通用组件并添加 Preview
+
+体验版：`dist/ChampionsDex-0.1.0-preview.apk`，12,507,047 字节。SHA-256：`f1f3e2f2bfc72b77a02d32f3d245dd30e71c1ef9d59838bf47e8bfe6092c9e1e`。图鉴数据、Wiki、图片与计算内核未改动。
+
+- 741 行的 `Components.kt` 按职责拆到新包 `dev.champions.dex.components`：`Icons`、`Images`、`Labels`、`TypeTags`、`Controls`、`Surfaces`、`Feedback`、`Header`、`Search`、`Menus`、`Sheets`、`SelectField`、`Rows`。组件代码原样搬移，各页面只增加一行 `import dev.champions.dex.components.*`。
+- 底部面板拆出无状态内容：`FilterSheetContent`、`PokemonPickerContent`/`PokemonPickerRow`、`SelectOptionsContent`。搜索词等状态仍由原来的外层组件持有并保存，行为不变；拆出来的内容组件不依赖 `ModalBottomSheet`，可以直接预览。
+- 新增 `components/Preview.kt`：`@DexPreviews`（360dp 宽，亮色与暗色）、`@LargeTextPreview`（字体缩放 1.3）、`PreviewSurface`，以及取自 `dex.json` 的示例数据（含动态威力、必中、未开放招式和缺图形态）。每个组件文件末尾都有私有 Preview，共 21 个。
+- `rememberAsset` 在 `LocalInspectionMode` 下改为同步软件解码，使静态 Preview 能显示精灵图；应用内仍走 `SpriteCache` 的异步硬件位图路径。
+- 依赖：新增 `implementation("androidx.compose.ui:ui-tooling-preview")`。R8 后体验版增加 193 字节，只有 Preview 用到的字符串（如 `shiny_10034.png`、`Mega Charizard X`）已不在 `classes.dex` 中。
+
+|检查|结果|
+|---|---|
+|Kotlin 单元测试|17 项通过|
+|Android 交互|全量 6 项通过（`emulator-5580`），一次通过|
+|Android lint|0 错误；9 条均为原有提示，无新增（2 条 `ModifierParameter` 随代码从 `Components.kt` 移到 `components/Icons.kt`、`Labels.kt`）|
+|Preview 渲染|debug 包内用 ui-tooling 的 `PreviewActivity` 在模拟器上逐个启动，亮色与暗色各看了 `PokemonRowPreview`、`MoveRowPreview`、`TypeTagsPreview`、`FilterSheetPreview`、`MenuPanelPreview`、`ImagesPreview`，均正常|
+|Preview 实际页面|体验版图鉴列表 → 筛选面板（应用外观为暗色），显示与交互正常|
+
+仅操作本次以 `-read-only` 启动的 `emulator-5580`（AVD `Medium_Phone_API_37.0`），结束后已关闭；crash buffer 为空。本机没有 Android Studio，IDE 内的静态 Preview（即 `LocalInspectionMode` 下的同步解码分支）未验证；本机没有 PowerShell，以 `sh ./gradlew :app:assemblePreview` 构建后复制到 `dist/` 并写入 `.sha256`。其余 15 个 Preview、横屏与真机未验证。
+
+---
+
 ## 2026-10-16 删减测试
 
 APK 未变（测试代码不进 APK，与下一节同一个体验版）。只保留守住真实逻辑与项目硬性规则的测试：计算结果与上游逐例一致、页面状态按返回栈条目保存并经历重建与旋转、特殊数值不当普通值显示、旧队伍数据可读、Wiki 正文不丢字。删去复述数据、只断言文字存在、与其他测试重复的用例。

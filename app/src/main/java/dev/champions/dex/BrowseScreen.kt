@@ -10,6 +10,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
+import dev.champions.dex.components.*
 
 /** Scroll back to the top whenever the filter key changes, but not when the key is only restored. */
 @Composable

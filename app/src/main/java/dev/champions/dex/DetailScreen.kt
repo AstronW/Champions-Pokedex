@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.util.Locale
+import dev.champions.dex.components.*
 
 @Composable
 fun DetailScreen(key: String, dex: Dex, model: DexViewModel, onBack: () -> Unit, onOpen: (String) -> Unit) {

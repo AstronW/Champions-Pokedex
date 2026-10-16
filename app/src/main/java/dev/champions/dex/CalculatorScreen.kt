@@ -44,6 +44,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import kotlin.math.ceil
+import dev.champions.dex.components.*
 
 /** KO summary from the damage range against current HP. */
 internal fun koText(min: Int, max: Int, hp: Int, ohko: Double): String = when {

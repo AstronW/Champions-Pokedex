@@ -22,6 +22,7 @@ import kotlinx.coroutines.coroutineScope
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.concurrent.atomic.AtomicInteger
+import dev.champions.dex.components.*
 
 private fun JSONArray.ints() = (0 until length()).map { getInt(it) }
 private fun <T> JSONArray.mapObjects(block: (JSONObject) -> T) = (0 until length()).map { block(getJSONObject(it)) }

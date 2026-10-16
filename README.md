@@ -68,7 +68,7 @@ adb -s <test-emulator> shell am instrument -w dev.champions.dex.test/androidx.te
 
 ## 源码入口
 
-`scripts/import_data.py` 负责数据适配及 Wiki 转换；`Models.kt` 和 `DexRepository.kt` 提供模型与离线读取；`MainActivity.kt` 是侧边栏与返回栈；`BrowseScreen.kt` 是查询入口；`DetailScreen.kt` 展示游戏资料；`ToolsScreen.kt` 是属性克制、速度线、队伍与对比；`Components.kt` 是设计系统组件；`WikiContent.kt` 把导入生成的百科 HTML 片段（统一存放在 `assets/wiki.json`）原生解析并平铺在详情页（不使用 WebView、不加载远程资源）；`Theme.kt` 定义 Organic 配色、属性色与属性相性表。
+`scripts/import_data.py` 负责数据适配及 Wiki 转换；`Models.kt` 和 `DexRepository.kt` 提供模型与离线读取；`MainActivity.kt` 是侧边栏与返回栈；`BrowseScreen.kt` 是查询入口；`DetailScreen.kt` 展示游戏资料；`ToolsScreen.kt` 是属性克制、速度线、队伍与对比；`components/` 是按职责分文件的设计系统组件（每个文件附亮色、暗色 Preview，示例数据在 `components/Preview.kt`）；`WikiContent.kt` 把导入生成的百科 HTML 片段（统一存放在 `assets/wiki.json`）原生解析并平铺在详情页（不使用 WebView、不加载远程资源）；`Theme.kt` 定义 Organic 配色、属性色与属性相性表。
 
 ## 来源
 
