@@ -21,7 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -67,7 +68,7 @@ fun PokemonDetail(entry: Pokemon, dex: Dex, model: DexViewModel, onBack: () -> U
     val learnset = dex.learnedMoves[p.id].orEmpty()
     val moves = remember(learnset, filter.key) { filterMoves(learnset, "", filter.type, filter.category, filter.includeUnavailable, filter.sort) }
     val toast = LocalToast.current
-    val compact = LocalConfiguration.current.screenHeightDp < 500
+    val compact = with(LocalDensity.current) { LocalWindowInfo.current.containerSize.height.toDp() } < 500.dp
     Column(Modifier.fillMaxSize()) {
         AppHeader(p.number(), p.formLabel, false, onBack) { DetailFavorite(p.key, model) }
         LazyColumn(Modifier.weight(1f).testTag("pokemon-detail-list"), contentPadding = PaddingValues(start = 18.dp, end = 18.dp, bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {

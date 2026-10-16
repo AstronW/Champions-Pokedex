@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import dev.champions.dex.*
 
 @Composable
-fun Kicker(text: String, color: Color = pal.n(700), modifier: Modifier = Modifier, spacing: TextUnit = 1.sp) =
+fun Kicker(text: String, modifier: Modifier = Modifier, color: Color = pal.n(700), spacing: TextUnit = 1.sp) =
     Text(text, modifier, fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = spacing, color = color)
 
 @Composable

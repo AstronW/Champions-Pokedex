@@ -120,7 +120,7 @@ fun StatusDetail(status: BattleStatus, dex: Dex, onBack: () -> Unit, onOpen: (St
     val moves = references.filterKeys { it.startsWith("move:") }.entries.toList()
     val abilities = references.filterKeys { it.startsWith("ability:") }.entries.toList()
     val items = references.filterKeys { it.startsWith("item:") }.entries.toList()
-    var tab by rememberSaveable { mutableStateOf(0) }
+    var tab by rememberSaveable { mutableIntStateOf(0) }
     Column(Modifier.fillMaxSize()) {
         AppHeader(status.kindLabel, status.displayName, false, onBack)
         LazyColumn(Modifier.testTag("status-detail-list"), contentPadding = PaddingValues(18.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {

@@ -39,8 +39,8 @@ fun BallMark(modifier: Modifier = Modifier, color: Color = MaterialTheme.colorSc
 enum class GlyphKind { MENU, BACK, STAR, FILTER, SWAP, CLOSE, PLUS, CHEVRON, SEARCH, SHARE }
 
 @Composable
-fun Glyph(kind: GlyphKind, modifier: Modifier = Modifier.size(22.dp), color: Color = LocalContentColor.current, filled: Boolean = false) {
-    Canvas(modifier) {
+fun Glyph(kind: GlyphKind, modifier: Modifier = Modifier, color: Color = LocalContentColor.current, filled: Boolean = false) {
+    Canvas(modifier.size(22.dp)) {
         val u = size.minDimension / 24f
         fun p(x: Float, y: Float) = Offset(x * u, y * u)
         val stroke = Stroke(2.5f * u, cap = StrokeCap.Round, join = StrokeJoin.Round)

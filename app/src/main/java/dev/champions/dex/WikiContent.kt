@@ -226,7 +226,7 @@ fun LazyListScope.wikiSection(key: String, dex: Dex, onOpen: (String) -> Unit) {
     val page = dex.wiki[key] ?: return
     item(key = "wikiHead") {
         Column(Modifier.padding(top = 8.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-            Kicker("百科详解 · 52POKE", pal.a(700))
+            Kicker("百科详解 · 52POKE", color = pal.a(700))
             Text(page.title.replace(EntitySuffix, ""), style = androidx.compose.material3.MaterialTheme.typography.titleLarge)
         }
     }

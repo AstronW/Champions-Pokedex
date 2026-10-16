@@ -1,5 +1,25 @@
 # 验证记录
 
+## 2026-10-16 清理 Android lint 提示
+
+体验版：`dist/ChampionsDex-0.1.0-preview.apk`，12,540,204 字节。SHA-256：`99cdf2ab849d047be5e726bf118f5215904d0cd77ae0efd8220569c8e0d58d31`。图鉴数据、Wiki、图片与计算内核未改动（构建前按 `provenance.json` 核对计算器资源哈希，一致）。
+
+- `ConfigurationScreenWidthHeight`：详情页与伤害计算页的 `compact` 判断改用 `LocalWindowInfo.current.containerSize` 换算 dp，阈值仍为 500dp。
+- `ModifierParameter`：`Glyph` 的 `modifier` 默认值改为 `Modifier`，22dp 默认尺寸移到组件内部（`modifier.size(22.dp)`，调用方给出的尺寸优先）；`Kicker` 的 `modifier` 移到第一个可选参数，5 处按位置传颜色的调用改为 `color =` 具名参数。
+- `AutoboxingStateCreation`：状态详情页签改用 `mutableIntStateOf`。
+- 版本提示：Gradle 9.6.0 → 9.8.1，`compose-bom` 2026.08.00 → 2026.09.00，测试用 `org.json` 20240303 → 20260814。
+
+|检查|结果|
+|---|---|
+|Kotlin 单元测试|17 项通过|
+|Android 交互|全量 6 项通过（`emulator-5580`），一次通过|
+|Android lint|0 错误、0 警告（原 8 条警告、1 条提示全部清除）|
+|Preview 实际页面|横屏亮色、暗色：喷火龙详情、由详情进入的伤害计算页（紧凑布局生效，结果卡位于右侧栏）；返回、交换图标尺寸正常。截图 `screenshots/{light,dark}-preview-{detail,calculator}-landscape-lint.png`|
+
+仅操作本次以 `-read-only` 启动的 `emulator-5580`（AVD `Medium_Phone_API_37.0`），adb 全部指定 serial。第一次实例关闭前 crash buffer 有 38 行，但关闭前没有查看内容；随后重启的同一只读实例在安装应用前，crash buffer 同样是 38 行，内容全部是 `com.google.android.bluetooth` 的原生崩溃（HCI 硬件错误），判断为模拟器蓝牙噪声，但不能百分之百排除本应用。复查时第二次实例在安装 APK 时因宿主 GPU 层（gfxstream）崩溃退出；第三次实例（`-gpu swiftshader_indirect`）在启动阶段被前一次遗留的后台命令执行 `emu kill` 关闭，没有完成复查。系统暗色与旋转设置已恢复，模拟器均已关闭。本机没有 PowerShell，以 `sh ./gradlew :app:assemblePreview` 构建后复制到 `dist/` 并写入 `.sha256`。竖屏下的这两页、真机、Android 8–9 未验证。没有提交 Git。
+
+---
+
 ## 2026-10-16 导航迁移到 Navigation 3
 
 体验版：`dist/ChampionsDex-0.1.0-preview.apk`，12,540,204 字节。SHA-256：`30be7a49b58fb2a03e99c14b1f724c580f7ce98ea706b985d918dcf30a4901b4`。图鉴数据、Wiki、图片与计算内核未改动（构建前按 `provenance.json` 核对计算器资源哈希，一致）。

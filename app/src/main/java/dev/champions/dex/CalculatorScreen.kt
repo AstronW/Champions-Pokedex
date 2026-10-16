@@ -27,7 +27,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
@@ -104,7 +105,7 @@ fun CalculatorScreen(dex: Dex, model: DexViewModel, modifier: Modifier = Modifie
     // A detail opens above this page while it stays composed, so the menu closes first.
     fun navigate(key: String) { close(); onOpen(key) }
     BackHandler(sheet.isNotEmpty(), close)
-    val compact = LocalConfiguration.current.screenHeightDp < 500
+    val compact = with(LocalDensity.current) { LocalWindowInfo.current.containerSize.height.toDp() } < 500.dp
     Column(modifier.fillMaxSize()) {
         AppHeader("Lv.50 · 能力点 $PointTotal", "伤害计算", isRoot, onNav) {
             SecondaryButton("交换", ::swap, height = 40.dp, leading = { Glyph(GlyphKind.SWAP, Modifier.size(16.dp), pal.text) })
@@ -278,7 +279,7 @@ private fun SideSummary(title: String, color: Color, key: String, p: Pokemon, si
     Column(modifier.clip(RoundedCornerShape(24.dp)).background(pal.surface).padding(10.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         if (compact) Row(Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             Column(pick.width(104.dp).fillMaxHeight().padding(4.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Kicker(title, color, spacing = 1.1.sp)
+                Kicker(title, color = color, spacing = 1.1.sp)
                 Blob(p, 48.dp)
                 Text(p.displayName, fontSize = 14.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center)
                 // The column is too narrow for two named types side by side, so they stack.
@@ -287,7 +288,7 @@ private fun SideSummary(title: String, color: Color, key: String, p: Pokemon, si
             config(Modifier.weight(1f).fillMaxHeight())
         } else {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                Box(Modifier.size(8.dp).clip(CircleShape).background(color)); Kicker(title, color, spacing = 1.1.sp)
+                Box(Modifier.size(8.dp).clip(CircleShape).background(color)); Kicker(title, color = color, spacing = 1.1.sp)
             }
             Column(pick.fillMaxWidth().padding(4.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {

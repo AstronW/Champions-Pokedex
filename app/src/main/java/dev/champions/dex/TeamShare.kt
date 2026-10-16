@@ -119,7 +119,7 @@ private fun TeamShareCard(sets: List<MemberSet>, dex: Dex, modifier: Modifier) {
     Column(modifier.background(pal.bg).padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Row(verticalAlignment = Alignment.Bottom) {
             Column(Modifier.weight(1f)) {
-                Kicker("POKÉMON CHAMPIONS", pal.a(700), spacing = 1.4.sp)
+                Kicker("POKÉMON CHAMPIONS", color = pal.a(700), spacing = 1.4.sp)
                 Text("我的队伍", fontFamily = HeadingFont, fontWeight = HeadingWeight, fontSize = 26.sp, lineHeight = 30.sp, color = pal.text)
             }
             Text("${sets.size} 只 · Lv.50", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = pal.n(700))

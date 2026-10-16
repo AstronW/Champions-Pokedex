@@ -108,7 +108,7 @@ fun AnimatedVisibilityScope.MenuPanel(kicker: String, kickerColor: Color, title:
                 Row(Modifier.fillMaxWidth().padding(start = 18.dp, end = 14.dp, top = 2.dp, bottom = 8.dp),
                     verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     Column(Modifier.weight(1f)) {
-                        Kicker(kicker, kickerColor, spacing = 1.1.sp)
+                        Kicker(kicker, color = kickerColor, spacing = 1.1.sp)
                         Text(title, style = MaterialTheme.typography.titleLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                     actions()
