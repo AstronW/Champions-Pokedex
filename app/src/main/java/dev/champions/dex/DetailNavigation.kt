@@ -1,13 +1,15 @@
 package dev.champions.dex
 
-/** Revisit an existing entry without duplicating its state or the path above it. */
-internal fun openDetailEntry(stack: List<String>, entry: String): List<String> {
-    val route = entry.substringAfter('#')
-    val existing = stack.indexOfLast { it.substringAfter('#') == route }
-    return if (existing >= 0) stack.take(existing + 1) else (stack + entry).takeLast(64)
-}
+/** Navigation 3 back stack keys: the catalogue pages always sit at the bottom, details stack above them. */
+internal sealed interface DexKey
+internal data object HomeKey : DexKey
+internal data class DetailKey(val route: String) : DexKey
 
-/** Entry IDs increase on forward navigation; returning to an earlier ID moves back. */
-internal fun isReturningToDetail(initialEntry: String?, targetEntry: String?): Boolean =
-    (targetEntry?.substringBefore('#')?.toInt() ?: -1) <
-        (initialEntry?.substringBefore('#')?.toInt() ?: -1)
+/** Content key of the bottom entry; detail routes are prefixed ("pokemon:", "settings", …) and never equal it. */
+internal const val HomeContentKey = "home"
+
+/** Revisit an existing entry without duplicating its state or the path above it. */
+internal fun openDetailEntry(stack: List<String>, route: String): List<String> {
+    val existing = stack.lastIndexOf(route)
+    return if (existing >= 0) stack.take(existing + 1) else (stack + route).takeLast(64)
+}

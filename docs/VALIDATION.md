@@ -1,5 +1,27 @@
 # 验证记录
 
+## 2026-10-16 导航迁移到 Navigation 3
+
+体验版：`dist/ChampionsDex-0.1.0-preview.apk`，12,540,204 字节。SHA-256：`30be7a49b58fb2a03e99c14b1f724c580f7ce98ea706b985d918dcf30a4901b4`。图鉴数据、Wiki、图片与计算内核未改动（构建前按 `provenance.json` 核对计算器资源哈希，一致）。
+
+- 依赖：新增 `androidx.navigation3:navigation3-runtime` 与 `navigation3-ui` 1.2.0（稳定版）。路由仍是字符串，不需要 Kotlin 序列化插件；R8 后体验版增加 33,157 字节。
+- 详情返回栈交给 `NavDisplay`：栈底固定 `HomeKey`（内含原有的顶层页 `AnimatedContent` 与每页 `SaveableStateHolder`），其上是 `DetailKey(route)`。返回栈本身仍以 `rememberSaveable` 保存路由列表，`contentKey` 就是路由。
+- 删除手写的 `detailStates`、条目自增序号与 `isReturningToDetail`：每个条目的保存状态由 `SaveableStateHolderNavEntryDecorator` 管理，出栈后自动清除；前进/返回方向由 Navigation 3 比较前后返回栈判断。`openDetailEntry` 的去重截断保留，改为直接按路由比较。
+- 过渡：详情页之间沿用原来的横向淡入滑动；从目录进入或返回目录时，目录保持不动（`EnterTransition.None` / `ExitTransition.KeepUntilTransitionsFinished`），与迁移前“详情页叠在目录上”的观感一致。新增预测性返回手势动画，使用同一过渡。
+- 返回键：栈内返回由 `NavDisplay` 处理；抽屉开着时先关抽屉；栈空且不在图鉴页时先回图鉴页。目录页不再常驻在详情页下方的组合里，返回时重新组合可见项，滚动与筛选状态由保存状态恢复。
+- Android Studio 内置 lint 在分析局部扩展函数 `isHome` 时抛 `ClassCastException`（`JoinEffectDetector`，IDE 缺陷），已将两个过渡函数改为文件顶层私有函数。
+
+|检查|结果|
+|---|---|
+|Kotlin 单元测试|17 项通过（`DetailNavigationTest` 改为按路由断言）|
+|Android 交互|全量 6 项通过（`emulator-5580`），一次通过；含 `NavigationFlowTest` 的重建恢复与入场动画中返回|
+|Android lint|0 错误；9 条均为原有提示，无新增|
+|Preview 实际页面|暗色：图鉴列表滚动后进入怪力详情再返回，位置不变；横屏下打开详情并返回，列表正常。亮色：抽屉、招式列表滚动后进入日光束详情再返回，切到宝可梦页再切回招式，滚动位置仍保留。截图 `screenshots/nav3/`|
+
+仅操作本次以 `-read-only` 启动的 `emulator-5580`（AVD `Medium_Phone_API_37.0`），结束后已关闭；crash buffer 为空。第一次启动模拟器失败：Android Studio 当时正以非只读方式运行同一 AVD（`emulator-5554`）。本机没有 PowerShell，以 `sh ./gradlew :app:assemblePreview` 构建后复制到 `dist/` 并写入 `.sha256`。预测性返回手势（边缘滑动）、返回目录首帧的真机帧耗时（SwiftShader 下 gfxinfo 数字不作结论）、Android 8–9 与真机未验证。
+
+---
+
 ## 2026-10-16 拆分通用组件并添加 Preview
 
 体验版：`dist/ChampionsDex-0.1.0-preview.apk`，12,507,047 字节。SHA-256：`f1f3e2f2bfc72b77a02d32f3d245dd30e71c1ef9d59838bf47e8bfe6092c9e1e`。图鉴数据、Wiki、图片与计算内核未改动。

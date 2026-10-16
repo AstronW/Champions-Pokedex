@@ -9,7 +9,6 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -28,7 +27,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.ui.semantics.LiveRegionMode
-import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -36,9 +34,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.scene.Scene
+import androidx.navigation3.ui.NavDisplay
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import dev.champions.dex.components.*
+import kotlin.time.Duration.Companion.milliseconds
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,31 +74,21 @@ fun DexApp(model: DexViewModel) {
             return@DexTheme
         }
         var root by rememberSaveable { mutableStateOf(DexRoot.POKEMON) }
-        var stack by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
-        var nextEntry by rememberSaveable { mutableIntStateOf(0) }
-        val rootStates = rememberSaveableStateHolder()
-        val detailStates = rememberSaveableStateHolder()
+        // Detail routes above the catalogue; Navigation 3 keeps each entry's saved state and clears it once popped.
+        var details by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
+        val backStack = remember(details) { listOf<DexKey>(HomeKey) + details.map(::DetailKey) }
         val drawer = rememberDrawerState(DrawerValue.Closed)
         val scope = rememberCoroutineScope()
         var toast by remember { mutableStateOf<Pair<Int, String>?>(null) }
-        LaunchedEffect(toast) { if (toast != null) { delay(1600); toast = null } }
-        fun open(key: String) {
-            if (stack.lastOrNull()?.substringAfter('#') == key) return
-            val updated = openDetailEntry(stack, "${nextEntry++}#$key")
-            (stack - updated.toSet()).forEach { detailStates.removeState(it) }
-            stack = updated
-        }
-        fun back() {
-            stack.lastOrNull()?.let { detailStates.removeState(it) }
-            stack = stack.dropLast(1)
-        }
+        LaunchedEffect(toast) { if (toast != null) { delay(1600.milliseconds); toast = null } }
+        fun open(route: String) { details = openDetailEntry(details, route) }
+        fun back() { details = details.dropLast(1) }
         fun openDrawer() { scope.launch { drawer.open() } }
         // Back from another top-level page returns to the catalogue first, rather than leaving the app.
-        BackHandler(stack.isEmpty() && root != DexRoot.POKEMON && !drawer.isOpen) { root = DexRoot.POKEMON }
+        BackHandler(details.isEmpty() && root != DexRoot.POKEMON && !drawer.isOpen) { root = DexRoot.POKEMON }
         BackHandler(drawer.isOpen) { scope.launch { drawer.close() } }
-        BackHandler(stack.isNotEmpty() && !drawer.isOpen) { back() }
         CompositionLocalProvider(LocalToast provides { message -> toast = (toast?.first ?: 0) + 1 to message }) {
-            ModalNavigationDrawer(drawerState = drawer, gesturesEnabled = stack.isEmpty() || drawer.isOpen, scrimColor = pal.n(900).copy(alpha = .45f), drawerContent = {
+            ModalNavigationDrawer(drawerState = drawer, gesturesEnabled = details.isEmpty() || drawer.isOpen, scrimColor = pal.n(900).copy(alpha = .45f), drawerContent = {
                 // Switch pages first and let that heavy first frame finish while the drawer is still open, then slide the drawer
                 // away over the page's own fade-in. Closing first left a pause after the drawer had gone before anything appeared.
                 suspend fun closeDrawer() {
@@ -107,41 +99,45 @@ fun DexApp(model: DexViewModel) {
                     onSettings = { open("settings"); scope.launch { closeDrawer() } })
             }) {
                 Box(Modifier.fillMaxSize().background(pal.bg).safeDrawingPadding()) {
-                    Box(if (stack.isNotEmpty()) Modifier.fillMaxSize().clearAndSetSemantics {} else Modifier.fillMaxSize()) {
-                        val pageDuration = if (model.reduceMotion) 0 else 260
-                        AnimatedContent(targetState = root, modifier = Modifier.fillMaxSize(), transitionSpec = {
-                            (fadeIn(tween(pageDuration)) + slideInVertically(tween(pageDuration)) { it / 24 }) togetherWith
-                                fadeOut(tween(pageDuration / 2))
-                        }, label = "page") { current ->
-                        rootStates.SaveableStateProvider(current.name) {
-                            when (current) {
-                                DexRoot.POKEMON -> PokemonListScreen(dex, model, ::openDrawer, ::open)
-                                DexRoot.MOVES -> MoveListScreen(dex, model, ::openDrawer, ::open)
-                                DexRoot.ABILITIES -> AbilityListScreen(dex, model, ::openDrawer, ::open)
-                                DexRoot.STATUSES -> StatusListScreen(dex, ::openDrawer, ::open)
-                                DexRoot.TYPES -> TypeChartScreen(::openDrawer)
-                                DexRoot.CALCULATOR -> CalculatorScreen(dex, model, onNav = ::openDrawer, isRoot = true, onOpen = ::open)
-                                DexRoot.SPEED -> SpeedScreen(dex, model, ::openDrawer, ::open)
-                                DexRoot.TEAM -> TeamScreen(dex, model, ::openDrawer, ::open)
-                                DexRoot.FAVORITES -> FavoritesScreen(dex, model, ::openDrawer, ::open)
-                            }
-                        }
-                        }
-                    }
                     val duration = if (model.reduceMotion) 0 else 220
-                    AnimatedContent(targetState = stack.lastOrNull(), modifier = Modifier.fillMaxSize(), transitionSpec = {
-                        val direction = if (isReturningToDetail(initialState, targetState)) -1 else 1
-                        ((fadeIn(tween(duration)) + slideInHorizontally(tween(duration)) { direction * it / 12 }) togetherWith
-                            (fadeOut(tween(duration)) + slideOutHorizontally(tween(duration)) { -direction * it / 12 })).using(null)
-                    }, label = "navigation") { entry ->
-                        if (entry != null) detailStates.SaveableStateProvider(entry) {
-                            val route = entry.substringAfter('#')
-                            Box(Modifier.fillMaxSize().background(pal.bg).testTag("detail:$route")) {
-                                when {
-                                    route == "settings" -> SettingsScreen(model, dex, ::back)
-                                    route == "calculator-license" -> CalculatorLicense(::back)
-                                    route.startsWith("calculator:") -> CalculatorScreen(dex, model, initialId = route.substringAfter(':'), onNav = ::back, isRoot = false, onOpen = ::open)
-                                    else -> DetailScreen(route, dex, model, ::back, ::open)
+                    NavDisplay(backStack, Modifier.fillMaxSize(),
+                        // A drawer still closing over a just-opened page takes the back press first.
+                        onBack = { if (drawer.isOpen) scope.launch { drawer.close() } else back() },
+                        transitionSpec = { detailSlide(1, duration) }, popTransitionSpec = { detailSlide(-1, duration) },
+                        predictivePopTransitionSpec = { detailSlide(-1, duration) },
+                    ) { key ->
+                        when (key) {
+                            HomeKey -> NavEntry(key, contentKey = HomeContentKey) {
+                                val rootStates = rememberSaveableStateHolder()
+                                val pageDuration = if (model.reduceMotion) 0 else 260
+                                AnimatedContent(targetState = root, modifier = Modifier.fillMaxSize().background(pal.bg), transitionSpec = {
+                                    (fadeIn(tween(pageDuration)) + slideInVertically(tween(pageDuration)) { it / 24 }) togetherWith
+                                        fadeOut(tween(pageDuration / 2))
+                                }, label = "page") { current ->
+                                    rootStates.SaveableStateProvider(current.name) {
+                                        when (current) {
+                                            DexRoot.POKEMON -> PokemonListScreen(dex, model, ::openDrawer, ::open)
+                                            DexRoot.MOVES -> MoveListScreen(dex, model, ::openDrawer, ::open)
+                                            DexRoot.ABILITIES -> AbilityListScreen(dex, model, ::openDrawer, ::open)
+                                            DexRoot.STATUSES -> StatusListScreen(dex, ::openDrawer, ::open)
+                                            DexRoot.TYPES -> TypeChartScreen(::openDrawer)
+                                            DexRoot.CALCULATOR -> CalculatorScreen(dex, model, onNav = ::openDrawer, isRoot = true, onOpen = ::open)
+                                            DexRoot.SPEED -> SpeedScreen(dex, model, ::openDrawer, ::open)
+                                            DexRoot.TEAM -> TeamScreen(dex, model, ::openDrawer, ::open)
+                                            DexRoot.FAVORITES -> FavoritesScreen(dex, model, ::openDrawer, ::open)
+                                        }
+                                    }
+                                }
+                            }
+                            is DetailKey -> NavEntry(key, contentKey = key.route) {
+                                val route = key.route
+                                Box(Modifier.fillMaxSize().background(pal.bg).testTag("detail:$route")) {
+                                    when {
+                                        route == "settings" -> SettingsScreen(model, dex, ::back)
+                                        route == "calculator-license" -> CalculatorLicense(::back)
+                                        route.startsWith("calculator:") -> CalculatorScreen(dex, model, initialId = route.substringAfter(':'), onNav = ::back, isRoot = false, onOpen = ::open)
+                                        else -> DetailScreen(route, dex, model, ::back, ::open)
+                                    }
                                 }
                             }
                         }
@@ -151,6 +147,17 @@ fun DexApp(model: DexViewModel) {
             }
         }
     }
+}
+
+private fun Scene<DexKey>.isHome() = entries.lastOrNull()?.contentKey == HomeContentKey
+
+/** The catalogue stays still beneath a detail sliding over or away from it; details slide past each other. */
+private fun AnimatedContentTransitionScope<Scene<DexKey>>.detailSlide(direction: Int, duration: Int): ContentTransform {
+    val enter = if (targetState.isHome()) EnterTransition.None
+        else fadeIn(tween(duration)) + slideInHorizontally(tween(duration)) { direction * it / 12 }
+    val exit = if (initialState.isHome()) ExitTransition.KeepUntilTransitionsFinished
+        else fadeOut(tween(duration)) + slideOutHorizontally(tween(duration)) { -direction * it / 12 }
+    return (enter togetherWith exit).using(null)
 }
 
 @Composable
