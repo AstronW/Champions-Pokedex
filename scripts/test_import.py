@@ -65,7 +65,29 @@ class DataContractTests(unittest.TestCase):
         self.assertIn('<sup>1</sup>⁄<sub>3</sub>',rendered)
         table=renderer.render('{|\n!招式!!威力\n|-\n|火花||40\n|}')
         self.assertIn('<table>',table);self.assertIn('<td>',table);self.assertIn('火花',table)
-        self.assertNotIn('dex://entity/item:',renderer.render('{{I|王者之证}}'))
+        kings_rock=next(e['key'] for e in self.entities if e['kind']=='item' and e['name_zh']=='王者之证')
+        self.assertIn('dex://entity/'+kings_rock,renderer.render('{{I|王者之证}}'))
+        self.assertIn('dex://entity/'+kings_rock,renderer.render('[[王者之证]]'))
+        abomasite=next(e['key'] for e in self.entities if e['kind']=='item' and e['name_zh']=='暴雪王进化石')
+        with_items=WikiRenderer(self.entities,{},None,{abomasite:'abomasite'})
+        self.assertIn('data-item="abomasite"',with_items.render('{{i|暴雪王进化石}}'))
+        self.assertNotIn('data-item',with_items.render('{{i|王者之证}}'))
+        self.assertNotIn('data-item',with_items.render('{{i|大师球}}'))
+        for stat in ['[[防御]]','[[特防|特防]]','[[攻击]]','[[速度]]','[[ＨＰ]]']:
+            self.assertNotIn('<a',renderer.render(stat))
+        self.assertEqual('特防',renderer.render('[[特防]]'))
+
+    def test_items_match_source_and_ship_icons(self):
+        source={e['id']:e for e in self.entities if e['kind']=='item'}
+        self.assertEqual(len(source),len(self.data['items']))
+        ids={p['id'] for p in self.data['pokemon']}
+        for item in self.data['items']:
+            e=source[str(item['id'])]
+            self.assertEqual((item['name'],item['english'],item['description']),(e['name_zh'],e['name_en'],e['description_zh']))
+            self.assertEqual(item['holders'],[x for x in e['raw']['personal_usepoke'].split(',') if x])
+            if item['sprite']: self.assertTrue((ROOT/'app/src/main/assets/items'/(item['sprite']+'.png')).is_file())
+        self.assertTrue(any(h in ids for item in self.data['items'] for h in item['holders']))
+        self.assertTrue({f"item:{i['id']}" for i in self.data['items']} <= {w['key'] for w in self.data['wiki']})
 
     def test_no_unknown_templates_and_source_tracing_present(self):
         self.assertEqual({},read_json(ROOT/'data/import-report.json')['unhandledTemplates'])
@@ -112,7 +134,7 @@ class DataContractTests(unittest.TestCase):
         import re
         mechanics = read_json(ROOT/'app/src/main/assets/mechanics.json')
         valid = {f"move:{m['id']}" for m in self.data['moves']} | {f"ability:{a['id']}" for a in self.data['abilities']}
-        valid |= {s['key'] for s in mechanics['statuses']} | {'category:'+c['category_key'] for c in mechanics['categories']}
+        valid |= {f"item:{i['id']}" for i in self.data['items']} | {s['key'] for s in mechanics['statuses']} | {'category:'+c['category_key'] for c in mechanics['categories']}
         for w in self.data['wiki']:
             content = self.bodies[w['key']]
             for key in re.findall(r'href="dex://entity/([^\"]+)"',content): self.assertIn(key,valid,w['key'])

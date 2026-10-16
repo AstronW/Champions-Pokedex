@@ -11,6 +11,8 @@ CC = OpenCC('t2s')
 TYPE_NAMES = ['一般','格斗','飞行','毒','地面','岩石','虫','幽灵','钢','火','水','草','电','超能力','冰','龙','恶','妖精']
 # masterdata uses a different ordering from PokeAPI (1-based).
 TYPE_API = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+# Stat pages are general background, not something to navigate to; render their links as plain text.
+PLAIN_TITLES = {'ＨＰ','HP','攻击','防御','特攻','特防','速度','命中率','闪避率'}
 
 def digest(path): return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 def read_json(path): return json.loads(Path(path).read_text(encoding='utf-8'))
@@ -22,8 +24,12 @@ def write_json(path, value):
 
 class WikiRenderer:
     """Render the actual finite set of remaining Wiki constructs; never execute source HTML."""
-    def __init__(self, entities, aliases, local_titles=None):
-        self.names = {(e['kind'], e['name_zh']): e['key'] for e in entities if e['name_zh'] and e['kind'] in ['pokemon','move','ability']}
+    def __init__(self, entities, aliases, local_titles=None, item_sprites=None):
+        # Item key -> Champions sprite file stem; linked items show the icon inline.
+        self.item_sprites = item_sprites or {}
+        self.names = {(e['kind'], e['name_zh']): e['key'] for e in entities if e['name_zh'] and e['kind'] in ['pokemon','move','ability','item']}
+        # Plain [[道具名]] links name Champions items directly.
+        self.item_names = {e['name_zh']: e['key'] for e in entities if e['name_zh'] and e['kind'] == 'item'}
         self.aliases = aliases
         self.local_titles = local_titles or {}
         self.unknown = collections.Counter()
@@ -32,6 +38,7 @@ class WikiRenderer:
         title = CC.convert(title.strip()).replace('_',' ')
         if title.lower().startswith(('category:', '分类:', 'file:', 'image:', '文件:')): return ''
         title, _, anchor = title.partition('#')
+        if title in PLAIN_TITLES: return label
         name = self.aliases.get(f'{kind}:{title}', title)
         # Status aliases resolve by page ID, independently of move names (e.g. 替身).
         key = self.local_titles.get(f'{name}（状态）') if kind == 'status' else None
@@ -39,8 +46,10 @@ class WikiRenderer:
         if not key:
             match = re.fullmatch(r'(.+)[（(](招式|特性|道具)[）)]', title)
             if match: key = self.names.get(({'招式':'move','特性':'ability','道具':'item'}[match[2]],match[1]))
-        if not key and kind is None: key = self.local_titles.get(title)
+        if not key and kind is None: key = self.local_titles.get(title) or self.item_names.get(title)
         href = 'dex://entity/' + key if key else 'https://wiki.52poke.com/zh-hans/' + quote(title, safe='') + ('#'+quote(anchor, safe='') if anchor else '')
+        if key in self.item_sprites:
+            return f'<a href="{html.escape(href, quote=True)}" data-item="{self.item_sprites[key]}">{label}</a>'
         return f'<a href="{html.escape(href, quote=True)}">{label}</a>'
 
     def render(self, source):
@@ -192,12 +201,14 @@ def import_data(champout, sprites, explicit_output=None):
     (assets/'pokemon').mkdir(exist_ok=True)
     (assets/'types').mkdir(exist_ok=True)
     mechanics, local_titles = import_mechanics(output, entities)
-    renderer=WikiRenderer(entities, config['reference_aliases'], local_titles)
+    sprite_files={p.stem for p in (sprites/'sprites/items').glob('*.png')}
+    item_sprites={e['key']:slug(e['name_en']) for e in entities if e['kind']=='item' and slug(e['name_en']) in sprite_files}
+    renderer=WikiRenderer(entities, config['reference_aliases'], local_titles, item_sprites)
     api=rows(ROOT/'data/pokeapi/pokemon.csv'); api_index={r['identifier']:r for r in api}
     sprite_root=sprites/'sprites/pokemon/versions/generation-ix/champions'
     audit=[]; wiki=[]; wiki_bodies={}
     for e in entities:
-        if e['kind'] not in ['move','ability']: continue
+        if e['kind'] not in ['move','ability','item']: continue
         page=pages.get(e['key'])
         if not page or page['status']!='ok': continue
         body=renderer.render(page['expanded'])
@@ -207,6 +218,8 @@ def import_data(champout, sprites, explicit_output=None):
         wiki_bodies[s['key']]=renderer.render(s.pop('text'))
         wiki.append({'key':s['key'], 'title':s['name'], 'revision':s['revision'], 'hash':s['hash'], 'url':s['url']})
     write_json(assets/'wiki.json', wiki_bodies)
+    shutil.rmtree(assets/'items',ignore_errors=True); (assets/'items').mkdir()
+    for stem in sorted(set(item_sprites.values())): shutil.copyfile(sprites/'sprites/items'/(stem+'.png'),assets/'items'/(stem+'.png'))
     write_json(assets/'mechanics.json', mechanics)
     pokemon=[]
     for r in rows(output/'pokemon.csv'):
@@ -227,13 +240,16 @@ def import_data(champout, sprites, explicit_output=None):
         r=e['raw']
         moves.append({'id':int(e['id']),'name':e['name_zh'] or '招式 #'+e['id'],'english':e['name_en'],'description':e['description_zh'],'available':e['available'],'type':int(r['type']),'category':int(r['category']),'power':int(r['power']),'accuracy':int(r['accuracy']),'pp':int(r['pp']),'priority':int(r['priority']),'contact':r['direct']=='1'})
     abilities=[{'id':int(e['id']),'name':e['name_zh'],'english':e['name_en'],'description':e['description_zh']} for e in entities if e['kind']=='ability']
+    # Holders come from the game's own per-item Pokémon list (Mega Stones, Light Ball, ...).
+    items=[{'id':int(e['id']),'name':e['name_zh'],'english':e['name_en'],'description':e['description_zh'],'sprite':item_sprites.get(e['key'],''),
+            'sort':int(e['raw']['sort']),'holders':[x for x in e['raw']['personal_usepoke'].split(',') if x]} for e in entities if e['kind']=='item']
     learns=collections.defaultdict(list)
     for r in rows(output/'learnsets.csv'): learns[r['personal_id']].append(int(r['move_id']))
     for i,api_id in enumerate(TYPE_API):
         source=sprites/f'sprites/types/generation-ix/champions/small/{api_id}.png'
         shutil.copyfile(source,assets/'types'/f'{i}.png')
-    version={'champout':output.name,'pipeline':manifest['version'],'wikiDump':xmls[-1].name,'spritesCommit':subprocess.check_output(['git','-C',str(sprites),'rev-parse','HEAD'],text=True).strip(),'species':len({p['no'] for p in pokemon}),'forms':len(pokemon),'availableMoves':sum(m['available'] for m in moves),'abilities':len(abilities),'missingSprites':sum(x['status']=='missing' for x in audit)}
-    data={'version':version,'types':TYPE_NAMES,'pokemon':pokemon,'moves':moves,'abilities':abilities,'learnsets':learns,'wiki':wiki}
+    version={'champout':output.name,'pipeline':manifest['version'],'wikiDump':xmls[-1].name,'spritesCommit':subprocess.check_output(['git','-C',str(sprites),'rev-parse','HEAD'],text=True).strip(),'species':len({p['no'] for p in pokemon}),'forms':len(pokemon),'availableMoves':sum(m['available'] for m in moves),'abilities':len(abilities),'items':len(items),'missingSprites':sum(x['status']=='missing' for x in audit)}
+    data={'version':version,'types':TYPE_NAMES,'pokemon':pokemon,'moves':moves,'abilities':abilities,'items':items,'learnsets':learns,'wiki':wiki}
     write_json(assets/'dex.json',data)
     write_json(ROOT/'data/sprite-map.json',audit)
     write_json(ROOT/'data/import-report.json',{'version':version,'learnsets':sum(map(len,learns.values())),'wikiPages':len(wiki),'mechanics':{k:len(v) for k,v in mechanics.items()},'unhandledTemplates':renderer.unknown,'inputManifest':manifest,'metadataHashes':{p.name:digest(p) for p in (ROOT/'data/pokeapi').glob('*.csv')}})
