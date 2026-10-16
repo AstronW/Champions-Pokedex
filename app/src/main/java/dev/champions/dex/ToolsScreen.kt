@@ -160,7 +160,7 @@ private fun TypeDetailCard(attack: Int) {
 private fun TypeMatrix(attack: Int?, defend: Int?, modifier: Modifier, onPick: (Int?, Int?) -> Unit) {
     val n = TypeNames.size
     val measurer = rememberTextMeasurer()
-    val tones = TypeNames.indices.map { typeTone(it) }
+    val iconBgs = TypeNames.indices.map { typeIconColors(it).first }; val iconFilter = typeIconFilter()
     val icons = TypeNames.indices.map { rememberAsset("types/$it.png") }
     val colors = listOf(pal.g(400), pal.a(300), pal.n(800), pal.n(100))
     val text = pal.text; val light = pal.n(100)
@@ -199,9 +199,9 @@ private fun TypeMatrix(attack: Int?, defend: Int?, modifier: Modifier, onPick: (
             // Cut to a circle like every other type icon; a plain type-coloured dot stands in until the icon has loaded.
             fun DrawScope.typeIcon(t: Int, cx: Float, cy: Float, alpha: Float) {
                 val r = icon.toPx() / 2
-                val bitmap = icons[t] ?: return drawCircle(tones[t].solid, r, Offset(cx, cy), alpha)
+                val bitmap = icons[t] ?: return drawCircle(iconBgs[t], r, Offset(cx, cy), alpha)
                 clipPath(Path().apply { addOval(Rect(Offset(cx, cy), r)) }) {
-                    drawImage(bitmap, dstOffset = IntOffset((cx - r).roundToInt(), (cy - r).roundToInt()), dstSize = IntSize((2 * r).roundToInt(), (2 * r).roundToInt()), alpha = alpha)
+                    drawImage(bitmap, dstOffset = IntOffset((cx - r).roundToInt(), (cy - r).roundToInt()), dstSize = IntSize((2 * r).roundToInt(), (2 * r).roundToInt()), alpha = alpha, colorFilter = iconFilter)
                 }
             }
             for (dt in 0 until n) typeIcon(dt, x0 + dt * step + c / 2, headRow.toPx() / 2, if (defend == null || defend == dt) 1f else .45f)
@@ -362,7 +362,7 @@ private fun TeamSlot(set: MemberSet?, modifier: Modifier, onAdd: () -> Unit, onE
         Column(Modifier.fillMaxSize().padding(start = 6.dp, end = 6.dp, top = 10.dp, bottom = 10.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
             PokemonArt(p, Modifier.fillMaxWidth().weight(1f))
             Text(p.displayName, fontSize = 12.5.sp, lineHeight = 15.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center, maxLines = 2)
-            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) { p.types.distinct().forEach { TypeIcon(it, size = 16.dp) } }
+            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) { p.types.distinct().forEach { TypeTag(it, showName = false, icon = 16.dp) } }
         }
         set.item?.let { item ->
             AssetImage("items/${item.sprite}.png", item.name, Modifier.align(Alignment.TopStart).padding(6.dp).size(26.dp).background(pal.bg, CircleShape).padding(3.dp))

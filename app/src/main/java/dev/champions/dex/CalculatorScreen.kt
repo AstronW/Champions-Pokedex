@@ -281,7 +281,7 @@ private fun SideSummary(title: String, color: Color, key: String, p: Pokemon, si
                 Blob(p, 48.dp)
                 Text(p.displayName, fontSize = 14.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center)
                 // The column is too narrow for two named types side by side, so they stack.
-                p.types.distinct().forEach { TypeTag(it, Modifier.fillMaxWidth(), horizontal = 3.dp) }
+                p.types.distinct().forEach { TypeTag(it, expanded = true, horizontal = 3.dp) }
             }
             config(Modifier.weight(1f).fillMaxHeight())
         } else {
@@ -352,8 +352,7 @@ private fun TypeChips(selected: Int?, onSelect: (Int?) -> Unit) {
     Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
         Text("属性", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = pal.n(700))
         (listOf<Int?>(null) + TypeNames.indices).forEach { t ->
-            // The icon sits as far from the start as from the top and bottom.
-            TypeChoice(t, selected == t, Modifier.heightIn(min = 36.dp), PaddingValues(start = if (t != null) 8.dp else 14.dp, end = 14.dp)) { onSelect(t) }
+            TypeChoice(t, selected == t, expanded = false) { onSelect(t) }
         }
     }
 }
@@ -625,7 +624,7 @@ private fun AnimatedVisibilityScope.MoveSheet(dex: Dex, attacker: Pokemon, defen
             Row(Modifier.fillMaxWidth().clip(PillShape).background(if (on) pal.a(100) else pal.surface)
                 .clickable { edit { q -> q.put("move", m.id); q.put("hits", 0) }; onClose() }.padding(start = 12.dp, end = 14.dp, top = 11.dp, bottom = 11.dp),
                 verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                TypeIcon(m.type, size = MoveTypeIcon)
+                TypeTag(m.type, showName = false, icon = MoveTypeIcon)
                 Text(m.name, Modifier.weight(1f), fontSize = 14.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 if (m.id !in learned) Pill("假设", pal.a(200), pal.a(800), fontSize = 10.sp)
                 val (bg, fg) = categoryColors(m.category)

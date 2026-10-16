@@ -142,7 +142,7 @@ private fun ShareTile(set: MemberSet, dex: Dex, modifier: Modifier) {
             Text(p.displayName, Modifier.weight(1f), fontSize = 13.sp, lineHeight = 15.sp, fontWeight = FontWeight.Bold, color = pal.text, maxLines = 2)
         }
         // Two named types need the tile's full width.
-        TypeTagRow(p.types, fontSize = 10.sp, icon = 16.dp, vertical = 2.dp, onTint = true)
+        TypeTagRow(p.types, fontSize = 10.sp, icon = 16.dp, vertical = 2.dp)
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             set.item?.let { AssetImage("items/${it.sprite}.png", null, Modifier.size(18.dp)) }
             FitText("${set.item?.name ?: "无道具"} · ${dex.abilitiesById[set.ability]?.name ?: "—"}", Modifier.weight(1f))
@@ -154,7 +154,7 @@ private fun ShareTile(set: MemberSet, dex: Dex, modifier: Modifier) {
                 Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     pair.forEach { move ->
                         Row(Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
-                            TypeIcon(move.type, size = MoveIcon)
+                            TypeTag(move.type, showName = false, icon = MoveIcon)
                             Text(move.name, fontSize = MoveText, lineHeight = 12.sp, color = pal.text, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
                     }

@@ -241,7 +241,7 @@ fun MoveDetail(move: Move, dex: Dex, model: DexViewModel, onBack: () -> Unit, on
                     Box(Modifier.align(Alignment.TopEnd).offset(x = 30.dp, y = (-40).dp).size(150.dp).alpha(.35f).clip(CircleShape).background(tone.solid))
                     Column(Modifier.padding(horizontal = 20.dp, vertical = 22.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                            TypeTag(move.type, fontSize = 12.sp, icon = 22.dp, horizontal = 12.dp, vertical = 4.dp, solid = true)
+                            TypeTag(move.type, fontSize = 12.sp, icon = 22.dp, horizontal = 12.dp, vertical = 4.dp)
                             Pill(move.categoryLabel, pal.bg, tone.fg, fontSize = 12.sp)
                         }
                         Text(move.name, style = MaterialTheme.typography.headlineLarge, color = tone.fg)

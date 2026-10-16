@@ -50,6 +50,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.SolidColor
@@ -204,41 +205,41 @@ fun SectionHeading(text: String, modifier: Modifier = Modifier) =
 
 // —— Tags, pills and toggles ——
 
-/** The type's Champions icon cut to a circle; [description] is null where a label next to it already names the type. */
+/** The type's Champions icon cut to a circle; only [TypeTag] draws it, so every type shows in the same colours. */
 @Composable
-fun TypeIcon(type: Int, modifier: Modifier = Modifier, size: Dp = 20.dp, description: String? = TypeNames[type]) {
+private fun TypeIcon(type: Int, modifier: Modifier, size: Dp, description: String?) {
     val bitmap = rememberAsset("types/$type.png")
     val shape = modifier.size(size).clip(CircleShape)
-    if (bitmap != null) Image(bitmap, description, shape, contentScale = ContentScale.Fit)
-    else Box(shape.background(typeTone(type).solid).then(if (description != null) Modifier.semantics { contentDescription = description } else Modifier))
+    if (bitmap != null) Image(bitmap, description, shape, contentScale = ContentScale.Fit, colorFilter = typeIconFilter())
+    else Box(shape.background(typeIconColors(type).first).then(if (description != null) Modifier.semantics { contentDescription = description } else Modifier))
 }
 
 /**
- * Type icon followed by its name in a pill. The icon sits as far from the start as from the top, so it follows the pill's
- * curve; given more width than it needs (e.g. a weight), the content stays centred.
+ * The one way a type is shown: its Champions icon, followed unless [showName] is off by its name in a capsule of the icon's
+ * own colour, so icon and capsule read as one. [expanded] fills the width given with the content centred; otherwise the
+ * capsule wraps its content. The icon sits as far from the start as from the top, so it follows the capsule's curve.
+ * Without the name the tag is the icon alone, described by the type's name. [trailing] draws after the name in its colour.
  */
 @Composable
-fun TypeTag(type: Int, modifier: Modifier = Modifier, fontSize: TextUnit = 11.sp, icon: Dp = 18.dp, horizontal: Dp = 9.dp, vertical: Dp = 3.dp,
-            onTint: Boolean = false, solid: Boolean = false, iconColor: Boolean = false, suffix: String = "") {
-    val tone = typeTone(type)
-    // On a type-tinted surface the tag uses the page colour so it stays readable; a solid tag inverts the type colours;
-    // an icon-coloured tag takes the icon's own background so icon and pill read as one capsule.
-    val bg = when { iconColor -> TypeIconColors[type]; solid -> tone.fg; onTint -> pal.bg.copy(alpha = .75f); else -> tone.bg }
-    val fg = when { iconColor -> OnTypeIconColors[type]; solid -> pal.bg; else -> tone.fg }
-    Row(modifier.clip(PillShape).background(bg).padding(start = vertical, end = horizontal, top = vertical, bottom = vertical),
+fun TypeTag(type: Int, modifier: Modifier = Modifier, showName: Boolean = true, expanded: Boolean = false, fontSize: TextUnit = 11.sp,
+            icon: Dp = 18.dp, horizontal: Dp = 9.dp, vertical: Dp = 3.dp, suffix: String = "", trailing: (@Composable (Color) -> Unit)? = null) {
+    if (!showName) return TypeIcon(type, modifier, icon, TypeNames[type])
+    val (bg, fg) = typeIconColors(type)
+    Row((if (expanded) modifier.fillMaxWidth() else modifier).clip(PillShape).background(bg).padding(start = vertical, end = horizontal, top = vertical, bottom = vertical),
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(icon / 4, Alignment.CenterHorizontally)) {
-        TypeIcon(type, size = icon, description = null)
-        Text(TypeNames[type] + suffix, Modifier.weight(1f, fill = false), color = fg, fontSize = fontSize, lineHeight = fontSize * 1.3f,
+        TypeIcon(type, Modifier, icon, null)
+        // Only an expanded tag shares out its width; a wrapping one may sit in a scrolling row, where a weight would leave the name no room.
+        Text(TypeNames[type] + suffix, if (expanded) Modifier.weight(1f, fill = false) else Modifier, color = fg, fontSize = fontSize, lineHeight = fontSize * 1.3f,
             fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        trailing?.invoke(fg)
     }
 }
 
 /** A Pokémon's types across the whole width: a single type fills it, two types share it equally. */
 @Composable
-fun TypeTagRow(types: List<Int>, modifier: Modifier = Modifier, fontSize: TextUnit = 11.sp, icon: Dp = 18.dp, vertical: Dp = 3.dp, gap: Dp = 4.dp,
-               onTint: Boolean = false, iconColor: Boolean = false) {
+fun TypeTagRow(types: List<Int>, modifier: Modifier = Modifier, fontSize: TextUnit = 11.sp, icon: Dp = 18.dp, vertical: Dp = 3.dp, gap: Dp = 4.dp) {
     Row(modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(gap)) {
-        types.distinct().forEach { TypeTag(it, Modifier.weight(1f), fontSize, icon, horizontal = vertical, vertical = vertical, onTint = onTint, iconColor = iconColor) }
+        types.distinct().forEach { TypeTag(it, Modifier.weight(1f), expanded = true, fontSize = fontSize, icon = icon, horizontal = vertical, vertical = vertical) }
     }
 }
 
@@ -364,29 +365,28 @@ fun ActiveFilters(caption: String?, filters: List<ActiveFilter>, modifier: Modif
         horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         if (caption != null) Text(caption, Modifier.padding(end = 6.dp), fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = pal.n(700))
         filters.forEach { f ->
-            val tone = f.type?.let { typeTone(it) }
-            Row(Modifier.clip(PillShape).background(tone?.bg ?: pal.a(200)).clickable(onClickLabel = "清除${f.label}", onClick = f.clear)
-                .padding(start = if (f.type != null) 5.dp else 12.dp, end = 9.dp, top = 5.dp, bottom = 5.dp), verticalAlignment = Alignment.CenterVertically,
+            val clear = Modifier.clip(PillShape).clickable(onClickLabel = "清除${f.label}", onClick = f.clear)
+            if (f.type != null) TypeTag(f.type, clear, fontSize = 12.sp, icon = 22.dp, vertical = 5.dp) { fg -> Glyph(GlyphKind.CLOSE, Modifier.size(12.dp), fg) }
+            else Row(clear.background(pal.a(200)).padding(horizontal = 12.dp, vertical = 5.dp), verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                val fg = tone?.fg ?: pal.a(900)
-                f.type?.let { TypeIcon(it, size = 22.dp, description = null) }
-                Text(f.label, color = fg, fontSize = 12.sp, lineHeight = 22.sp, fontWeight = FontWeight.Bold)
-                Glyph(GlyphKind.CLOSE, Modifier.size(12.dp), fg)
+                Text(f.label, color = pal.a(900), fontSize = 12.sp, lineHeight = 22.sp, fontWeight = FontWeight.Bold)
+                Glyph(GlyphKind.CLOSE, Modifier.size(12.dp), pal.a(900))
             }
         }
     }
 }
 
-/** One type filter choice: "全部" when [type] is null, otherwise the type's icon and name, centred in the space given. */
+/**
+ * One type filter choice: "全部" when [type] is null, otherwise the type's [TypeTag], centred in the space given.
+ * A ring around the choice marks the selected one, so the types keep their own colours.
+ */
 @Composable
-fun TypeChoice(type: Int?, selected: Boolean, modifier: Modifier = Modifier, padding: PaddingValues = PaddingValues(horizontal = 4.dp), onClick: () -> Unit) {
-    val tone = type?.let { typeTone(it) }
-    val bg = if (selected) tone?.fg ?: pal.text else tone?.bg ?: pal.surface
-    val fg = if (selected) pal.bg else tone?.fg ?: pal.text
-    Row(modifier.clip(PillShape).background(bg).selectable(selected, role = Role.RadioButton, onClick = onClick).padding(padding),
-        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally)) {
-        if (type != null) TypeIcon(type, size = 20.dp, description = null)
-        Text(type?.let { TypeNames[it] } ?: "全部", color = fg, fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+fun TypeChoice(type: Int?, selected: Boolean, modifier: Modifier = Modifier, expanded: Boolean = true, onClick: () -> Unit) {
+    Box(modifier.clip(PillShape).border(2.dp, if (selected) pal.text else Color.Transparent, PillShape)
+        .selectable(selected, role = Role.RadioButton, onClick = onClick).padding(3.dp), contentAlignment = Alignment.Center) {
+        if (type != null) TypeTag(type, expanded = expanded, fontSize = 12.sp, icon = 20.dp, horizontal = 12.dp, vertical = 6.dp)
+        else Text("全部", (if (expanded) Modifier.fillMaxWidth() else Modifier).clip(PillShape).background(pal.surface).padding(horizontal = 14.dp, vertical = 7.dp),
+            color = pal.text, fontSize = 12.sp, lineHeight = 18.sp, fontWeight = FontWeight.Bold, maxLines = 1, textAlign = TextAlign.Center)
     }
 }
 
@@ -399,7 +399,7 @@ fun TypeGrid(selected: Int?, onSelect: (Int?) -> Unit) {
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
             all.chunked(columns).forEach { row ->
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    row.forEach { t -> TypeChoice(t, selected == t, Modifier.weight(1f).heightIn(min = 38.dp)) { onSelect(t) } }
+                    row.forEach { t -> TypeChoice(t, selected == t, Modifier.weight(1f)) { onSelect(t) } }
                     repeat(columns - row.size) { Spacer(Modifier.weight(1f)) }
                 }
             }
@@ -626,7 +626,7 @@ fun PokemonRow(p: Pokemon, mega: Boolean, badge: String?, metricLabel: String, m
                 if (badge != null) Pill(badge, pal.bg.copy(alpha = .75f), pal.a(800), fontSize = 10.sp)
             }
             Text(p.displayName, fontFamily = HeadingFont, fontWeight = HeadingWeight, fontSize = 19.sp, lineHeight = 21.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            TypeTagRow(p.types, iconColor = true)
+            TypeTagRow(p.types)
         }
         Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(2.dp)) {
             FavoriteButton(favorite, onFavorite, size = 36.dp)
@@ -650,7 +650,7 @@ val MoveTypeIcon = 26.dp
 fun MoveRow(move: Move, showAccuracy: Boolean, favorite: Boolean = false, onClick: () -> Unit) {
     Row(Modifier.fillMaxWidth().clip(PillShape).background(pal.surface).clickable(onClick = onClick).padding(start = 12.dp, end = 14.dp, top = 11.dp, bottom = 11.dp),
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-        TypeIcon(move.type, size = MoveTypeIcon)
+        TypeTag(move.type, showName = false, icon = MoveTypeIcon)
         Row(Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(move.name, Modifier.weight(1f, false), fontSize = 14.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis,
                 color = if (move.available) pal.text else pal.n(600))

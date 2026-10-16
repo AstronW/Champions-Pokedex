@@ -12,6 +12,8 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.ExperimentalTextApi
@@ -121,7 +123,9 @@ private fun oklch(l: Double, c: Double, hDeg: Double): Color {
 @Immutable data class TypeTone(val bg: Color, val fg: Color, val solid: Color, val blob: Color)
 
 private val toneLight = TypeHue.map { (h, c) -> TypeTone(oklch(.9, c * .5, h.toDouble()), oklch(.4, c, h.toDouble()), oklch(.68, c, h.toDouble()), oklch(.87, c * .55, h.toDouble())) }
-private val toneDark = TypeHue.map { (h, c) -> TypeTone(oklch(.36, c * .6, h.toDouble()), oklch(.88, c * .75, h.toDouble()), oklch(.64, c, h.toDouble()), oklch(.33, c * .5, h.toDouble())) }
+// Dark surfaces keep only a hint of the hue: at low lightness more chroma turns warm hues brown and yellow ones olive.
+private val toneDark = TypeHue.map { (h, c) -> TypeTone(oklch(.36, c * .6, h.toDouble()), oklch(.88, c * .75, h.toDouble()), oklch(.64, c, h.toDouble()),
+    oklch(.31, minOf(c * .18, .018), h.toDouble())) }
 
 @Composable fun typeTone(type: Int): TypeTone = (if (LocalDark.current) toneDark else toneLight)[type]
 
@@ -129,5 +133,22 @@ private val toneDark = TypeHue.map { (h, c) -> TypeTone(oklch(.36, c * .6, h.toD
 val TypeIconColors = listOf(0xFF9FA19F, 0xFFFF8000, 0xFF81B9EF, 0xFF9141CB, 0xFF915121, 0xFFAFA981, 0xFF91A119, 0xFF704170, 0xFF60A1B8,
     0xFFE62829, 0xFF2980EF, 0xFF3FA129, 0xFFFAC000, 0xFFEF4179, 0xFF3FD8FF, 0xFF5060E1, 0xFF50413F, 0xFFEF70EF).map(::Color)
 
-/** Label colour on [TypeIconColors]: white like the icon's glyph while it keeps 3:1 contrast, else the light theme's ink. */
-val OnTypeIconColors = TypeIconColors.map { c -> if (1.05f / (c.luminance() + .05f) >= 3f) Color.White else LightPalette.text }
+/** The dark theme mutes type icons and the capsules that continue them (less saturated, darker) so they don't glare on the dark page. */
+private val DarkIconMatrix = ColorMatrix().apply { setToSaturation(.6f); timesAssign(ColorMatrix().apply { setToScale(.76f, .76f, .76f, 1f) }) }
+private val TypeIconColorsDark = TypeIconColors.map { c ->
+    val m = DarkIconMatrix.values
+    fun row(i: Int) = (m[i] * c.red + m[i + 1] * c.green + m[i + 2] * c.blue).coerceIn(0f, 1f)
+    Color(row(0), row(5), row(10))
+}
+
+/** Label colour on an icon colour: white like the icon's glyph while it keeps 3:1 contrast, else the light theme's ink. */
+private fun onIconColor(c: Color) = if (1.05f / (c.luminance() + .05f) >= 3f) Color.White else LightPalette.text
+private val OnTypeIconColors = TypeIconColors.map(::onIconColor)
+private val OnTypeIconColorsDark = TypeIconColorsDark.map(::onIconColor)
+
+/** Filter for drawing a type icon in the current theme, matching [typeIconColors]. */
+@Composable fun typeIconFilter(): ColorFilter? = if (LocalDark.current) ColorFilter.colorMatrix(DarkIconMatrix) else null
+
+/** Background and label colour of an icon-coloured tag in the current theme. */
+@Composable fun typeIconColors(type: Int): Pair<Color, Color> =
+    if (LocalDark.current) TypeIconColorsDark[type] to OnTypeIconColorsDark[type] else TypeIconColors[type] to OnTypeIconColors[type]
