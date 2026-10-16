@@ -1,50 +1,87 @@
 package dev.champions.dex
 
+import androidx.activity.compose.LocalActivity
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.dismiss
+import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlin.math.roundToInt
 
 val PillShape = RoundedCornerShape(50)
 val CardShape = RoundedCornerShape(32.dp)
@@ -65,7 +102,7 @@ fun BallMark(modifier: Modifier = Modifier, color: Color = MaterialTheme.colorSc
 
 // —— Line glyphs drawn on a 24-unit grid, matching the design's stroke icons. ——
 
-enum class GlyphKind { MENU, BACK, STAR, FILTER, SWAP, CLOSE, PLUS, CHEVRON, SEARCH }
+enum class GlyphKind { MENU, BACK, STAR, FILTER, SWAP, CLOSE, PLUS, CHEVRON, SEARCH, SHARE }
 
 @Composable
 fun Glyph(kind: GlyphKind, modifier: Modifier = Modifier.size(22.dp), color: Color = LocalContentColor.current, filled: Boolean = false) {
@@ -90,6 +127,8 @@ fun Glyph(kind: GlyphKind, modifier: Modifier = Modifier.size(22.dp), color: Col
             GlyphKind.CLOSE -> { line(18f, 6f, 6f, 18f); line(6f, 6f, 18f, 18f) }
             GlyphKind.PLUS -> { line(12f, 5f, 12f, 19f); line(5f, 12f, 19f, 12f) }
             GlyphKind.SEARCH -> { drawCircle(color, 8f * u, p(11f, 11f), style = stroke); line(21f, 21f, 16.7f, 16.7f) }
+            GlyphKind.SHARE -> { listOf(p(18f, 5f), p(6f, 12f), p(18f, 19f)).forEach { drawCircle(color, 3f * u, it, style = stroke) }
+                line(8.6f, 13.5f, 15.4f, 17.5f); line(15.4f, 6.5f, 8.6f, 10.5f) }
         }
     }
 }
@@ -98,6 +137,15 @@ fun Glyph(kind: GlyphKind, modifier: Modifier = Modifier.size(22.dp), color: Col
 fun RoundIconButton(description: String, onClick: () -> Unit, modifier: Modifier = Modifier, size: Dp = 44.dp, content: @Composable () -> Unit) {
     Box(modifier.size(size).clip(CircleShape).clickable(onClickLabel = description, role = Role.Button, onClick = onClick)
         .semantics { contentDescription = description }, contentAlignment = Alignment.Center) { content() }
+}
+
+/** A small round badge (e.g. remove) drawn at [visual] size inside a [touch]-sized target, so it stays easy to hit. */
+@Composable
+fun BadgeIconButton(description: String, onClick: () -> Unit, modifier: Modifier = Modifier, visual: Dp = 26.dp, touch: Dp = 40.dp, content: @Composable () -> Unit) {
+    Box(modifier.size(touch).clip(CircleShape).clickable(onClickLabel = description, role = Role.Button, onClick = onClick)
+        .semantics { contentDescription = description }, contentAlignment = Alignment.Center) {
+        Box(Modifier.size(visual).background(pal.bg, CircleShape), contentAlignment = Alignment.Center) { content() }
+    }
 }
 
 @Composable
@@ -109,13 +157,19 @@ fun FavoriteButton(selected: Boolean, onClick: () -> Unit, modifier: Modifier = 
 
 // —— Images ——
 
+/** Decoded asset image, or null until it has loaded. */
+@Composable
+fun rememberAsset(path: String): ImageBitmap? {
+    val context = LocalContext.current
+    val state = remember(path) { mutableStateOf(SpriteCache.cached(path)) }
+    if (state.value == null && path.isNotBlank()) LaunchedEffect(path) { state.value = SpriteCache.load(context, path) }
+    return state.value
+}
+
 @Composable
 fun AssetImage(path: String, description: String?, modifier: Modifier = Modifier) {
-    val context = LocalContext.current
-    val bitmap by produceState<android.graphics.Bitmap?>(null, path) {
-        value = if (path.isBlank()) null else SpriteCache.load(context, path)
-    }
-    if (bitmap != null) Image(bitmap!!.asImageBitmap(), description, modifier, contentScale = ContentScale.Fit)
+    val bitmap = rememberAsset(path)
+    if (bitmap != null) Image(bitmap, description, modifier, contentScale = ContentScale.Fit)
     else Box(modifier, contentAlignment = Alignment.Center) {
         BallMark(Modifier.fillMaxSize(.6f), pal.text.copy(alpha = .13f))
     }
@@ -146,17 +200,52 @@ fun Kicker(text: String, color: Color = pal.n(700), modifier: Modifier = Modifie
 
 @Composable
 fun SectionHeading(text: String, modifier: Modifier = Modifier) =
-    Text(text, modifier.padding(top = 4.dp), style = MaterialTheme.typography.titleMedium)
+    Text(text, modifier.padding(top = 4.dp).semantics { heading() }, style = MaterialTheme.typography.titleMedium)
 
 // —— Tags, pills and toggles ——
 
+/** The type's Champions icon cut to a circle; [description] is null where a label next to it already names the type. */
 @Composable
-fun TypeTag(type: Int, modifier: Modifier = Modifier, fontSize: TextUnit = 11.sp, horizontal: Dp = 9.dp, vertical: Dp = 2.dp,
-            onTint: Boolean = false, suffix: String = "") {
+fun TypeIcon(type: Int, modifier: Modifier = Modifier, size: Dp = 20.dp, description: String? = TypeNames[type]) {
+    val bitmap = rememberAsset("types/$type.png")
+    val shape = modifier.size(size).clip(CircleShape)
+    if (bitmap != null) Image(bitmap, description, shape, contentScale = ContentScale.Fit)
+    else Box(shape.background(typeTone(type).solid).then(if (description != null) Modifier.semantics { contentDescription = description } else Modifier))
+}
+
+/**
+ * Type icon followed by its name in a pill. The icon sits as far from the start as from the top, so it follows the pill's
+ * curve; given more width than it needs (e.g. a weight), the content stays centred.
+ */
+@Composable
+fun TypeTag(type: Int, modifier: Modifier = Modifier, fontSize: TextUnit = 11.sp, icon: Dp = 18.dp, horizontal: Dp = 9.dp, vertical: Dp = 3.dp,
+            onTint: Boolean = false, solid: Boolean = false, suffix: String = "") {
     val tone = typeTone(type)
-    // On a type-tinted surface the tag uses the page colour so it stays readable.
-    Text(TypeNames[type] + suffix, modifier.clip(PillShape).background(if (onTint) pal.bg.copy(alpha = .75f) else tone.bg).padding(horizontal = horizontal, vertical = vertical),
-        color = tone.fg, fontSize = fontSize, fontWeight = FontWeight.Bold, maxLines = 1, textAlign = TextAlign.Center)
+    // On a type-tinted surface the tag uses the page colour so it stays readable; a solid tag inverts the type colours.
+    val bg = when { solid -> tone.fg; onTint -> pal.bg.copy(alpha = .75f); else -> tone.bg }
+    Row(modifier.clip(PillShape).background(bg).padding(start = vertical, end = horizontal, top = vertical, bottom = vertical),
+        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(icon / 4, Alignment.CenterHorizontally)) {
+        TypeIcon(type, size = icon, description = null)
+        Text(TypeNames[type] + suffix, Modifier.weight(1f, fill = false), color = if (solid) pal.bg else tone.fg, fontSize = fontSize, lineHeight = fontSize * 1.3f,
+            fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+    }
+}
+
+/** A Pokémon's types across the whole width: a single type fills it, two types share it equally. */
+@Composable
+fun TypeTagRow(types: List<Int>, modifier: Modifier = Modifier, fontSize: TextUnit = 11.sp, icon: Dp = 18.dp, vertical: Dp = 3.dp, gap: Dp = 4.dp,
+               onTint: Boolean = false) {
+    Row(modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(gap)) {
+        types.distinct().forEach { TypeTag(it, Modifier.weight(1f), fontSize, icon, horizontal = vertical, vertical = vertical, onTint = onTint) }
+    }
+}
+
+/** Types stacked at the end of a list row, every tag as wide as the longest name so rows line up. */
+@Composable
+fun TypeTagColumn(types: List<Int>, modifier: Modifier = Modifier) {
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(3.dp)) {
+        types.distinct().forEach { TypeTag(it, Modifier.widthIn(min = 64.dp), horizontal = 3.dp) }
+    }
 }
 
 @Composable
@@ -171,12 +260,12 @@ fun PillSegment(options: List<String>, selected: Int, onSelect: (Int) -> Unit, m
                 scrollable: Boolean = options.size > 5) {
     val scroll = scrollable
     Row((if (scroll) modifier.horizontalScroll(rememberScrollState()) else modifier.fillMaxWidth())
-        .clip(PillShape).background(container).padding(3.dp), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+        .clip(PillShape).background(container).padding(3.dp).selectableGroup(), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
         options.forEachIndexed { i, label ->
             val on = i == selected
             Box((if (scroll) Modifier else Modifier.weight(1f)).heightIn(min = height).clip(PillShape)
                 .background(if (on) pal.accent else Color.Transparent)
-                .clickable(role = Role.Tab) { onSelect(i) }.padding(horizontal = 12.dp), contentAlignment = Alignment.Center) {
+                .selectable(on, role = Role.Tab) { onSelect(i) }.padding(horizontal = 12.dp), contentAlignment = Alignment.Center) {
                 Text(label, color = if (on) pal.bg else pal.n(800), fontSize = fontSize, maxLines = 1,
                     fontWeight = if (heading) HeadingWeight else FontWeight.Bold, fontFamily = if (heading) HeadingFont else BodyFont)
             }
@@ -187,7 +276,7 @@ fun PillSegment(options: List<String>, selected: Int, onSelect: (Int) -> Unit, m
 @Composable
 fun ToggleTile(label: String, on: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier, off: Color = pal.bg) {
     Box(modifier.heightIn(min = 38.dp).clip(PillShape).background(if (on) pal.g(600) else off)
-        .clickable(role = Role.Switch, onClickLabel = label, onClick = onClick).padding(horizontal = 6.dp, vertical = 8.dp),
+        .toggleable(on, role = Role.Switch) { onClick() }.padding(horizontal = 6.dp, vertical = 8.dp),
         contentAlignment = Alignment.Center) {
         Text(label, color = if (on) pal.n(100) else pal.n(800), fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 1)
     }
@@ -224,12 +313,13 @@ fun GhostButton(text: String, onClick: () -> Unit) {
 
 @Composable
 fun AppHeader(kicker: String, title: String, isRoot: Boolean, onNav: () -> Unit, actions: @Composable RowScope.() -> Unit = {}) {
-    Row(Modifier.fillMaxWidth().height(56.dp).background(pal.bg).padding(horizontal = 10.dp),
+    // At least 56 dp; with large system text the kicker and title grow the bar instead of being clipped.
+    Row(Modifier.fillMaxWidth().heightIn(min = 56.dp).background(pal.bg).padding(horizontal = 10.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         RoundIconButton(if (isRoot) "导航" else "返回", onNav) { Glyph(if (isRoot) GlyphKind.MENU else GlyphKind.BACK, color = pal.text) }
         Column(Modifier.weight(1f)) {
             if (kicker.isNotEmpty()) Text(kicker, fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp, color = pal.a(700), maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(title, style = MaterialTheme.typography.headlineSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(title, Modifier.semantics { heading() }, style = MaterialTheme.typography.headlineSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         actions()
     }
@@ -239,18 +329,29 @@ fun AppHeader(kicker: String, title: String, isRoot: Boolean, onNav: () -> Unit,
 
 @Composable
 fun SearchField(value: String, onChange: (String) -> Unit, placeholder: String, filterCount: Int?, modifier: Modifier = Modifier, onFilter: () -> Unit = {}) {
+    val focus = LocalFocusManager.current
     Box(modifier.fillMaxWidth().heightIn(min = 48.dp).clip(PillShape).background(pal.surface).border(1.dp, pal.divider, PillShape)) {
         Glyph(GlyphKind.SEARCH, Modifier.align(Alignment.CenterStart).padding(start = 16.dp).size(18.dp), pal.n(600))
         BasicTextField(value, onChange, Modifier.align(Alignment.CenterStart).fillMaxWidth().padding(start = 42.dp, end = if (filterCount != null) 96.dp else 48.dp, top = 12.dp, bottom = 12.dp),
             singleLine = true, textStyle = TextStyle(color = pal.text, fontSize = 15.sp), cursorBrush = SolidColor(pal.accent),
+            // Results already follow every keystroke, so the keyboard's search key only puts the keyboard away.
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search), keyboardActions = KeyboardActions(onSearch = { focus.clearFocus() }),
             decorationBox = { inner -> Box { if (value.isEmpty()) Text(placeholder, color = pal.n(600), fontSize = 15.sp, maxLines = 1); inner() } })
         Row(Modifier.align(Alignment.CenterEnd).padding(end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
             if (value.isNotEmpty()) RoundIconButton("清空搜索", { onChange("") }, size = 40.dp) { Glyph(GlyphKind.CLOSE, Modifier.size(16.dp), pal.n(700)) }
-            if (filterCount != null) RoundIconButton("筛选", onFilter, Modifier.background(if (filterCount > 0) pal.accent else pal.surface, CircleShape), size = 40.dp) {
+            if (filterCount != null) RoundIconButton("筛选", onFilter, Modifier.background(if (filterCount > 0) pal.accent else pal.surface, CircleShape)
+                .semantics { stateDescription = if (filterCount > 0) "已启用 $filterCount 项" else "未启用" }, size = 40.dp) {
                 Glyph(GlyphKind.FILTER, Modifier.size(18.dp), if (filterCount > 0) pal.bg else pal.text)
             }
         }
     }
+}
+
+/** Dragging a list puts the keyboard away, so the results it was covering come into view; the query stays. */
+@Composable
+fun HideKeyboardWhileScrolling(scrolling: Boolean) {
+    val focus = LocalFocusManager.current
+    LaunchedEffect(scrolling) { if (scrolling) focus.clearFocus() }
 }
 
 data class ActiveFilter(val label: String, val type: Int? = null, val clear: () -> Unit)
@@ -263,30 +364,42 @@ fun ActiveFilters(caption: String?, filters: List<ActiveFilter>, modifier: Modif
         filters.forEach { f ->
             val tone = f.type?.let { typeTone(it) }
             Row(Modifier.clip(PillShape).background(tone?.bg ?: pal.a(200)).clickable(onClickLabel = "清除${f.label}", onClick = f.clear)
-                .padding(start = 12.dp, end = 9.dp, top = 5.dp, bottom = 5.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                .padding(start = if (f.type != null) 5.dp else 12.dp, end = 9.dp, top = 5.dp, bottom = 5.dp), verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                 val fg = tone?.fg ?: pal.a(900)
-                Text(f.label, color = fg, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                f.type?.let { TypeIcon(it, size = 22.dp, description = null) }
+                Text(f.label, color = fg, fontSize = 12.sp, lineHeight = 22.sp, fontWeight = FontWeight.Bold)
                 Glyph(GlyphKind.CLOSE, Modifier.size(12.dp), fg)
             }
         }
     }
 }
 
-/** Grid of 19 type buttons ("全部" + 18 types), five per row. */
+/** One type filter choice: "全部" when [type] is null, otherwise the type's icon and name, centred in the space given. */
 @Composable
-fun TypeGrid(selected: Int?, onSelect: (Int?) -> Unit, columns: Int = 5) {
+fun TypeChoice(type: Int?, selected: Boolean, modifier: Modifier = Modifier, padding: PaddingValues = PaddingValues(horizontal = 4.dp), onClick: () -> Unit) {
+    val tone = type?.let { typeTone(it) }
+    val bg = if (selected) tone?.fg ?: pal.text else tone?.bg ?: pal.surface
+    val fg = if (selected) pal.bg else tone?.fg ?: pal.text
+    Row(modifier.clip(PillShape).background(bg).selectable(selected, role = Role.RadioButton, onClick = onClick).padding(padding),
+        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally)) {
+        if (type != null) TypeIcon(type, size = 20.dp, description = null)
+        Text(type?.let { TypeNames[it] } ?: "全部", color = fg, fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+    }
+}
+
+/** Grid of 19 type buttons ("全部" + 18 types): four per row on a phone, more where the sheet is wider. */
+@Composable
+fun TypeGrid(selected: Int?, onSelect: (Int?) -> Unit) {
     val all = listOf<Int?>(null) + TypeNames.indices
-    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        all.chunked(columns).forEach { row ->
-            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                row.forEach { t ->
-                    val on = selected == t; val tone = t?.let { typeTone(it) }
-                    val bg = if (on) tone?.fg ?: pal.text else tone?.bg ?: pal.surface
-                    val fg = if (on) pal.bg else tone?.fg ?: pal.text
-                    Box(Modifier.weight(1f).heightIn(min = 38.dp).clip(PillShape).background(bg).clickable(role = Role.RadioButton) { onSelect(t) },
-                        contentAlignment = Alignment.Center) { Text(t?.let { TypeNames[it] } ?: "全部", color = fg, fontSize = 12.5.sp, fontWeight = FontWeight.Bold, maxLines = 1) }
+    BoxWithConstraints {
+        val columns = when { maxWidth >= 560.dp -> 7; maxWidth >= 400.dp -> 5; else -> 4 }
+        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            all.chunked(columns).forEach { row ->
+                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    row.forEach { t -> TypeChoice(t, selected == t, Modifier.weight(1f).heightIn(min = 38.dp)) { onSelect(t) } }
+                    repeat(columns - row.size) { Spacer(Modifier.weight(1f)) }
                 }
-                repeat(columns - row.size) { Spacer(Modifier.weight(1f)) }
             }
         }
     }
@@ -294,6 +407,83 @@ fun TypeGrid(selected: Int?, onSelect: (Int?) -> Unit, columns: Int = 5) {
 
 @Composable
 fun SheetLabel(text: String) = Text(text, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = pal.n(700))
+
+// —— Second-level menus ——
+
+/**
+ * Name of the second-level menu a page shows ("" = none). Recreation (rotation, theme) keeps it open; leaving the page
+ * for another destination saves it closed, so coming back shows the page itself.
+ */
+@Composable
+fun rememberMenuState(): MutableState<String> {
+    val activity = LocalActivity.current
+    return rememberSaveable(saver = Saver({ if (activity?.isChangingConfigurations == true) it.value else "" }, { mutableStateOf(it) })) {
+        mutableStateOf("")
+    }
+}
+
+/** Shows [open]'s menu over this area; a closing menu keeps its content while it slides away. */
+@Composable
+fun MenuHost(open: String, modifier: Modifier = Modifier, content: @Composable AnimatedVisibilityScope.(String) -> Unit) {
+    AnimatedContent(open, modifier.fillMaxSize(), transitionSpec = { (EnterTransition.None togetherWith ExitTransition.None).using(null) },
+        label = "menu") { menu -> if (menu.isNotEmpty()) content(menu) }
+}
+
+private val PanelShape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)
+
+/**
+ * Panel that rises from the bottom of a [MenuHost] over a scrim. Dragging the handle or title row down past a short
+ * distance, or flinging it, closes the menu; a shorter drag springs back.
+ */
+@Composable
+fun AnimatedVisibilityScope.MenuPanel(kicker: String, kickerColor: Color, title: String, fill: Boolean, onClose: () -> Unit,
+                                       actions: @Composable RowScope.() -> Unit = {}, content: LazyListScope.() -> Unit) {
+    val reduceMotion = LocalReduceMotion.current
+    val duration = if (reduceMotion) 0 else 280
+    val density = LocalDensity.current
+    val closeDistance = with(density) { 96.dp.toPx() }; val closeVelocity = with(density) { 125.dp.toPx() }
+    var drag by remember { mutableFloatStateOf(0f) }
+    val close by rememberUpdatedState(onClose)
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        val maxH = maxHeight * .94f
+        val maxPx = with(density) { maxH.toPx() }
+        Box(Modifier.matchParentSize().animateEnterExit(fadeIn(tween(duration)), fadeOut(tween(duration)))
+            .graphicsLayer { alpha = 1f - (drag / maxPx).coerceIn(0f, 1f) }.background(pal.n(900).copy(alpha = .42f))
+            .clickable(remember { MutableInteractionSource() }, null, onClickLabel = "关闭菜单", onClick = onClose))
+        Column(Modifier.align(Alignment.BottomCenter).fillMaxWidth().then(if (fill) Modifier.height(maxH) else Modifier.heightIn(max = maxH))
+            .animateEnterExit(slideInVertically(tween(duration, easing = LinearOutSlowInEasing)) { it }, slideOutVertically(tween(duration, easing = FastOutLinearInEasing)) { it })
+            .offset { IntOffset(0, drag.roundToInt()) }
+            .shadow(16.dp, PanelShape).clip(PanelShape).background(pal.bg).testTag("menu-sheet")
+            .pointerInput(Unit) { awaitPointerEventScope { while (true) awaitPointerEvent() } }) {
+            Column(Modifier.draggable(rememberDraggableState { drag = (drag + it).coerceAtLeast(0f) }, Orientation.Vertical,
+                onDragStopped = { velocity ->
+                    when {
+                        drag > closeDistance || (velocity > closeVelocity && drag > 0f) -> close()
+                        reduceMotion -> drag = 0f
+                        else -> animate(drag, 0f) { value, _ -> drag = value }
+                    }
+                })) {
+                Box(Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 4.dp).semantics { contentDescription = "下拉关闭"; dismiss { close(); true } },
+                    contentAlignment = Alignment.Center) {
+                    Box(Modifier.size(40.dp, 4.dp).clip(PillShape).background(pal.n(400)))
+                }
+                Row(Modifier.fillMaxWidth().padding(start = 18.dp, end = 14.dp, top = 2.dp, bottom = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Column(Modifier.weight(1f)) {
+                        Kicker(kicker, kickerColor, spacing = 1.1.sp)
+                        Text(title, style = MaterialTheme.typography.titleLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    }
+                    actions()
+                    PrimaryButton("完成", onClose, height = 40.dp)
+                }
+            }
+            val list = rememberLazyListState()
+            HideKeyboardWhileScrolling(list.isScrollInProgress)
+            LazyColumn(Modifier.weight(1f, fill = false).testTag("menu-list"), list, contentPadding = PaddingValues(start = 18.dp, end = 18.dp, top = 4.dp, bottom = 20.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp), content = content)
+        }
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -343,13 +533,15 @@ fun PokemonPickerSheet(title: String, dex: Dex, onPick: (Pokemon) -> Unit, onDis
                 Text(title, Modifier.weight(1f), style = MaterialTheme.typography.titleLarge); GhostButton("取消", onDismiss)
             }
             SearchField(query, { query = it }, "搜索名称、英文或编号", null)
-            LazyColumn(Modifier.weight(1f), contentPadding = PaddingValues(bottom = 30.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            val state = rememberLazyListState()
+            HideKeyboardWhileScrolling(state.isScrollInProgress)
+            LazyColumn(Modifier.weight(1f), state, contentPadding = PaddingValues(bottom = 30.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 items(list, key = { it.id }) { p ->
                     Row(Modifier.fillMaxWidth().clip(PillShape).background(pal.surface).clickable { onPick(p) }.padding(start = 6.dp, end = 16.dp, top = 6.dp, bottom = 6.dp),
                         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         Blob(p, 46.dp)
                         Text(p.displayName, Modifier.weight(1f), fontSize = 14.sp, fontWeight = FontWeight.Bold, maxLines = 2)
-                        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) { p.types.distinct().forEach { TypeTag(it, horizontal = 8.dp) } }
+                        TypeTagColumn(p.types)
                     }
                 }
             }
@@ -373,7 +565,7 @@ fun SelectField(label: String?, value: String, options: List<SelectOption>, modi
             verticalAlignment = Alignment.CenterVertically) {
             Text(value, Modifier.weight(1f), fontSize = 14.sp, fontWeight = if (bold) FontWeight.Bold else FontWeight.Normal,
                 color = if (enabled) pal.text else pal.n(600), maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text("⌄", color = pal.n(700), fontSize = 14.sp)
+            Glyph(GlyphKind.CHEVRON, Modifier.size(16.dp).rotate(90f), if (enabled) pal.n(700) else pal.n(500))
         }
     }
     if (open) {
@@ -389,12 +581,20 @@ fun SelectField(label: String?, value: String, options: List<SelectOption>, modi
                     Text(label ?: "选择", Modifier.weight(1f), style = MaterialTheme.typography.titleLarge); GhostButton("取消") { open = false }
                 }
                 if (options.size > 12) SearchField(query, { query = it }, "搜索名称、英文或编号", null)
-                LazyColumn(if (options.size > 12) Modifier.weight(1f) else Modifier, contentPadding = PaddingValues(bottom = 30.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                // A long list opens at the current choice, two rows down so the rows above show there is more.
+                val list = rememberLazyListState((shown.indexOfFirst { it.label == value } - 2).coerceAtLeast(0))
+                HideKeyboardWhileScrolling(list.isScrollInProgress)
+                LazyColumn(if (options.size > 12) Modifier.weight(1f) else Modifier, list, contentPadding = PaddingValues(bottom = 30.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     items(shown, key = { it.id }) { o ->
-                        Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(22.dp)).background(pal.surface).clickable { onChoose(o.id); open = false }
-                            .padding(horizontal = 16.dp, vertical = 11.dp)) {
-                            Text(o.label, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-                            if (o.detail.isNotBlank()) Text(o.detail, fontSize = 12.sp, color = pal.n(700))
+                        val current = o.label == value
+                        Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(22.dp)).background(if (current) pal.a(100) else pal.surface)
+                            .selectable(current) { onChoose(o.id); open = false }.padding(horizontal = 16.dp, vertical = 11.dp),
+                            verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                            Column(Modifier.weight(1f)) {
+                                Text(o.label, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                                if (o.detail.isNotBlank()) Text(o.detail, fontSize = 12.sp, color = pal.n(700))
+                            }
+                            if (current) Text("当前", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = pal.a(800))
                         }
                     }
                 }
@@ -420,7 +620,7 @@ fun PokemonRow(p: Pokemon, badge: String?, metricLabel: String, metric: String, 
                 if (badge != null) Pill(badge, pal.bg.copy(alpha = .75f), pal.a(800), fontSize = 10.sp)
             }
             Text(p.displayName, fontFamily = HeadingFont, fontWeight = HeadingWeight, fontSize = 19.sp, lineHeight = 21.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) { p.types.distinct().forEach { TypeTag(it, onTint = true) } }
+            TypeTagRow(p.types, onTint = true)
         }
         Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(2.dp)) {
             FavoriteButton(favorite, onFavorite, size = 36.dp)
@@ -437,11 +637,14 @@ fun categoryColors(category: Int): Pair<Color, Color> = when (category) {
     0 -> pal.a(200) to pal.a(800); 1 -> pal.g(200) to pal.g(800); else -> pal.n(300) to pal.n(800)
 }
 
+/** Move lists show the type as an icon only; inset by the row's vertical padding, it follows the pill's curve. */
+val MoveTypeIcon = 26.dp
+
 @Composable
 fun MoveRow(move: Move, showAccuracy: Boolean, favorite: Boolean = false, onClick: () -> Unit) {
-    Row(Modifier.fillMaxWidth().clip(PillShape).background(pal.surface).clickable(onClick = onClick).padding(start = 10.dp, end = 14.dp, top = 11.dp, bottom = 11.dp),
+    Row(Modifier.fillMaxWidth().clip(PillShape).background(pal.surface).clickable(onClick = onClick).padding(start = 12.dp, end = 14.dp, top = 11.dp, bottom = 11.dp),
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-        TypeTag(move.type, Modifier.width(52.dp), horizontal = 0.dp, vertical = 3.dp)
+        TypeIcon(move.type, size = MoveTypeIcon)
         Row(Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(move.name, Modifier.weight(1f, false), fontSize = 14.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis,
                 color = if (move.available) pal.text else pal.n(600))
@@ -458,9 +661,10 @@ fun MoveRow(move: Move, showAccuracy: Boolean, favorite: Boolean = false, onClic
 
 @Composable
 fun MoveHeaderRow() {
-    Row(Modifier.fillMaxWidth().padding(start = 10.dp, end = 14.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+    Row(Modifier.fillMaxWidth().padding(start = 12.dp, end = 14.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
         @Composable fun h(t: String, m: Modifier, a: TextAlign = TextAlign.Start) = Text(t, m, fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = .5.sp, color = pal.n(700), textAlign = a)
-        h("属性", Modifier.width(52.dp)); h("招式", Modifier.weight(1f)); h("分类", Modifier.width(40.dp), TextAlign.Center)
+        // Wider than the icon column so larger text stays on one line; it overhangs evenly on both sides.
+        h("属性", Modifier.width(MoveTypeIcon).requiredWidth(MoveTypeIcon + 8.dp), TextAlign.Center); h("招式", Modifier.weight(1f)); h("分类", Modifier.width(40.dp), TextAlign.Center)
         h("威力", Modifier.width(36.dp), TextAlign.End); h("命中", Modifier.width(36.dp), TextAlign.End)
     }
 }
@@ -518,7 +722,7 @@ fun TypeGroupsCard(title: String, groups: List<TypeGroup>, note: String, empty: 
             if (shown.isEmpty() && empty != null) Text(empty, fontSize = 12.sp, color = pal.n(700))
             shown.forEach { g ->
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(g.label, Modifier.width(62.dp).padding(top = 3.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = g.color)
+                    Text(g.label, Modifier.width(62.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = g.color)
                     FlowRow(Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(5.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
                         g.types.forEach { TypeTag(it, horizontal = 10.dp, vertical = 3.dp, suffix = g.suffix(it)) }
                     }

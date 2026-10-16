@@ -39,6 +39,7 @@ fun PokemonListScreen(dex: Dex, model: DexViewModel, onMenu: () -> Unit, onOpen:
         filterPokemon(dex, query, type, allForms, favoritesOnly, model.favorites, sort)
     }
     val grid = rememberLazyGridState()
+    HideKeyboardWhileScrolling(grid.isScrollInProgress)
     ResetScrollOnChange(listOf(query, type, allForms, favoritesOnly, sort).joinToString("\u0000")) { grid.requestScrollToItem(0) }
     fun clear() { query = ""; type = null; favoritesOnly = false; allForms = false; sort = SortOrder.NUMBER }
     val filters = buildList {
@@ -118,6 +119,7 @@ fun MoveListScreen(dex: Dex, model: DexViewModel, onMenu: () -> Unit, onOpen: (S
             .filter { !favoritesOnly || it.key in model.favorites }
     }
     val list = rememberLazyListState()
+    HideKeyboardWhileScrolling(list.isScrollInProgress)
     ResetScrollOnChange(listOf(query, filter.key, favoritesOnly).joinToString("\u0000")) { list.requestScrollToItem(0) }
     val filters = filter.active() + listOfNotNull(if (favoritesOnly) ActiveFilter("仅看收藏") { favoritesOnly = false } else null)
     Column(Modifier.fillMaxSize()) {
@@ -148,6 +150,7 @@ fun AbilityListScreen(dex: Dex, model: DexViewModel, onMenu: () -> Unit, onOpen:
         dex.abilities.filter { search.matches(it.searchText) && (!favoritesOnly || it.key in model.favorites) }
     }
     val list = rememberLazyListState()
+    HideKeyboardWhileScrolling(list.isScrollInProgress)
     ResetScrollOnChange(listOf(query, favoritesOnly).joinToString("\u0000")) { list.requestScrollToItem(0) }
     Column(Modifier.fillMaxSize()) {
         AppHeader("${dex.abilities.size} 个特性", DexRoot.ABILITIES.title, true, onMenu)

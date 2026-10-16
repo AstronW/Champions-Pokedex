@@ -47,6 +47,21 @@ class NavigationFlowTest {
         compose.onNode(hasSetTextAction()).assertTextContains("0003")
     }
 
+    @Test fun backFromAnotherPageReturnsToCatalogueAndSelectionIsAnnounced() {
+        compose.waitForCatalog()
+        compose.onNode(hasSetTextAction()).performTextReplacement("0003")
+        compose.navigate("速度线")
+        compose.onNode(segment("最速 32+")).assertIsSelected()
+        compose.onNode(segment("无振")).assertIsNotSelected().performClick().assertIsSelected()
+        compose.onNodeWithText("讲究围巾 ×1.5").assertIsOff().performClick().assertIsOn()
+        compose.back()
+        compose.onNodeWithText("全国图鉴",substring=true).assertIsDisplayed()
+        compose.onNode(hasSetTextAction()).assertTextContains("0003")
+        compose.navigate("速度线")
+        compose.onNode(segment("无振")).assertIsSelected()
+        compose.onNodeWithText("讲究围巾 ×1.5").assertIsOn()
+    }
+
     @Test fun forwardAndBackMoveInOppositeDirections() {
         ready()
         scrollToAbility()

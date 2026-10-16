@@ -26,7 +26,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,7 +64,9 @@ fun DexApp(model: DexViewModel) {
                 BallMark(Modifier.size(56.dp), pal.accent); Spacer(Modifier.height(24.dp))
                 if (model.error != null) { Text(model.error!!, color = pal.text); GhostButton("重试", model::load) }
                 else { Text("正在打开图鉴", style = MaterialTheme.typography.titleMedium, color = pal.text)
-                    LinearProgressIndicator(Modifier.padding(top = 20.dp).width(120.dp), color = pal.accent, trackColor = pal.n(300)) }
+                    val bar = Modifier.padding(top = 20.dp).width(120.dp); val progress = model.loadProgress
+                    if (progress != null) LinearProgressIndicator({ progress }, bar, color = pal.accent, trackColor = pal.n(300), drawStopIndicator = {})
+                    else LinearProgressIndicator(bar, color = pal.accent, trackColor = pal.n(300)) }
             }
             return@DexTheme
         }
@@ -84,20 +90,26 @@ fun DexApp(model: DexViewModel) {
             stack = stack.dropLast(1)
         }
         fun openDrawer() { scope.launch { drawer.open() } }
+        // Back from another top-level page returns to the catalogue first, rather than leaving the app.
+        BackHandler(stack.isEmpty() && root != DexRoot.POKEMON && !drawer.isOpen) { root = DexRoot.POKEMON }
         BackHandler(drawer.isOpen) { scope.launch { drawer.close() } }
         BackHandler(stack.isNotEmpty() && !drawer.isOpen) { back() }
         CompositionLocalProvider(LocalToast provides { message -> toast = (toast?.first ?: 0) + 1 to message }) {
             ModalNavigationDrawer(drawerState = drawer, gesturesEnabled = stack.isEmpty() || drawer.isOpen, scrimColor = pal.n(900).copy(alpha = .45f), drawerContent = {
-                // Let the drawer slide away first, then switch pages, so both motions are visible instead of one heavy frame.
-                suspend fun closeDrawer() { if (model.reduceMotion) drawer.snapTo(DrawerValue.Closed) else drawer.close() }
-                NavigationDrawerContent(dex, model, root, onPick = { item -> scope.launch { closeDrawer(); root = item } },
-                    onSettings = { scope.launch { closeDrawer(); open("settings") } })
+                // Switch pages first and let that heavy first frame finish while the drawer is still open, then slide the drawer
+                // away over the page's own fade-in. Closing first left a pause after the drawer had gone before anything appeared.
+                suspend fun closeDrawer() {
+                    repeat(2) { withFrameNanos { } }
+                    if (model.reduceMotion) drawer.snapTo(DrawerValue.Closed) else drawer.close()
+                }
+                NavigationDrawerContent(dex, model, root, onPick = { item -> root = item; scope.launch { closeDrawer() } },
+                    onSettings = { open("settings"); scope.launch { closeDrawer() } })
             }) {
                 Box(Modifier.fillMaxSize().background(pal.bg).safeDrawingPadding()) {
                     Box(if (stack.isNotEmpty()) Modifier.fillMaxSize().clearAndSetSemantics {} else Modifier.fillMaxSize()) {
                         val pageDuration = if (model.reduceMotion) 0 else 260
                         AnimatedContent(targetState = root, modifier = Modifier.fillMaxSize(), transitionSpec = {
-                            (fadeIn(tween(pageDuration, delayMillis = pageDuration / 4)) + slideInVertically(tween(pageDuration)) { it / 24 }) togetherWith
+                            (fadeIn(tween(pageDuration)) + slideInVertically(tween(pageDuration)) { it / 24 }) togetherWith
                                 fadeOut(tween(pageDuration / 2))
                         }, label = "page") { current ->
                         rootStates.SaveableStateProvider(current.name) {
@@ -145,7 +157,7 @@ private fun ToastHost(message: String?, modifier: Modifier) {
     var last by remember { mutableStateOf("") }
     if (message != null) last = message
     val alpha by animateFloatAsState(if (message != null) 1f else 0f, tween(if (LocalReduceMotion.current) 0 else 250), label = "toast")
-    if (alpha > 0f) Text(last, modifier.alpha(alpha).clip(PillShape).background(pal.n(900)).padding(horizontal = 18.dp, vertical = 10.dp),
+    if (alpha > 0f) Text(last, modifier.alpha(alpha).semantics { liveRegion = LiveRegionMode.Polite }.clip(PillShape).background(pal.n(900)).padding(horizontal = 18.dp, vertical = 10.dp),
         color = pal.n(100), fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
 }
 
@@ -184,7 +196,7 @@ private fun NavigationDrawerContent(dex: Dex, model: DexViewModel, current: DexR
 @Composable
 private fun DrawerItem(label: String, count: String, selected: Boolean, onClick: () -> Unit) {
     Row(Modifier.fillMaxWidth().heightIn(min = 44.dp).clip(PillShape).background(if (selected) pal.a(200) else pal.bg)
-        .clickable(role = Role.Tab, onClick = onClick).padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) {
+        .selectable(selected, role = Role.Tab, onClick = onClick).padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) {
         Text(label, Modifier.weight(1f), fontFamily = HeadingFont, fontWeight = HeadingWeight, fontSize = 17.sp, color = if (selected) pal.a(900) else pal.text)
         Text(count, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = pal.n(600))
     }
