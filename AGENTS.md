@@ -10,3 +10,4 @@
 - 以 `./build.ps1` 输出优化的本地体验版；正式发布密钥不进入仓库。
 - 设备验证必须指定 `adb -s <serial>`；不要对所有已连接设备批量安装或重启。
 - 验证与变化相称，构建不等于真实页面、设备性能验收。
+- 界面设计以 `Theme.kt`、`Components.kt` 的 Organic 设计系统为准；使用 `material-3` 技能时先读 `.claude/skills/material-3/PROJECT.md`，Material 3 只作交互、无障碍与布局原则参考。
