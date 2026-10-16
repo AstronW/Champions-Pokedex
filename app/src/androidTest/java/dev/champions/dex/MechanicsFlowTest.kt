@@ -31,12 +31,12 @@ class MechanicsFlowTest {
 
     @Test fun statusLinkOpensOfflineAndReturnsToSameMovePosition() {
         compose.waitForCatalog(); compose.navigate("招式"); search("火焰拳"); openRow("火焰拳")
-        scrollTo(hasText("灼伤（状态）") and hasClickAction()); openRow("灼伤（状态）")
+        scrollTo(hasText("灼伤") and hasClickAction()); openRow("灼伤")
         compose.onNodeWithTag("status-detail-list").assertExists()
         compose.onNodeWithText("游戏说明 · CHAMPIONS").assertExists()
         scrollTo(hasText("百科详解 · 52POKE"))
         scrollTo(hasText("来源：52poke 神奇宝贝百科及条目贡献者"))
-        compose.back(); compose.onNodeWithText("灼伤（状态）").assertIsDisplayed()
+        compose.back(); compose.onNodeWithText("灼伤").assertIsDisplayed()
         compose.back(); compose.onNode(hasSetTextAction()).assertTextContains("火焰拳")
     }
 
@@ -44,8 +44,8 @@ class MechanicsFlowTest {
         compose.waitForCatalog(); compose.navigate("设置与关于")
         compose.onNode(segment("暗色") and hasAnyAncestor(hasTestTag("detail:settings"))).performClick()
         compose.back(); compose.navigate("状态说明"); search("剧毒")
-        compose.onNodeWithText("中毒（状态）").assertExists()
-        search("麻痹"); openRow("麻痹（状态）")
+        compose.onNodeWithText("中毒").assertExists()
+        search("麻痹"); openRow("麻痹")
         compose.onNodeWithText("12.5%", substring = true).assertExists()
         compose.activityRule.scenario.onActivity { it.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE }
         compose.waitUntil(10000) { compose.activity.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE }

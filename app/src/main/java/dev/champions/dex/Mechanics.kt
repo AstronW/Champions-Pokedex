@@ -17,6 +17,8 @@ data class MoveTarget(val text: String, val wikiCode: String, val gameCode: Stri
 data class StatusGameText(val name: String, val english: String, val description: String)
 data class BattleStatus(val key: String, val bodyKey: String, val name: String, val kind: String,
                         val aliases: List<String>, val game: List<StatusGameText>, val section: String) {
+    /** The list and page already say these are statuses, so the wiki's "（状态）" disambiguator is dropped. */
+    val displayName get() = name.removeSuffix("（状态）")
     val searchText = (listOf(name) + aliases + game.flatMap { listOf(it.name, it.english) }).joinToString(" ").lowercase()
     val kindLabel get() = when (kind) {
         "status_page" -> "状态"
@@ -73,6 +75,9 @@ fun parseMechanics(j: JSONObject): Mechanics = Mechanics(
     }.distinct(),
     issues = j.getJSONArray("issues").objects { it.getString("subject") to it.getString("detail") }.groupBy({ it.first }, { it.second }),
 )
+
+/** Out-of-battle use has no meaning in Champions, so it is never listed. */
+val HiddenSpecialFlags = setOf("field_use")
 
 val SpecialFlagLabels = mapOf(
     "contact" to "接触", "protect" to "守住", "magic_coat" to "魔法反射", "snatch" to "抢夺",

@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 private fun ReferenceChip(label: String, key: String, onOpen: (String) -> Unit) {
-    Pill(label, pal.surface, pal.a(800), Modifier.clickable(role = Role.Button) { onOpen(key) }.testTag("link:$key"), fontSize = 12.sp)
+    Pill(label, pal.surface, pal.a(800), Modifier.heightIn(min = 32.dp).clickable(role = Role.Button) { onOpen(key) }.wrapContentHeight().testTag("link:$key"), fontSize = 12.sp)
 }
 
 /** Wiki metadata stays separate from the game's contact/category/numeric fields. */
@@ -47,12 +47,12 @@ fun LazyListScope.mechanicsSection(key: String, dex: Dex, onOpen: (String) -> Un
             Text(if (target.text.isBlank() || target.text == "未知") "百科未标明目标范围。" else target.text, fontSize = 14.sp, lineHeight = 22.sp)
         }
     } }
-    val flags = mechanics.flags[key].orEmpty()
+    val flags = mechanics.flags[key].orEmpty().filter { it.field !in HiddenSpecialFlags }
     if (flags.isNotEmpty()) item(key = "flags") {
         var expanded by rememberSaveable { mutableStateOf(false) }
         DexCard(padding = PaddingValues(16.dp), spacing = 10.dp) {
             Text("特殊判定 · ${flags.size} 项  ${if (expanded) "收起 −" else "展开 +"}",
-                Modifier.fillMaxWidth().clickable(role = Role.Button) { expanded = !expanded }.padding(vertical = 4.dp).testTag("special-flags"),
+                Modifier.fillMaxWidth().heightIn(min = 40.dp).clickable(role = Role.Button) { expanded = !expanded }.wrapContentHeight().testTag("special-flags"),
                 fontSize = 14.sp, fontWeight = FontWeight.Bold, color = pal.a(800))
             if (expanded) {
                 flags.forEach { flag ->
@@ -76,12 +76,12 @@ fun LazyListScope.mechanicsSection(key: String, dex: Dex, onOpen: (String) -> Un
             SectionHeading("提及的状态")
             Text("点击查看游戏说明与百科效果；引用可能包含历史或其他游戏语境。", fontSize = 11.sp, lineHeight = 17.sp, color = pal.n(700))
             FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                direct.forEach { ReferenceChip(it.name, it.key, onOpen) }
+                direct.forEach { ReferenceChip(it.displayName, it.key, onOpen) }
             }
             if (other.isNotEmpty()) {
-                Text("其他章节引用 · ${other.size}  ${if (showOther) "收起 −" else "展开 +"}", Modifier.clickable { showOther = !showOther }.padding(vertical = 8.dp), fontSize = 12.sp, color = pal.a(800))
+                Text("其他章节引用 · ${other.size}  ${if (showOther) "收起 −" else "展开 +"}", Modifier.clickable(role = Role.Button) { showOther = !showOther }.padding(vertical = 10.dp), fontSize = 12.sp, color = pal.a(800))
                 if (showOther) FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    other.forEach { ReferenceChip(it.name, it.key, onOpen) }
+                    other.forEach { ReferenceChip(it.displayName, it.key, onOpen) }
                 }
             }
         }
@@ -94,6 +94,7 @@ fun StatusListScreen(dex: Dex, onMenu: () -> Unit, onOpen: (String) -> Unit) {
     val focus = LocalFocusManager.current
     val statuses = remember(dex, query) { val search = SearchQuery(query); dex.mechanics.statuses.filter { search.matches(it.searchText) } }
     val list = rememberLazyListState()
+    HideKeyboardWhileScrolling(list.isScrollInProgress)
     ResetScrollOnChange(query) { list.requestScrollToItem(0) }
     Column(Modifier.fillMaxSize()) {
         AppHeader("${dex.mechanics.statuses.size} 篇离线资料", "状态说明", true, onMenu)
@@ -104,8 +105,8 @@ fun StatusListScreen(dex: Dex, onMenu: () -> Unit, onOpen: (String) -> Unit) {
         LazyColumn(state = list, contentPadding = PaddingValues(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             if (statuses.isEmpty()) item { EmptyResult(onClear = { query = "" }) }
             items(statuses, key = { it.key }) { status ->
-                AbilityRow(status.name, status.game.firstOrNull()?.description?.replace('\n', ' ') ?: status.kindLabel,
-                    status.kindLabel, onClick = { focus.clearFocus(); onOpen(status.key) }, chevron = true)
+                AbilityRow(status.displayName, status.game.firstOrNull()?.description?.replace('\n', ' ') ?: status.kindLabel,
+                    status.kindLabel.takeIf { status.kind != "status_page" }, onClick = { focus.clearFocus(); onOpen(status.key) }, chevron = true)
             }
         }
     }
@@ -115,11 +116,15 @@ fun StatusListScreen(dex: Dex, onMenu: () -> Unit, onOpen: (String) -> Unit) {
 fun StatusDetail(status: BattleStatus, dex: Dex, onBack: () -> Unit, onOpen: (String) -> Unit) {
     val references = dex.mechanics.referencesByBody[status.bodyKey].orEmpty().filter { dex.entityName(it.entityKey) != null }
         .groupBy { it.entityKey }
+    val moves = references.filterKeys { it.startsWith("move:") }.entries.toList()
+    val abilities = references.filterKeys { it.startsWith("ability:") }.entries.toList()
+    val items = references.filterKeys { it.startsWith("item:") }.entries.toList()
+    var tab by rememberSaveable { mutableStateOf(0) }
     Column(Modifier.fillMaxSize()) {
-        AppHeader(status.kindLabel, status.name, false, onBack)
+        AppHeader(status.kindLabel, status.displayName, false, onBack)
         LazyColumn(Modifier.testTag("status-detail-list"), contentPadding = PaddingValues(18.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             item(key = "hero") {
-                Text(status.name, style = MaterialTheme.typography.headlineLarge)
+                Text(status.displayName, style = MaterialTheme.typography.headlineLarge)
                 Text("百科资料保留原有版本语境；被引用不代表该状态在 Champions 中可用。", Modifier.padding(top = 8.dp), fontSize = 12.sp, lineHeight = 19.sp, color = pal.n(700))
                 if (status.kind == "redirected_definition") Text("该状态的定义收录于招式页面。", Modifier.padding(top = 6.dp), fontSize = 12.sp, color = pal.a(800))
             }
@@ -134,9 +139,16 @@ fun StatusDetail(status: BattleStatus, dex: Dex, onBack: () -> Unit, onOpen: (St
             }
             item(key = "section") { Text("百科摘录 · ${status.section}", fontSize = 12.sp, color = pal.n(700)) }
             wikiSection(status.key, dex, onOpen)
-            item(key = "referencesHead") { SectionHeading("引用此资料的招式与特性 · ${references.size}") }
-            items(references.entries.toList(), key = { it.key }) { (key, refs) ->
-                EntityReferenceRow(key, refs.map { it.section.ifBlank { "页面概述" } }.distinct().joinToString("；"), dex, onOpen)
+            item(key = "referencesHead") {
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    SectionHeading("引用此资料的条目")
+                    PillSegment(listOf("招式 · ${moves.size}", "特性 · ${abilities.size}", "道具 · ${items.size}"), tab, { tab = it })
+                }
+            }
+            val shown = listOf(moves, abilities, items)[tab]
+            if (shown.isEmpty()) item(key = "referencesEmpty") { Text("没有引用此资料的${listOf("招式", "特性", "道具")[tab]}。", fontSize = 13.sp, color = pal.n(700)) }
+            items(shown, key = { it.key }) { (key, refs) ->
+                EntityReferenceRow(key, dex, onOpen)
             }
         }
     }
@@ -152,6 +164,7 @@ fun CategoryListScreen(kind: String, dex: Dex, onBack: () -> Unit, onOpen: (Stri
             dex.mechanics.relationsByCategory[c.id].orEmpty().any { it.entityKey.startsWith("$kind:") && it.relation != "section_reference" } }
     }
     val list = rememberLazyListState()
+    HideKeyboardWhileScrolling(list.isScrollInProgress)
     ResetScrollOnChange(query) { list.requestScrollToItem(0) }
     Column(Modifier.fillMaxSize()) {
         AppHeader("百科分类索引", if (kind == "ability") "特性相关分类" else "招式详细分类", false, onBack)
@@ -179,19 +192,19 @@ fun CategoryDetail(category: MoveCategory, dex: Dex, onBack: () -> Unit, onOpen:
                 Text(category.name, style = MaterialTheme.typography.headlineLarge)
                 Text(category.group, Modifier.padding(top = 6.dp), fontSize = 12.sp, color = pal.n(700))
                 Text("按 Champions 收录范围关联；分类成员与相关条目分别列出，具体条件以百科原文为准。", Modifier.padding(top = 10.dp), fontSize = 12.sp, lineHeight = 19.sp, color = pal.n(700))
-                Text("52poke · 修订 ${category.revision} ↗", Modifier.clickable { openWeb(context, category.url) }.padding(vertical = 10.dp), fontSize = 12.sp, color = pal.a(800))
-                Text("CC BY-NC-SA 3.0 ↗", Modifier.clickable { openWeb(context, "https://creativecommons.org/licenses/by-nc-sa/3.0/") }.padding(vertical = 6.dp), fontSize = 11.sp, color = pal.a(800))
+                Text("52poke · 修订 ${category.revision} ↗", Modifier.clickable(role = Role.Button) { openWeb(context, category.url) }.padding(vertical = 10.dp), fontSize = 12.sp, color = pal.a(800))
+                Text("CC BY-NC-SA 3.0 ↗", Modifier.clickable(role = Role.Button) { openWeb(context, "https://creativecommons.org/licenses/by-nc-sa/3.0/") }.padding(vertical = 10.dp), fontSize = 11.sp, color = pal.a(800))
             }
             listOf("member" to "成员招式", "related_move" to "相关招式", "related_ability" to "相关特性", "section_reference" to "段落提及").forEach { (relation, title) ->
                 val entries = groups[relation].orEmpty().groupBy { it.entityKey }
                 if (entries.isNotEmpty()) {
                     item(key = "heading:$relation") {
                         if (relation == "section_reference") Text("$title · ${entries.size}  ${if (showMentions) "收起 −" else "展开 +"}",
-                            Modifier.clickable { showMentions = !showMentions }.padding(vertical = 8.dp), fontSize = 14.sp, color = pal.a(800))
+                            Modifier.clickable(role = Role.Button) { showMentions = !showMentions }.padding(vertical = 10.dp), fontSize = 14.sp, color = pal.a(800))
                         else SectionHeading("$title · ${entries.size}")
                     }
                     if (relation != "section_reference" || showMentions) items(entries.entries.toList(), key = { "$relation:${it.key}" }) { (key, rows) ->
-                        EntityReferenceRow(key, rows.map { it.section }.distinct().joinToString("；"), dex, onOpen)
+                        EntityReferenceRow(key, dex, onOpen)
                     }
                 }
             }
@@ -202,11 +215,16 @@ fun CategoryDetail(category: MoveCategory, dex: Dex, onBack: () -> Unit, onOpen:
 private fun Dex.entityName(key: String): String? = when (key.substringBefore(':')) {
     "move" -> movesById[key.substringAfter(':').toIntOrNull()]?.name
     "ability" -> abilitiesById[key.substringAfter(':').toIntOrNull()]?.name
+    "item" -> itemsById[key.substringAfter(':').toIntOrNull()]?.name
     else -> null
 }
 
 @Composable
-private fun EntityReferenceRow(key: String, section: String, dex: Dex, onOpen: (String) -> Unit) {
-    val name = dex.entityName(key) ?: return
-    AbilityRow(name, section, if (key.startsWith("move:")) "招式" else "特性", onClick = { onOpen(key) }, chevron = true)
+private fun EntityReferenceRow(key: String, dex: Dex, onOpen: (String) -> Unit) {
+    val id = key.substringAfter(':').toIntOrNull()
+    when (key.substringBefore(':')) {
+        "move" -> dex.movesById[id]?.let { MoveRow(it, false) { onOpen(key) } }
+        "ability" -> dex.abilitiesById[id]?.let { AbilityRow(it.name, it.description, null, onClick = { onOpen(key) }, chevron = true) }
+        "item" -> dex.itemsById[id]?.let { AbilityRow(it.name, it.description, null, onClick = { onOpen(key) }, chevron = true) }
+    }
 }

@@ -37,6 +37,9 @@ class MechanicsTest {
         val paralysis = mechanics.statuses.first { it.name == "麻痹（状态）" }
         assertTrue(paralysis.game.any { "12.5%" in it.description })
         assertEquals("影响对战", mechanics.statuses.first { it.name == "下雨（天气）" }.section)
+        assertEquals("中毒", poison.displayName)
+        assertEquals("下雨（天气）", mechanics.statuses.first { it.name == "下雨（天气）" }.displayName)
+        assertTrue(mechanics.flags.values.flatten().any { it.field in HiddenSpecialFlags })
     }
 
     @Test fun referencesResolveAndDoNotPromoteHistoricalMentions() {

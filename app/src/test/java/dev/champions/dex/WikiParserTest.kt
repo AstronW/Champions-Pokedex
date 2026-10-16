@@ -16,6 +16,11 @@ class WikiParserTest {
     // Both ordinary spaces and nonbreaking spaces can be trimmed at table-cell boundaries.
     private fun squash(s: String) = s.filterNot { it.isWhitespace() }
 
+    @Test fun readsItemIconFromLink() {
+        val run = (parseWiki("<a href=\"dex://entity/item:674\" data-item=\"abomasite\">石</a>")[0] as WikiBlock.Text).runs.single()
+        assertEquals("abomasite", run.item); assertEquals("dex://entity/item:674", run.href)
+    }
+
     @Test fun parsesTablesLinksAndInlineStyles() {
         val blocks = parseWiki("<h2>效果</h2>\n<b>粗</b>与<a href=\"dex://entity/move:1\">拍击</a><sup>[1]</sup>&lt;注&gt;\n<table><tr><th colspan=\"2\">表头\n</th></tr><tr><td>甲\n</td><td>乙<table><tr><td>内</td><td>外</td></tr></table></td></tr></table><table><tr><td>仅包装</td></tr></table>尾")
         assertEquals("效果", (blocks[0] as WikiBlock.Heading).runs.joinToString("") { it.text })

@@ -30,18 +30,30 @@ data class Ability(val id: Int, val name: String, val english: String, val descr
     val searchText = "$name $english $id".lowercase()
 }
 
+/** [holders] are Pokémon IDs the game restricts the item to (Mega Stones, Light Ball, ...). */
+data class Item(val id: Int, val name: String, val english: String, val description: String, val sprite: String, val sort: Int, val holders: List<String>) {
+    val key get() = "item:$id"
+}
+
 data class WikiPage(val key: String, val title: String, val revision: String, val url: String)
 
 data class Dex(
     val pokemon: List<Pokemon>, val moves: List<Move>, val abilities: List<Ability>,
     val learnsets: Map<String, List<Int>>, val wiki: Map<String, WikiPage>,
     val speciesCount: Int, val fingerprint: String, val pipeline: String, val spriteCommit: String,
-    val mechanics: Mechanics = Mechanics(),
+    val mechanics: Mechanics = Mechanics(), val items: List<Item> = emptyList(),
 ) {
+    val itemsById = items.associateBy { it.id }
     val pokemonById = pokemon.associateBy { it.id }
     val movesById = moves.associateBy { it.id }
     val abilitiesById = abilities.associateBy { it.id }
     val forms = pokemon.groupBy { it.no }.mapValues { (_, variants) -> variants.sortedBy { it.formId } }
+    /** (holder form ID, Mega Stone ID) → the Mega form it becomes. */
+    val megaForms: Map<Pair<String, Int>, Pokemon> = items.flatMap { stone ->
+        stone.holders.mapNotNull { id -> pokemonById[id]?.let { holder -> megaFormFor(holder, stone, forms[holder.no].orEmpty())?.let { (id to stone.id) to it } } }
+    }.toMap()
+    /** Mega form ID → (holder form ID, stone ID). */
+    val megaSources = megaForms.entries.associate { (source, mega) -> mega.id to source }
     // Species lists choose the lowest game form ID, independently of PokeAPI defaults.
     val species = forms.values.map { it.first() }
     val availableMoves = moves.filter { it.available }
