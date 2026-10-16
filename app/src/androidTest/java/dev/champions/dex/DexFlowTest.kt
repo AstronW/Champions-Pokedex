@@ -121,4 +121,17 @@ class DexFlowTest {
         compose.onNode(hasScrollToNodeAction()).performScrollToNode(hasText("拥有此特性的宝可梦",substring=true))
         compose.onNodeWithText("隐藏特性").assertDoesNotExist()
     }
+
+    @Test fun typeChartCellTogglesItsMatchupAndClears() {
+        compose.waitForCatalog(); compose.navigate("属性克制")
+        val chart = compose.onNodeWithTag("type-matrix")
+        chart.performTouchInput { click(center) }
+        compose.onNodeWithTag("type-matchup").assertExists()
+        chart.performTouchInput { click(center) }
+        compose.onNodeWithTag("type-matchup").assertDoesNotExist()
+        compose.onNodeWithText("清除选择").assertDoesNotExist()
+        chart.performTouchInput { click(center) }
+        compose.onNodeWithText("清除选择").performClick()
+        compose.onNodeWithTag("type-matchup").assertDoesNotExist()
+    }
 }
