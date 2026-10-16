@@ -5,6 +5,7 @@ import org.json.JSONObject
 
 internal val calcStats = listOf("hp", "atk", "def", "spa", "spd", "spe")
 internal const val PointTotal = 66
+internal fun statLabel(stat: String) = StatLabels[calcStats.indexOf(stat)]
 
 internal fun calculatorSide(p: Pokemon) = JSONObject().apply {
     put("id", p.id); put("ability", p.abilities.first()); put("nature", "Serious"); put("item", "")
