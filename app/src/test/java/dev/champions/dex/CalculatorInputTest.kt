@@ -57,4 +57,14 @@ class CalculatorInputTest {
         swapCalculatorSides(request)
         assertEquals(before, request.toString())
     }
+
+    @Test fun koSummaryCoversEveryRangeAgainstTheCurrentHp() {
+        assertEquals("没有造成伤害", koText(0, 0, 100, 0.0))
+        assertEquals("确定一击击倒", koText(100, 120, 100, 100.0))
+        assertEquals("18.8% 几率一击击倒", koText(80, 104, 100, 18.8))
+        assertEquals("50% 几率一击击倒", koText(80, 104, 100, 50.0))
+        assertEquals("确定 2 发击倒", koText(50, 50, 100, 0.0))
+        assertEquals("2~3 发击倒", koText(40, 50, 100, 0.0))
+        assertEquals("至少 4 发击倒", koText(0, 30, 100, 0.0))
+    }
 }
