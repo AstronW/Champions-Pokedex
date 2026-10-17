@@ -3,8 +3,13 @@ package dev.champions.dex
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 
 typealias DexRule = AndroidComposeTestRule<ActivityScenarioRule<MainActivity>, MainActivity>

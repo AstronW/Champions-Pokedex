@@ -1,7 +1,8 @@
 package dev.champions.dex
 
 import org.json.JSONObject
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
 
