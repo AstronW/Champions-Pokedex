@@ -33,7 +33,7 @@
 | D2 | 缺陷 | `rememberWiki` 解析失败时把空列表写进缓存，之后本次运行中这一页永远显示为空 | `WikiContent.kt` 中 `getOrElse { emptyList() }.also { WikiCache.pages.put(...) }` | `rememberWiki` | 无 | 档 1 | — | Done |
 | R1 | 去重 | 所有 JSON 数组读取结果不变 | 上面 4 个文件各有一套写法（`grep -n "0 until .*length()" app/src/main`） | 新文件 `Json.kt` 里的 internal 扩展 | 测试只调用 `parseDex` / `CalculatorCatalog` / `decodeTeam`，不碰这些私有辅助函数 | 档 2 | C1 | Done |
 | R2 | 去重 | 计算结果卡片的倍率标签文字不变 | `EffectPill` 内联了 `½/¼`，`multiplierText` 已经在做同样的事 | `multiplierText`（`Team.kt`） | 无 | 档 1 | — | Done |
-| S1 | 结构 | 包、公开符号与测试都不变 | 见架构结论第 1 条 | `TypeChartScreen.kt`、`SpeedScreen.kt`、`TeamScreen.kt`、`FavoritesScreen.kt`、`DexViewModel.kt`、`SpriteCache.kt` | 测试与被测代码同包，只移动文件，不需要改测试 | 档 1 + 单元测试 | R1、R2 | Approved |
+| S1 | 结构 | 包、公开符号与测试都不变 | 见架构结论第 1 条 | `TypeChartScreen.kt`、`SpeedScreen.kt`、`TeamScreen.kt`、`FavoritesScreen.kt`、`DexViewModel.kt`、`SpriteCache.kt` | 测试与被测代码同包，只移动文件，不需要改测试 | 档 1 + 单元测试 | R1、R2 | Done |
 | X1 | 刻意保留 | `DamageCalc.kt` 逐行移植上游（包括 `checkInfiltrator` 与 `clearScreens` 的重复、读取防守方能力等级等） | 文件头注释；`CalculatorEngineTest` 逐例对照 fixtures | — | fixtures | — | — | Deliberate |
 | X2 | 刻意保留 | 计算器请求使用 JSON 字符串 | 与 fixtures 请求格式一致 | — | fixtures、`CalculatorInputTest` | — | — | Deliberate |
 | X3 | 刻意保留 | `decodeTeam` 兼容旧的 `team` ID 列表 | 用户本地数据可能仍是旧格式 | `Team.kt` | `TeamTest.storedTeamsKeepSetsAndReadTheOldIdList` | — | — | Deliberate |
