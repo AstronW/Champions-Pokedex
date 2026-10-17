@@ -83,5 +83,5 @@ production 冻结。基线（`7d3be0e`）：单元测试 7 个类、23 项，约
 |---|---|---|---|---|
 | DS0 | 合规 | 除 `Theme.kt` 外没有硬编码颜色；每个组件文件都有 `@DexPreviews` | `grep -n "Color(0x"` 在其他文件无结果；按文件统计 `@DexPreviews` | 无需改动 |
 | DS1 | 去重 | 计算结果卡的 `SheetShape` 与菜单面板的 `PanelShape` 都是“顶部 28dp”，合并为 `components/Menus.kt` 的 `PanelShape` | 两处定义逐字相同 | Done |
-| DS2 | 规则与实现不一致 | PROJECT.md 写“字号取自 `MaterialTheme.typography` 的项目定义”，但页面里有 200 多处直接写的 `fontSize`，只有 16 处引用 typography 样式 | `grep -oh "fontSize = [0-9.]*\.sp"` 与 `grep -oh "typography\.[a-zA-Z]*"` | Blocked：需要用户决定改规则还是改代码 |
+| DS2 | 规则与实现不一致 | PROJECT.md 写“字号取自 `MaterialTheme.typography` 的项目定义”，但页面里有 200 多处直接写的 `fontSize`，只有 16 处引用 typography 样式 | `grep -oh "fontSize = [0-9.]*\.sp"` 与 `grep -oh "typography\.[a-zA-Z]*"` | Done：按用户决定改规则（PROJECT.md 字体一行），代码保留原样 |
 | DS3 | 否决 | 页面里的圆角另有 20、22、26、30dp 等取值，没有对应的 token | 各处是有意的视觉取值，强行归并会改变界面 | Rejected：会改变外观 |
