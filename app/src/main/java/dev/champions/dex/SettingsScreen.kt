@@ -36,7 +36,7 @@ fun SettingsScreen(model: DexViewModel, dex: Dex, onBack: () -> Unit) {
             item {
                 DexCard {
                     Kicker("这本图鉴")
-                    Text("${dex.speciesCount} 种宝可梦 · ${dex.pokemon.size} 种形态\n${dex.moves.count { it.available }} 个可用招式 · ${dex.abilities.size} 个特性\n${model.favorites.size} 条收藏",
+                    Text("${dex.speciesCount} 种宝可梦 · ${dex.pokemon.size} 种形态\n${dex.availableMoves.size} 个可用招式 · ${dex.abilities.size} 个特性\n${model.favorites.size} 条收藏",
                         fontSize = 15.sp, lineHeight = 24.sp)
                     Text("数据与图片均已内置，日常查询无需网络。", fontSize = 12.sp, color = pal.n(700))
                 }

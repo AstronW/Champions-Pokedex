@@ -148,7 +148,7 @@ fun StatusDetail(status: BattleStatus, dex: Dex, onBack: () -> Unit, onOpen: (St
             }
             val shown = listOf(moves, abilities, items)[tab]
             if (shown.isEmpty()) item(key = "referencesEmpty") { Text("没有引用此资料的${listOf("招式", "特性", "道具")[tab]}。", fontSize = 13.sp, color = pal.n(700)) }
-            items(shown, key = { it.key }) { (key, refs) ->
+            items(shown, key = { it.key }) { (key, _) ->
                 EntityReferenceRow(key, dex, onOpen)
             }
         }
@@ -204,7 +204,7 @@ fun CategoryDetail(category: MoveCategory, dex: Dex, onBack: () -> Unit, onOpen:
                             Modifier.clickable(role = Role.Button) { showMentions = !showMentions }.padding(vertical = 10.dp), fontSize = 14.sp, color = pal.a(800))
                         else SectionHeading("$title · ${entries.size}")
                     }
-                    if (relation != "section_reference" || showMentions) items(entries.entries.toList(), key = { "$relation:${it.key}" }) { (key, rows) ->
+                    if (relation != "section_reference" || showMentions) items(entries.entries.toList(), key = { "$relation:${it.key}" }) { (key, _) ->
                         EntityReferenceRow(key, dex, onOpen)
                     }
                 }
