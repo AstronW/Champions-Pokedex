@@ -34,6 +34,9 @@
 | R1 | 去重 | 所有 JSON 数组读取结果不变 | 上面 4 个文件各有一套写法（`grep -n "0 until .*length()" app/src/main`） | 新文件 `Json.kt` 里的 internal 扩展 | 测试只调用 `parseDex` / `CalculatorCatalog` / `decodeTeam`，不碰这些私有辅助函数 | 档 2 | C1 | Done |
 | R2 | 去重 | 计算结果卡片的倍率标签文字不变 | `EffectPill` 内联了 `½/¼`，`multiplierText` 已经在做同样的事 | `multiplierText`（`Team.kt`） | 无 | 档 1 | — | Done |
 | S1 | 结构 | 包、公开符号与测试都不变 | 见架构结论第 1 条 | `TypeChartScreen.kt`、`SpeedScreen.kt`、`TeamScreen.kt`、`FavoritesScreen.kt`、`DexViewModel.kt`、`SpriteCache.kt` | 测试与被测代码同包，只移动文件，不需要改测试 | 档 1 + 单元测试 | R1、R2 | Done |
+| D3 | 缺陷（第二轮） | 在超级进化形态的详情页点“加入队伍”：提示显示“第 0 位”，同一超级形态可以重复加入 | 队伍保存为“原形态 + 超级石”，`DetailScreen` 却按超级形态 ID 比较 | `Dex.teamSlotOf`（`Team.kt`），按 `battleForm` 比较 | 无 | 档 2 + 锁定测试 `aMegaFormIsFoundInTheTeamThroughItsHolderAndStone` | — | Done |
+| R3 | 去重（第二轮） | 设置页的“可用招式”数量不变 | `SettingsScreen` 自己重算 `moves.count { it.available }`，与 `Dex.availableMoves` 重复 | `Dex.availableMoves` | 无 | 档 1 | — | Approved |
+| R4 | 清理（第二轮） | 引用列表行为不变 | `MechanicsScreen` 两处 `items` 的解构变量 `refs`、`rows` 没有用到 | — | 无 | 档 1 | — | Approved |
 | X1 | 刻意保留 | `DamageCalc.kt` 逐行移植上游（包括 `checkInfiltrator` 与 `clearScreens` 的重复、读取防守方能力等级等） | 文件头注释；`CalculatorEngineTest` 逐例对照 fixtures | — | fixtures | — | — | Deliberate |
 | X2 | 刻意保留 | 计算器请求使用 JSON 字符串 | 与 fixtures 请求格式一致 | — | fixtures、`CalculatorInputTest` | — | — | Deliberate |
 | X3 | 刻意保留 | `decodeTeam` 兼容旧的 `team` ID 列表 | 用户本地数据可能仍是旧格式 | `Team.kt` | `TeamTest.storedTeamsKeepSetsAndReadTheOldIdList` | — | — | Deliberate |
