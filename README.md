@@ -4,14 +4,14 @@
 
 ## 功能
 
-- 侧边栏导航：宝可梦、招式、特性、属性克制、伤害计算、速度线、队伍构建、收藏与对比；中英文与编号搜索，底部面板筛选与排序。
+- 侧边栏导航：宝可梦、招式、特性、状态说明、属性克制、伤害计算、速度线、队伍构建、收藏与对比；中英文与编号搜索，底部面板筛选与排序。
 - Champions 原生伤害计算器：形态、能力点、能力调整、特性、道具、单双打、天气、场地与多段伤害；可从宝可梦详情带入。规则与边界见 [计算器说明](docs/CALCULATOR.md)。
-- 231 个物种、396 条形态；种族值、体重、性别、普通/隐藏特性、可学招式。
-- 512 个可用招式、215 个特性，856 篇可离线阅读的 52poke 详解（含 129 篇状态资料）。招式、特性、状态和分类可在应用内互相跳转。
-- 57 个百科分类，保留成员、相关招式/特性与段落提及的区别；招式目标和特殊判定独立展示。状态支持别名检索，Champions 游戏说明与百科历史语境分开。
-- 全部 920 条原始招式和 24,063 条学习关系保留；未开放招式可从学习页开启显示，已收藏的未开放招式也可找回。
+- 全部物种与形态；种族值、体重、性别、普通/隐藏特性、可学招式。
+- 已开放招式与全部特性，以及可离线阅读的 52poke 详解（含状态资料）。招式、特性、状态和分类可在应用内互相跳转。
+- 52poke 百科分类，保留成员、相关招式/特性与段落提及的区别；招式目标和特殊判定独立展示。状态支持别名检索，Champions 游戏说明与百科历史语境分开。
+- 全部原始招式和学习关系保留（数量见 `data/import-report.json`）；未开放招式可从学习页开启显示，已收藏的未开放招式也可找回。
 - 普通/异色图片、收藏、亮色/暗色/跟随系统、减少动态效果。
-- 惰性网格/列表、后台解析与图片解码、24 MiB 图片缓存、返回栈状态恢复。
+- 惰性网格/列表、后台解析与图片解码、48 MiB 图片缓存、返回栈状态恢复。
 
 ## 安装与构建
 
@@ -27,7 +27,7 @@ Windows 已安装 Android Studio 时：
 ./build.ps1 -ImportCalculator
 ```
 
-其他环境需要 JDK 17+、Android SDK Platform 37；设置 `JAVA_HOME`、`ANDROID_HOME` 后执行 `./gradlew :app:assemblePreview`。AGP 9.2.1 使用内置 Kotlin；Compose 编译插件为 2.2.10，BOM 固定为 2026.08.00。
+其他环境需要 JDK 17+、Android SDK Platform 37；设置 `JAVA_HOME`、`ANDROID_HOME` 后执行 `./gradlew :app:assemblePreview`。AGP、Compose 编译插件与 Compose BOM 的版本以根目录与 `app/` 的 `build.gradle.kts` 为准；AGP 使用内置 Kotlin。
 
 ```powershell
 # 仅向明确指定的设备安装
@@ -36,7 +36,7 @@ adb -s <serial> install -r dist/ChampionsDex-0.1.0-preview.apk
 
 ## 重新导入数据
 
-默认目录结构：`PokeDex/`、`champout/`、`sprites/` 位于同一个父目录。
+默认目录结构：本仓库、`champout/`、`sprites/` 位于同一个父目录。
 
 ```powershell
 python -m pip install -r scripts/requirements.txt
@@ -52,7 +52,7 @@ Wiki 使用最新导出中的 `expanded`，不读取历史编辑草稿；转换�
 
 分类、特殊判定、招式目标和状态引用从同一 manifest 的 `wiki_*` 文件导入。`data/mechanics-records.json` 保存未裁剪的记录（含章节上下文、模板修订与差异）；`data/mechanics-sources.json` 和 `data/status-sources.json` 保存分类来源与完整状态原文。应用的 `mechanics.json` 使用精简字段，状态正文优先展示已展开的效果节，没有效果节时选“影响对战”或概述。
 
-图片只来自 `sprites/pokemon/versions/generation-ix/champions/` 及其 `shiny/`；属性图标来自 `sprites/types/generation-ix/champions/small/`。353 条形态有对应图片，43 条缺图明确显示占位。`data/sprite-map.json` 记录逐形态映射与缺失项；彩粉蝶仅匹配经查看确认的花园花纹。PokeAPI 元数据只用于图片 ID 关联，固定版本见 `data/pokeapi/SOURCE.json`。
+图片只来自 `sprites/pokemon/versions/generation-ix/champions/` 及其 `shiny/`；属性图标来自 `sprites/types/generation-ix/champions/small/`。缺图的形态明确显示占位，`data/sprite-map.json` 记录逐形态映射与缺失项；彩粉蝶仅匹配经查看确认的花园花纹。PokeAPI 元数据只用于图片 ID 关联，固定版本见 `data/pokeapi/SOURCE.json`。
 
 ## 验证
 
