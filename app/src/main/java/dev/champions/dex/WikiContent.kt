@@ -141,7 +141,7 @@ private object WikiCache {
         (bodies ?: context.applicationContext.assets.open("wiki.json").bufferedReader().use { JSONObject(it.readText()) }.also { bodies = it }).getString(key)
 }
 
-/** Loads and parses one page off the main thread; null while loading, empty list on failure. */
+/** Loads and parses one page off the main thread; null while loading, empty list on failure. Failures are not cached, so the next visit retries. */
 @Composable
 fun rememberWiki(page: WikiPage?): List<WikiBlock>? {
     val context = LocalContext.current
@@ -149,8 +149,8 @@ fun rememberWiki(page: WikiPage?): List<WikiBlock>? {
     val state by produceState(cached, page?.key) {
         if (page == null || value != null) return@produceState
         value = withContext(Dispatchers.Default) {
-            runCatching { parseWiki(WikiCache.html(context, page.key)) }.getOrElse { emptyList() }
-        }.also { WikiCache.pages.put(page.key, it) }
+            runCatching { parseWiki(WikiCache.html(context, page.key)) }.getOrNull()
+        }?.also { WikiCache.pages.put(page.key, it) } ?: emptyList()
     }
     return state
 }
