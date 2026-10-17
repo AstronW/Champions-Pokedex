@@ -29,7 +29,7 @@
 | ID | 类别 | 要保留的行为 / 问题 | 证据 | 规范归属 | pin | 验证 | 依赖 | 状态 |
 |---|---|---|---|---|---|---|---|---|
 | C1 | 特征测试 | `parseMechanics` 对真实 `mechanics.json` 的解析结果（分类、关系、状态、引用都非空，别名合并按 key 唯一） | `grep -n parseMechanics app/src/test` 无结果，现有测试都传 `Mechanics()` | `app/src/test/.../MechanicsParseTest.kt` | 无 | 档 2 | — | Done |
-| D1 | 缺陷 | 计算器“单侧状态”提供了蓄电池、能量点、钢之意志、花之礼 4 个开关，但无论怎么切换都不影响结果 | `grep -n "isBattery\|isPowerSpot\|isSteelySpirit\|isFlowerGift" vendor/damage-calc/src/mechanics/champions.ts` 无结果；`CalculatorEngine.makeSide` 也不读这 4 个键 | 引擎读取的键集合 `CalcSideFlags`（`CalculatorEngine.kt`），界面列表只能从这个集合里取 | fixtures 请求里含这些键（引擎忽略它们，不受影响） | 档 2 + 锁定测试 | — | Approved |
+| D1 | 缺陷 | 计算器“单侧状态”提供了蓄电池、能量点、钢之意志、花之礼 4 个开关，但无论怎么切换都不影响结果 | `grep -n "isBattery\|isPowerSpot\|isSteelySpirit\|isFlowerGift" vendor/damage-calc/src/mechanics/champions.ts` 无结果；`CalculatorEngine.makeSide` 也不读这 4 个键 | 引擎读取的键集合 `CalcSideFlags`（`CalculatorEngine.kt`），界面列表只能从这个集合里取 | fixtures 请求里含这些键（引擎忽略它们，不受影响） | 档 2 + 锁定测试 | — | Done |
 | D2 | 缺陷 | `rememberWiki` 解析失败时把空列表写进缓存，之后本次运行中这一页永远显示为空 | `WikiContent.kt` 中 `getOrElse { emptyList() }.also { WikiCache.pages.put(...) }` | `rememberWiki` | 无 | 档 1 | — | Approved |
 | R1 | 去重 | 所有 JSON 数组读取结果不变 | 上面 4 个文件各有一套写法（`grep -n "0 until .*length()" app/src/main`） | 新文件 `Json.kt` 里的 internal 扩展 | 测试只调用 `parseDex` / `CalculatorCatalog` / `decodeTeam`，不碰这些私有辅助函数 | 档 2 | C1 | Approved |
 | R2 | 去重 | 计算结果卡片的倍率标签文字不变 | `EffectPill` 内联了 `½/¼`，`multiplierText` 已经在做同样的事 | `multiplierText`（`Team.kt`） | 无 | 档 1 | — | Approved |

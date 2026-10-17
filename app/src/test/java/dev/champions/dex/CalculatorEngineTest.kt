@@ -41,6 +41,24 @@ class CalculatorEngineTest {
         assertTrue("too few damaging cases: $damaging", damaging > 900)
     }
 
+    /** Remembers every key the engine asks for. */
+    private class ReadKeys : JSONObject() {
+        val read = mutableSetOf<String>()
+        override fun opt(key: String?): Any? = super.opt(key).also { if (key != null) read += key }
+    }
+
+    @Test fun everyConditionThePageOffersIsReadByTheEngine() {
+        val request = JSONObject(cases.getJSONObject(0).getJSONObject("request").toString())
+        val field = ReadKeys(); val attackerSide = ReadKeys(); val defenderSide = ReadKeys()
+        request.put("field", field.put("attackerSide", attackerSide).put("defenderSide", defenderSide))
+        assertTrue(engine.calculate(request) is CalcDamage)
+        assertTrue(field.read.containsAll(CalculatorFieldConditions.map { it.first }))
+        for (side in listOf(attackerSide, defenderSide)) {
+            val ignored = CalculatorSideConditions.map { it.first } - side.read
+            assertTrue("offered but never read: $ignored", ignored.isEmpty())
+        }
+    }
+
     @Test fun malformedRequestsReportAMessageInsteadOfThrowing() {
         val request = JSONObject(cases.getJSONObject(0).getJSONObject("request").toString())
         request.getJSONObject("attacker").remove("sp")

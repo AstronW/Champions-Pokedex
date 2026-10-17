@@ -7,6 +7,12 @@ internal val calcStats = listOf("hp", "atk", "def", "spa", "spd", "spe")
 internal const val PointTotal = 66
 internal fun statLabel(stat: String) = StatLabels[calcStats.indexOf(stat)]
 
+/** Field toggles the calculator page offers; every key must be one [CalculatorEngine] reads. */
+internal val CalculatorFieldConditions = listOf("isGravity" to "重力", "isWonderRoom" to "奇妙空间", "isMagicRoom" to "魔法空间")
+/** Per-side toggles. Battery, Power Spot, Steely Spirit and Flower Gift are left out: the Champions rules never read them. */
+internal val CalculatorSideConditions = listOf("isReflect" to "反射壁", "isLightScreen" to "光墙", "isAuroraVeil" to "极光幕", "isProtected" to "守住",
+    "isTailwind" to "顺风", "isHelpingHand" to "帮助", "isFriendGuard" to "友情防守", "isCharge" to "充电")
+
 internal fun calculatorSide(p: Pokemon) = JSONObject().apply {
     put("id", p.id); put("ability", p.abilities.first()); put("nature", "Serious"); put("item", "")
     put("sp", JSONArray(List(6) { "0" })); put("boosts", JSONArray(List(6) { 0 }))
