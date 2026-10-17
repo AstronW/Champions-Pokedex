@@ -1,8 +1,0 @@
-
-dev.champions.dex.MechanicsFlowTest:....
-
-Time: 27.988
-
-OK (4 tests)
-
-

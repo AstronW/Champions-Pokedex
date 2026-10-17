@@ -58,4 +58,4 @@
 | F9 | 错误（指令文件） | PROJECT.md 写 compact 判断用 `LocalConfiguration.screenHeightDp` | `CalculatorScreen.kt`、`DetailScreen.kt` 使用 `LocalWindowInfo` | Done |
 | F10 | 错误（指令文件） | PROJECT.md 写动效 250–280ms | 详情 220、顶层页 260、菜单 280 | Done |
 | V1 | 刻意保留 | `docs/VALIDATION.md` 是按日期记录的历史，旧小节里的路径和数量反映的是当时的状态 | 只在顶部追加新的一节 | Deliberate |
-| V2 | 待确认 | `docs/screenshots/` 的大部分截图和 `docs/*-instrumentation.txt` 只有旧验证记录在引用（`git grep` 按文件名查找；带花括号的写法另行人工核对） | 删除会让历史记录里的引用失效，需要用户决定 | Proposed |
+| V2 | 删除 | 66 个截图与 txt 全都被引用（按花括号展开后核对；之前说“大部分没被引用”有误），引用都在 `docs/VALIDATION.md` 的历史小节里。按用户决定，删除设计稿 v2 与计算器原生化之前的 A–E 组共 25 个文件（约 3.4 MB），对应 9 处引用标注“已删除，用 `git show 2ac182e:<路径>` 查看”；F–I 组 39 个文件保留 | `git grep` 按文件名查找，并人工核对带花括号的写法 | Done |
