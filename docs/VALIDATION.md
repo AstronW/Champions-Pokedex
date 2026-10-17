@@ -1,5 +1,25 @@
 # 验证记录
 
+## 2026-10-17 全面重构第一轮（审计台账 `docs/REFACTOR-AUDIT.md`）
+
+未打包体验版，检查使用 debug APK。图鉴数据、Wiki、图片与计算资源未改动。
+
+- 修复：计算器去掉上游 Champions 规则从不读取的蓄电池、能量点、钢之意志、花之礼 4 个开关（D1），新增锁定测试，要求页面提供的每个开关都被引擎读取；Wiki 页面解析失败不再写入缓存（D2）。
+- 重构：JSON 读取辅助函数合并到 `Json.kt`（R1）；`EffectPill` 改用 `multiplierText`（R2）；`ToolsScreen.kt` 拆为 4 个页面文件，`DexRepository.kt` 拆出 `DexViewModel.kt`、`SpriteCache.kt`（S1）。包与符号不变，原有测试未改动。
+- 新增特征测试 `MechanicsParseTest`（C1），两处变异均能让它失败。
+- 文档：更正 README、CALCULATOR、PLAN、material-3/PROJECT.md 中与代码不符的说明（F1–F10）。
+
+|检查|结果|
+|---|---|
+|Kotlin 单元测试|7 个类、22 项通过（原 17 项 + C1 的 4 项 + D1 的 1 项）|
+|Android 交互|全量 6 项通过（`emulator-5580`），一次通过|
+|Android lint|`No issues found.`|
+|实际页面|暗色竖屏：抽屉、伤害计算页（倍率标签“效果绝佳 ×2”）、场地菜单（单侧状态 8 项，末行左对齐）|
+
+仅操作本次以 `-read-only` 启动的 `emulator-5580`，adb 全部指定 serial；crash buffer 中没有本应用记录，模拟器已关闭。亮色、横屏、大字体、真机未验证；体验版 APK 未重新打包。
+
+---
+
 ## 2026-10-16 清理 Android lint 提示
 
 体验版：`dist/ChampionsDex-0.1.0-preview.apk`，12,540,204 字节。SHA-256：`99cdf2ab849d047be5e726bf118f5215904d0cd77ae0efd8220569c8e0d58d31`。图鉴数据、Wiki、图片与计算内核未改动（构建前按 `provenance.json` 核对计算器资源哈希，一致）。
