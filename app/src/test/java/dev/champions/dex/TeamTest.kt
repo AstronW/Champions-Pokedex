@@ -93,4 +93,22 @@ class TeamTest {
         assertEquals(1.0, toss.hits(0), 0.0); assertEquals(0.0, toss.hits(7), 0.0)        // Fixed damage only checks immunity
         assertEquals(0.0, set(normal).hits(0), 0.0)
     }
+
+    @Test fun changingFormKeepsWhatTheNewFormAllowsAndLeavingAMegaDropsItsStone() {
+        val mega = TeamMember(lizard.id, 66, stone.id, listOf(304, 69))
+        assertEquals(TeamMember(lizard.id, 66, stone.id, listOf(304, 69)), dex.withForm(mega.copy(item = null), megaLizard.id))
+        assertEquals(TeamMember(lizard.id, 66, null, listOf(304, 69)), dex.withForm(mega, lizard.id))
+        assertEquals(TeamMember(normal.id, 174, 541, emptyList()), dex.withForm(TeamMember(lizard.id, 66, 541, listOf(999)), normal.id))
+    }
+
+    @Test fun storedMembersAreFittedToTheirFormOrDroppedWhenTheFormIsGone() {
+        assertEquals(TeamMember(normal.id, 174, null, listOf(304, 69, 573, 311)),
+            dex.normalized(TeamMember(normal.id, 0, stone.id, listOf(304, 304, 69, 999, 573, 311, 182))))
+        assertNull(dex.normalized(TeamMember("9999000", 0)))
+    }
+
+    @Test fun multipliersReadAsFractionsOrShortDecimals() {
+        assertEquals(listOf("×0", "×¼", "×½", "×1", "×1.25", "×1.5", "×2", "×4"),
+            listOf(0.0, .25, .5, 1.0, 1.25, 1.5, 2.0, 4.0).map(::multiplierText))
+    }
 }

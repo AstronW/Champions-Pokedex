@@ -66,4 +66,11 @@ class CalculatorEngineTest {
         request.put("attacker", "nothing")
         assertEquals(CalcFailure("此形态尚未适配计算器"), engine.calculate(request))
     }
+
+    @Test fun raisedAndLoweredStatsBecomeTheMatchingNature() {
+        assertEquals("Modest", catalog.natureFor("spa", "atk"))
+        assertEquals("Adamant", catalog.natureFor("atk", "spa"))
+        assertEquals("Serious", catalog.natureFor("atk", "atk"))
+        assertEquals("Serious", catalog.natureFor("", ""))
+    }
 }

@@ -38,4 +38,17 @@ class ModelsTest {
         assertEquals(0.25, effectiveness(11, listOf(9, 2)), 0.0)
         assertEquals(0.0, effectiveness(12, listOf(10, 4)), 0.0)
     }
+
+    @Test fun moveSortsPutSentinelValuesLastAndHideUnavailableMovesUnlessAsked() {
+        val status = Move(5, "戊", "", "", true, 0, 2, 0, 100, 10, 0, false)           // Power 0: no power at all
+        val dynamic = status.copy(id = 1, name = "乙", category = 0, power = 1)         // Power 1 marks a dynamic power, sorted like 0
+        val strong = dynamic.copy(id = 2, name = "甲", power = 120, accuracy = 70)
+        val sure = dynamic.copy(id = 3, name = "丙", power = 60, accuracy = 101)         // 101 marks a move that never misses
+        val closed = dynamic.copy(id = 4, name = "丁", power = 150, available = false)
+        val moves = listOf(status, dynamic, strong, sure, closed)
+        assertEquals(listOf(strong, sure, status, dynamic), filterMoves(moves, "", null, null, false, MoveSort.POWER))
+        assertEquals(listOf(status, dynamic, strong, sure), filterMoves(moves, "", null, null, false, MoveSort.ACCURACY))
+        assertEquals(listOf(closed, strong, sure, status, dynamic), filterMoves(moves, "", null, null, true, MoveSort.POWER))
+        assertEquals(listOf(status, dynamic, strong, sure), filterMoves(moves, "", null, null, false, MoveSort.DEFAULT))
+    }
 }
