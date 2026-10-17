@@ -65,7 +65,7 @@ class DexViewModel(
             loadProgress = 0f
             SpriteCache.preload(
                 getApplication(),
-                TypeNames.indices.map { "types/$it.png" } + MegaSymbol +
+                TypeNames.indices.map { "types/$it.png" } + MEGA_SYMBOL +
                     loaded.pokemon.filter { it.sprite.isNotBlank() }.map { "pokemon/${it.sprite}" },
             ) { loadProgress = it }
             team.map { m -> m?.let(loaded::normalized) }.let { if (it != team) saveTeam(it) }

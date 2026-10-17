@@ -155,7 +155,7 @@ fun CalculatorScreen(
                 .toDp()
         } < 500.dp
     Column(modifier.fillMaxSize()) {
-        AppHeader("Lv.50 · 能力点 $PointTotal", "伤害计算", isRoot, onNav) {
+        AppHeader("Lv.50 · 能力点 $POINT_TOTAL", "伤害计算", isRoot, onNav) {
             SecondaryButton("交换", ::swap, height = 40.dp, leading = { Glyph(GlyphKind.SWAP, Modifier.size(16.dp), pal.text) })
         }
         val resultCard: @Composable (Modifier) -> Unit = { m ->
@@ -943,13 +943,13 @@ private fun AnimatedVisibilityScope.ConfigSheet(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         val total = side.pointTotal()
                         Text(
-                            "合计 $total / $PointTotal",
+                            "合计 $total / $POINT_TOTAL",
                             Modifier.weight(1f),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
                             color =
                                 if (total >
-                                    PointTotal
+                                    POINT_TOTAL
                                 ) {
                                     pal.a(800)
                                 } else {
@@ -977,7 +977,7 @@ private fun AnimatedVisibilityScope.ConfigSheet(
                         value: Int,
                     ) = onEdit { s ->
                         val others = s.pointTotal() - s.points(stat)
-                        s.getJSONArray("sp").put(stat, value.coerceIn(0, minOf(32, PointTotal - others).coerceAtLeast(0)).toString())
+                        s.getJSONArray("sp").put(stat, value.coerceIn(0, minOf(32, POINT_TOTAL - others).coerceAtLeast(0)).toString())
                     }
                     Column {
                         calcStats.indices.forEach { i ->
@@ -1022,7 +1022,11 @@ private fun AnimatedVisibilityScope.ConfigSheet(
                                     cursorBrush = SolidColor(pal.accent),
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                 )
-                                StepButton("+", "增加${label}能力点", points < 32 && side.pointTotal() < PointTotal) { setPoints(i, points + 1) }
+                                StepButton(
+                                    "+",
+                                    "增加${label}能力点",
+                                    points < 32 && side.pointTotal() < POINT_TOTAL,
+                                ) { setPoints(i, points + 1) }
                             }
                             if (i < calcStats.lastIndex) HorizontalDivider(color = pal.divider)
                         }

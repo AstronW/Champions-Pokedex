@@ -102,7 +102,7 @@ fun AnimatedVisibilityScope.TeamShareSheet(
                                         Dispatchers.IO,
                                     ) { saveToPictures(context, bitmap) }
                                 ) {
-                                    "已保存到相册 · Pictures/$ImageFolder"
+                                    "已保存到相册 · Pictures/$IMAGE_FOLDER"
                                 } else {
                                     "保存失败，请重试"
                                 },
@@ -266,7 +266,7 @@ private fun FitText(
     autoSize = TextAutoSize.StepBased(minFontSize = 8.sp, maxFontSize = size, stepSize = .5.sp),
 )
 
-private const val ImageFolder = "ChampionsDex"
+private const val IMAGE_FOLDER = "ChampionsDex"
 
 private fun imageName() = "champions-team-" + SimpleDateFormat("yyyyMMdd-HHmmss", Locale.ROOT).format(Date()) + ".png"
 
@@ -286,7 +286,7 @@ private fun saveToPictures(
         ContentValues().apply {
             put(MediaStore.Images.Media.DISPLAY_NAME, imageName())
             put(MediaStore.Images.Media.MIME_TYPE, "image/png")
-            put(MediaStore.Images.Media.RELATIVE_PATH, "${Environment.DIRECTORY_PICTURES}/$ImageFolder")
+            put(MediaStore.Images.Media.RELATIVE_PATH, "${Environment.DIRECTORY_PICTURES}/$IMAGE_FOLDER")
             put(MediaStore.Images.Media.IS_PENDING, 1)
         }
     val uri = resolver.insert(MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY), values) ?: return false

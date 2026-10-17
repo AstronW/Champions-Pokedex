@@ -63,7 +63,7 @@ fun TeamScreen(
                 item(key = "head") {
                     Row(verticalAlignment = Alignment.Bottom) {
                         Text(
-                            "我的队伍 · ${members.size} / $TeamSize",
+                            "我的队伍 · ${members.size} / $TEAM_SIZE",
                             Modifier.weight(1f),
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Bold,
@@ -295,7 +295,7 @@ private fun AnimatedVisibilityScope.MemberSheet(
         }
         item(key = "moves") {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                (0 until TeamMoveSlots).chunked(2).forEach { row ->
+                (0 until TEAM_MOVE_SLOTS).chunked(2).forEach { row ->
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         row.forEach { k ->
                             val current = set.moves.getOrNull(k)

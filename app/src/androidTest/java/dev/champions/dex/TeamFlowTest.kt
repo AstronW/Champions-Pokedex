@@ -24,7 +24,7 @@ class TeamFlowTest {
         compose.waitForCatalog()
         compose.activityRule.scenario.onActivity { activity ->
             val model = ViewModelProvider(activity)[DexViewModel::class.java]
-            repeat(TeamSize) { model.setTeamMember(it, null) }
+            repeat(TEAM_SIZE) { model.setTeamMember(it, null) }
         }
         compose.waitForIdle()
     }

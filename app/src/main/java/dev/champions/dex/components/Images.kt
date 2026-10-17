@@ -93,7 +93,7 @@ fun Blob(
     }
 }
 
-const val MegaSymbol = "Mega_Evolution_symbol.png"
+const val MEGA_SYMBOL = "Mega_Evolution_symbol.png"
 
 @DexPreviews
 @Composable
@@ -104,7 +104,7 @@ private fun ImagesPreview() =
             PokemonArt(PreviewData.charizard, Modifier.size(72.dp), shiny = true)
             // A form without its own picture shows the placeholder, never another form's sprite.
             PokemonArt(PreviewData.charizard.copy(sprite = ""), Modifier.size(72.dp))
-            AssetImage(MegaSymbol, "可超级进化", Modifier.height(24.dp).aspectRatio(56f / 74f))
+            AssetImage(MEGA_SYMBOL, "可超级进化", Modifier.height(24.dp).aspectRatio(56f / 74f))
         }
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
             PreviewData.pokemon.forEach { Blob(it, 52.dp) }

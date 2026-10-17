@@ -17,8 +17,8 @@ data class TeamMember(
     val down: String = "",
 )
 
-const val TeamSize = 6
-const val TeamMoveSlots = 4
+const val TEAM_SIZE = 6
+const val TEAM_MOVE_SLOTS = 4
 
 internal fun encodeTeam(team: List<TeamMember?>): String =
     JSONArray()
@@ -44,7 +44,7 @@ internal fun decodeTeam(
     legacy: String?,
 ): List<TeamMember?> {
     val stored = json?.let { runCatching { JSONArray(it) }.getOrNull() }
-    return List(TeamSize) { i ->
+    return List(TEAM_SIZE) { i ->
         if (stored != null) {
             stored.optJSONObject(i)?.let { o ->
                 TeamMember(
@@ -98,7 +98,7 @@ private fun Dex.fitted(m: TeamMember): TeamMember {
             m.moves
                 .filter { it in learnable && movesById[it]?.available == true }
                 .distinct()
-                .take(TeamMoveSlots),
+                .take(TEAM_MOVE_SLOTS),
     )
 }
 
