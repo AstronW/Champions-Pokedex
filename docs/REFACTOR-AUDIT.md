@@ -40,3 +40,22 @@
 | N1 | 否决 | 拆成 `data/`、`calc/`、`ui/` 等多个包 | 要改所有 import 和测试的 package 声明；同包按文件拆分已足够让新人找到代码 | — | 全部测试 | — | — | Rejected：收益低于改动面 |
 | N2 | 否决 | 把菜单路由字符串（`"pick:attacker"`、`"set:2"`）换成密封类 | 只在单个文件内使用，可以直接存进 `rememberSaveable`；换成密封类要额外写 Saver | — | — | — | — | Rejected：不划算 |
 | N3 | 否决 | `DexViewModel.load` 用 `catch (e: Exception)` 会连带捕获取消异常 | 只在 ViewModel 清除时发生，不会被用户看到 | — | — | — | — | Rejected：没有可观察的影响 |
+
+## 文档台账
+
+源码冻结。范围：`AGENTS.md`、`README.md`、`docs/*.md`、`.claude/skills/champions-dex-workflow/SKILL.md`、`.claude/skills/material-3/PROJECT.md`、`THIRD_PARTY_NOTICES.md`。`material-3`、`edge-to-edge` 的其余文件是带 `SOURCE.md` 的上游原样副本，不在范围内。
+
+| ID | 类别 | 问题 | 核对方式 | 状态 |
+|---|---|---|---|---|
+| F1 | 错误 | README 写目录名为 `PokeDex/` | 仓库目录名 `Champions-Pokedex` | Done |
+| F2 | 错误 | README 写图片缓存 24 MiB | `SpriteCache.kt` 中 `48 * 1024 * 1024` | Done |
+| F3 | 错误 | README 写 AGP 9.2.1、BOM 2026.08.00 | `build.gradle.kts` 中为 9.4.1、`app/build.gradle.kts` 中为 2026.09.00；改为指向构建文件，不再抄写版本号 | Done |
+| F4 | 错误 | README、PLAN 的侧边栏列表漏了“状态说明” | `DexRoot` 枚举 | Done |
+| F5 | 错误 / 写死的计数 | README 写 856 篇百科，实际 1022；其余计数改数据时会悄悄过期 | `data/import-report.json` 的 `wikiPages`；去掉计数，改为指向数据文件 | Done |
+| F6 | 错误 | CALCULATOR.md 描述的“四张卡片 / 更多条件 / 滑杆”界面已经不存在 | `CalculatorScreen.kt` 的 `SideSummary`、`FieldSummary`、`MoveSummary`、`StepButton` | Done |
+| F7 | 错误 | CALCULATOR.md 写可调“队友增益” | 代码 D1 修复后已不提供；`champions.ts` 不读取 | Done |
+| F8 | 错误（指令文件） | PROJECT.md 写详情页“自有返回栈” | `MainActivity.kt` 使用 `NavDisplay` | Done |
+| F9 | 错误（指令文件） | PROJECT.md 写 compact 判断用 `LocalConfiguration.screenHeightDp` | `CalculatorScreen.kt`、`DetailScreen.kt` 使用 `LocalWindowInfo` | Done |
+| F10 | 错误（指令文件） | PROJECT.md 写动效 250–280ms | 详情 220、顶层页 260、菜单 280 | Done |
+| V1 | 刻意保留 | `docs/VALIDATION.md` 是按日期记录的历史，旧小节里的路径和数量反映的是当时的状态 | 只在顶部追加新的一节 | Deliberate |
+| V2 | 待确认 | `docs/screenshots/` 的大部分截图和 `docs/*-instrumentation.txt` 只有旧验证记录在引用（`git grep` 按文件名查找；带花括号的写法另行人工核对） | 删除会让历史记录里的引用失效，需要用户决定 | Proposed |

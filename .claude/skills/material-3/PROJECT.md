@@ -8,9 +8,9 @@
 | 字体 | 标题用 Caprasimo（`HeadingFont`，只用 `HeadingWeight`，不加粗），正文用 Figtree（`BodyFont`），中文回落到系统字体；字号取自 `MaterialTheme.typography` 的项目定义。不改用 Roboto | 字号层级的用途划分、使用 sp 并适配系统字体缩放 |
 | 形状 | 控件用胶囊形 `PillShape`，卡片用 `CardShape`（32dp），列表行 24dp，二级菜单顶部 28dp，`DexSheet` 顶部 40dp | 同类元素保持一致的圆角 |
 | 组件 | 优先复用 `components/`（包 `dev.champions.dex.components`）的组件：`DexCard`、`PrimaryButton`、`SecondaryButton`、`GhostButton`、`PillSegment`、`ToggleTile`、`Pill`、`TypeTag`、`AppHeader`、`SearchField`、`MenuHost`/`MenuPanel`、`DexSheet`、`SelectField`、`RoundIconButton`、`Glyph`、`EmptyResult`。不要为了“符合 MD3”把它们换成 Material 默认组件 | 组件选择原则（例如几个选项用分段控件、多选用开关）和各组件的交互状态 |
-| 导航 | 左上角菜单打开侧边栏（`ModalNavigationDrawer`），详情页使用自有返回栈。每个页面的状态用 `SaveableStateProvider` 按返回栈条目保存。不改成底部导航栏或 Navigation Compose | 横屏和大屏的布局思路 |
-| 动效 | 先读取 `LocalReduceMotion`，开启“减少动态效果”时时长为 0。页面从右侧滑入，菜单从底部滑入，时长约 250–280ms | 进入用减速曲线、退出用加速曲线 |
-| 布局 | 横屏判断沿用 `LocalConfiguration.current.screenHeightDp < 500`（compact）。计算器结果在竖屏时位于底部，横屏时位于右侧 | 窗口尺寸断点（600 / 840dp）、宽屏限制内容最大宽度、间距取 4dp 的倍数 |
+| 导航 | 左上角菜单打开侧边栏（`ModalNavigationDrawer`），详情页由 Navigation 3 的 `NavDisplay` 管理返回栈（`DetailNavigation.kt`），每个条目的状态随条目保存、出栈后清除；顶层页用 `SaveableStateProvider` 各自保存。不改成底部导航栏或 Navigation Compose | 横屏和大屏的布局思路 |
+| 动效 | 先读取 `LocalReduceMotion`，开启“减少动态效果”时时长为 0。页面从右侧滑入，菜单从底部滑入，时长约 220–280ms | 进入用减速曲线、退出用加速曲线 |
+| 布局 | 横屏判断沿用 `LocalWindowInfo.current.containerSize` 换算的高度 < 500dp（compact）。计算器结果在竖屏时位于底部，横屏时位于右侧 | 窗口尺寸断点（600 / 840dp）、宽屏限制内容最大宽度、间距取 4dp 的倍数 |
 | 无障碍 | 中文 `contentDescription`，设置 `Role` 和 `onClickLabel`；测试用的 `testTag` 保持稳定 | 触控目标至少 48dp（本项目图标按钮为 44dp，新增控件建议用 `heightIn(min = 48.dp)`）、不只用颜色传达信息 |
 
 ## 用 material-3 的审查（audit）模式时
