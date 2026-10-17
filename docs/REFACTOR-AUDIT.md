@@ -60,6 +60,7 @@
 | F8 | 错误（指令文件） | PROJECT.md 写详情页“自有返回栈” | `MainActivity.kt` 使用 `NavDisplay` | Done |
 | F9 | 错误（指令文件） | PROJECT.md 写 compact 判断用 `LocalConfiguration.screenHeightDp` | `CalculatorScreen.kt`、`DetailScreen.kt` 使用 `LocalWindowInfo` | Done |
 | F10 | 错误（指令文件） | PROJECT.md 写动效 250–280ms | 详情 220、顶层页 260、菜单 280 | Done |
+| C1d | 压缩 | `docs/VALIDATION.md` 有 54 KB，AGENTS.md 把整个文件称作“当前验证证据”，里面却混着最初交付时已经过时的数量 | 2026-10-09 及更早的小节原样移到 `docs/VALIDATION-HISTORY.md`（逐行核对 0 行丢失），主文件降到 23 KB，开头链接历史文件；“新记录插在顶部”的约定不变 | Done |
 | V1 | 刻意保留 | `docs/VALIDATION.md` 是按日期记录的历史，旧小节里的路径和数量反映的是当时的状态 | 只在顶部追加新的一节 | Deliberate |
 | V2 | 删除 | 66 个截图与 txt 全都被引用（按花括号展开后核对；之前说“大部分没被引用”有误），引用都在 `docs/VALIDATION.md` 的历史小节里。按用户决定，删除设计稿 v2 与计算器原生化之前的 A–E 组共 25 个文件（约 3.4 MB），对应 9 处引用标注“已删除，用 `git show 2ac182e:<路径>` 查看”；F–I 组 39 个文件保留 | `git grep` 按文件名查找，并人工核对带花括号的写法 | Done |
 
