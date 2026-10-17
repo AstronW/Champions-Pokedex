@@ -211,7 +211,7 @@ private fun CalcResult(attacker: Pokemon, defender: Pokemon, move: Move?, noMove
 
 @Composable
 private fun EffectPill(e: Double) {
-    val label = when { e == 0.0 -> "无效"; e >= 4 -> "效果绝佳 ×4"; e >= 2 -> "效果绝佳 ×2"; e < 1 -> "效果不好 ×${if (e == .5) "½" else "¼"}"; else -> "效果一般" }
+    val label = when { e == 0.0 -> "无效"; e > 1 -> "效果绝佳 ${multiplierText(e)}"; e < 1 -> "效果不好 ${multiplierText(e)}"; else -> "效果一般" }
     when {
         e > 1 -> Pill(label, pal.a(200), pal.a(800))
         e < 1 -> Pill(label, pal.g(200), pal.g(800))
