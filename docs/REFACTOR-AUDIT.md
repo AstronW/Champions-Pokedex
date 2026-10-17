@@ -72,5 +72,5 @@ production 冻结。基线（`7d3be0e`）：单元测试 7 个类、23 项，约
 |---|---|---|---|---|
 | T1 | 补深度 | 关键纯函数此前没有测试：`koText`、`filterMoves` 的排序与未开放过滤、`Dex.withForm`、`Dex.normalized`、`multiplierText`、`CalculatorCatalog.natureFor`。新增 6 项，单元测试共 29 项 | 8 处变异全部能被测出（威力排序的变异第一次没被测出，补了用例后才测出） | Done |
 | T2 | 可读性 | `ModelsTest`、`CalculatorInputTest` 的 fixture 写得很挤（不加空格） | 只是格式，改了会掩盖 blame 历史，收益低 | Rejected：仅格式 |
-| T3 | 补深度 | 队伍构建（加入成员、配置、分享）没有交互测试 | `grep -n "@Test" app/src/androidTest` 中没有涉及队伍的用例 | Proposed：需要模拟器，单独做 |
+| T3 | 补深度 | 队伍构建（加入成员、配置、分享）没有交互测试 | 新增 `TeamFlowTest` 2 项：带超级石的成员按超级形态分析、重建后保留；超级形态详情页只加入一次并报告位置。全量交互测试 8 项通过；撤回 D3 修复、把 `battleForm` 改坏两处变异均能被测出。分享图片未覆盖 | Done |
 | T4 | 刻意保留 | `CalculatorEngineTest` 逐一对照 1238 个参考用例，是单元测试里最慢的一项（约 0.46 s） | 它是移植正确性的唯一证据 | Deliberate |
