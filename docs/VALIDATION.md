@@ -2,6 +2,25 @@
 
 最近的验证在本文件，新记录插在最上面。2026-10-09 及更早的记录（含最初交付时的数据核对）移到了 [VALIDATION-HISTORY.md](VALIDATION-HISTORY.md)，其中的数量、路径反映的是当时的状态。
 
+## 2026-10-17 全面重构第二轮
+
+体验版：`dist/ChampionsDex-0.1.0-preview.apk`，12,540,204 字节。SHA-256：`a866baf47092089f59817be7fa26a72ee8652e27305993d1f09f7cfda80755ab`。图鉴数据、Wiki、图片与计算资源未改动；构建前核对 `provenance.json` 中的 `dexSha256`、`catalogSha256`、`formAliasesSha256`，一致。
+
+- 第二轮代码审计修复 D3：在超级进化形态详情页点“加入队伍”会提示“第 0 位”，并且可以重复加入；改为按实战形态查找（`Dex.teamSlotOf`），并加锁定测试。R3、R4 为小清理。
+- 测试补深度（T1）：`koText`、`filterMoves`、`withForm`/`normalized`、`multiplierText`、`natureFor` 新增 6 项，8 处变异全部能被测出。
+- 2026-10-09 及更早的验证记录移到 `VALIDATION-HISTORY.md`。
+
+|检查|结果|
+|---|---|
+|Kotlin 单元测试|7 个类、29 项通过|
+|Android 交互|全量 6 项通过（`emulator-5580`），一次通过|
+|Android lint|`No issues found.`|
+|实际页面（体验版）|亮色竖屏：伤害计算场地菜单。亮色横屏 + 字体缩放 1.3：同一菜单在旋转后保持打开，8 个单侧状态开关末行左对齐。超级喷火龙 X 详情：第一次点“加入队伍”提示“已加入队伍第 1 位”，第二次提示“超级喷火龙 X 已在队伍第 1 位”|
+
+仅操作以 `-read-only` 启动的 `emulator-5580`，adb 全部指定 serial；crash buffer 中没有本应用记录；字体缩放与自动旋转已恢复，模拟器已关闭。暗色横屏、减少动态效果、真机、Android 8–9 未验证。
+
+---
+
 ## 2026-10-17 全面重构第一轮（审计台账 `docs/REFACTOR-AUDIT.md`）
 
 未打包体验版，检查使用 debug APK。图鉴数据、Wiki、图片与计算资源未改动。
