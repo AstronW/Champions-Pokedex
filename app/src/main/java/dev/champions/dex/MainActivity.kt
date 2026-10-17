@@ -5,17 +5,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
@@ -39,18 +38,17 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -62,6 +60,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.LiveRegionMode
@@ -77,10 +77,16 @@ import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.scene.Scene
 import androidx.navigation3.ui.NavDisplay
 import dev.champions.dex.components.BallMark
+import dev.champions.dex.components.DexModalDrawer
 import dev.champions.dex.components.GhostButton
+import dev.champions.dex.components.LocalSheetHost
 import dev.champions.dex.components.LocalToast
 import dev.champions.dex.components.PillSegment
 import dev.champions.dex.components.PillShape
+import dev.champions.dex.components.SheetHost
+import dev.champions.dex.components.SheetHostState
+import dev.champions.dex.components.rememberDexDrawerState
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
@@ -139,8 +145,12 @@ fun DexApp(model: DexViewModel) {
         // Detail routes above the catalogue; Navigation 3 keeps each entry's saved state and clears it once popped.
         var details by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
         val backStack = remember(details) { listOf<DexKey>(HomeKey) + details.map(::DetailKey) }
-        val drawer = rememberDrawerState(DrawerValue.Closed)
+        val drawer = rememberDexDrawerState()
+        val sheets = remember { SheetHostState() }
         val scope = rememberCoroutineScope()
+        // The catalogue page fades and rises in after a switch; it is a layer property, so the page itself never re-lays out.
+        var pageIn by remember { mutableFloatStateOf(1f) }
+        var pageAnimation by remember { mutableStateOf<Job?>(null) }
         var toast by remember { mutableStateOf<Pair<Int, String>?>(null) }
         LaunchedEffect(toast) {
             if (toast != null) {
@@ -160,145 +170,159 @@ fun DexApp(model: DexViewModel) {
         fun openDrawer() {
             scope.launch { drawer.open() }
         }
+
+        /**
+         * Shows [item] at once, with the old page dropped rather than cross-faded, so the new page's heavy first frame
+         * is the only work in it. Only after that frame has been drawn do the page's fade-in and the drawer's slide start,
+         * so neither animation begins with a dropped frame.
+         */
+        fun switchRoot(item: DexRoot) {
+            pageAnimation?.cancel()
+            pageIn = 1f
+            if (item == root) {
+                scope.launch { drawer.close() }
+                return
+            }
+            root = item
+            if (!model.reduceMotion) pageIn = 0f
+            pageAnimation =
+                scope.launch {
+                    repeat(2) { withFrameNanos { } }
+                    launch { drawer.close() }
+                    if (pageIn < 1f) animate(pageIn, 1f, animationSpec = tween(ENTER_MS, easing = EnterEasing)) { v, _ -> pageIn = v }
+                }
+        }
         // Back from another top-level page returns to the catalogue first, rather than leaving the app.
-        BackHandler(details.isEmpty() && root != DexRoot.POKEMON && !drawer.isOpen) { root = DexRoot.POKEMON }
+        BackHandler(details.isEmpty() && root != DexRoot.POKEMON && !drawer.isOpen) { switchRoot(DexRoot.POKEMON) }
         BackHandler(drawer.isOpen) { scope.launch { drawer.close() } }
-        CompositionLocalProvider(LocalToast provides { message -> toast = (toast?.first ?: 0) + 1 to message }) {
-            ModalNavigationDrawer(
-                drawerState = drawer,
+        CompositionLocalProvider(
+            LocalToast provides { message -> toast = (toast?.first ?: 0) + 1 to message },
+            LocalSheetHost provides sheets,
+        ) {
+            DexModalDrawer(
+                drawer,
                 gesturesEnabled = details.isEmpty() || drawer.isOpen,
-                scrimColor =
-                    pal
-                        .n(
-                            900,
-                        ).copy(alpha = .45f),
                 drawerContent = {
-                    // Switch pages first and let that heavy first frame finish while the drawer is still open, then slide the drawer
-                    // away over the page's own fade-in. Closing first left a pause after the drawer had gone before anything appeared.
-                    suspend fun closeDrawer() {
-                        repeat(2) { withFrameNanos { } }
-                        if (model.reduceMotion) drawer.snapTo(DrawerValue.Closed) else drawer.close()
-                    }
                     NavigationDrawerContent(
                         dex,
                         model,
                         root,
-                        onPick = { item ->
-                            root = item
-                            scope.launch { closeDrawer() }
-                        },
+                        onPick = ::switchRoot,
                         onSettings = {
                             open("settings")
-                            scope.launch { closeDrawer() }
+                            // Same order as a page switch: the detail's first frame lands before the drawer starts to move.
+                            scope.launch {
+                                repeat(2) { withFrameNanos { } }
+                                drawer.close()
+                            }
                         },
                     )
                 },
             ) {
-                Box(Modifier.fillMaxSize().background(pal.bg).safeDrawingPadding()) {
-                    val duration = if (model.reduceMotion) 0 else 220
-                    NavDisplay(
-                        backStack,
-                        Modifier.fillMaxSize(),
-                        // A drawer still closing over a just-opened page takes the back press first.
-                        onBack = { if (drawer.isOpen) scope.launch { drawer.close() } else back() },
-                        transitionSpec = { detailSlide(1, duration) },
-                        popTransitionSpec = { detailSlide(-1, duration) },
-                        predictivePopTransitionSpec = { detailSlide(-1, duration) },
-                    ) { key ->
-                        when (key) {
-                            HomeKey -> {
-                                NavEntry(key, contentKey = HOME_CONTENT_KEY) {
-                                    val rootStates = rememberSaveableStateHolder()
-                                    val pageDuration = if (model.reduceMotion) 0 else 260
-                                    AnimatedContent(
-                                        targetState = root,
-                                        modifier =
-                                            Modifier.fillMaxSize().background(
-                                                pal.bg,
-                                            ),
-                                        transitionSpec = {
-                                            (fadeIn(tween(pageDuration)) + slideInVertically(tween(pageDuration)) { it / 24 }) togetherWith
-                                                fadeOut(tween(pageDuration / 2))
-                                        },
-                                        label = "page",
-                                    ) { current ->
-                                        rootStates.SaveableStateProvider(current.name) {
-                                            when (current) {
-                                                DexRoot.POKEMON -> {
-                                                    PokemonListScreen(dex, model, ::openDrawer, ::open)
-                                                }
+                Box(Modifier.fillMaxSize().background(pal.bg)) {
+                    Box(Modifier.fillMaxSize().safeDrawingPadding()) {
+                        val duration = if (model.reduceMotion) 0 else 220
+                        NavDisplay(
+                            backStack,
+                            Modifier.fillMaxSize(),
+                            // A drawer still closing over a just-opened page takes the back press first.
+                            onBack = { if (drawer.isOpen) scope.launch { drawer.close() } else back() },
+                            transitionSpec = { detailSlide(1, duration) },
+                            popTransitionSpec = { detailSlide(-1, duration) },
+                            predictivePopTransitionSpec = { detailSlide(-1, duration) },
+                        ) { key ->
+                            when (key) {
+                                HomeKey -> {
+                                    NavEntry(key, contentKey = HOME_CONTENT_KEY) {
+                                        val rootStates = rememberSaveableStateHolder()
+                                        val rise = with(LocalDensity.current) { 24.dp.toPx() }
+                                        Box(
+                                            Modifier.fillMaxSize().background(pal.bg).graphicsLayer {
+                                                alpha = pageIn
+                                                translationY = (1f - pageIn) * rise
+                                            },
+                                        ) {
+                                            val current = root
+                                            key(current) {
+                                                rootStates.SaveableStateProvider(current.name) {
+                                                    when (current) {
+                                                        DexRoot.POKEMON -> {
+                                                            PokemonListScreen(dex, model, ::openDrawer, ::open)
+                                                        }
 
-                                                DexRoot.MOVES -> {
-                                                    MoveListScreen(dex, model, ::openDrawer, ::open)
-                                                }
+                                                        DexRoot.MOVES -> {
+                                                            MoveListScreen(dex, model, ::openDrawer, ::open)
+                                                        }
 
-                                                DexRoot.ABILITIES -> {
-                                                    AbilityListScreen(dex, model, ::openDrawer, ::open)
-                                                }
+                                                        DexRoot.ABILITIES -> {
+                                                            AbilityListScreen(dex, model, ::openDrawer, ::open)
+                                                        }
 
-                                                DexRoot.STATUSES -> {
-                                                    StatusListScreen(dex, ::openDrawer, ::open)
-                                                }
+                                                        DexRoot.STATUSES -> {
+                                                            StatusListScreen(dex, ::openDrawer, ::open)
+                                                        }
 
-                                                DexRoot.TYPES -> {
-                                                    TypeChartScreen(::openDrawer)
-                                                }
+                                                        DexRoot.TYPES -> {
+                                                            TypeChartScreen(::openDrawer)
+                                                        }
 
-                                                DexRoot.CALCULATOR -> {
-                                                    CalculatorScreen(
-                                                        dex,
-                                                        model,
-                                                        onNav = ::openDrawer,
-                                                        isRoot = true,
-                                                        onOpen = ::open,
-                                                    )
-                                                }
+                                                        DexRoot.CALCULATOR -> {
+                                                            CalculatorScreen(
+                                                                dex,
+                                                                model,
+                                                                onNav = ::openDrawer,
+                                                                isRoot = true,
+                                                                onOpen = ::open,
+                                                            )
+                                                        }
 
-                                                DexRoot.SPEED -> {
-                                                    SpeedScreen(dex, model, ::openDrawer, ::open)
-                                                }
+                                                        DexRoot.SPEED -> {
+                                                            SpeedScreen(dex, model, ::openDrawer, ::open)
+                                                        }
 
-                                                DexRoot.TEAM -> {
-                                                    TeamScreen(dex, model, ::openDrawer, ::open)
-                                                }
+                                                        DexRoot.TEAM -> {
+                                                            TeamScreen(dex, model, ::openDrawer, ::open)
+                                                        }
 
-                                                DexRoot.FAVORITES -> {
-                                                    FavoritesScreen(dex, model, ::openDrawer, ::open)
+                                                        DexRoot.FAVORITES -> {
+                                                            FavoritesScreen(dex, model, ::openDrawer, ::open)
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
                                     }
                                 }
-                            }
 
-                            is DetailKey -> {
-                                NavEntry(key, contentKey = key.route) {
-                                    val route = key.route
-                                    Box(Modifier.fillMaxSize().background(pal.bg).testTag("detail:$route")) {
-                                        when {
-                                            route == "settings" -> {
-                                                SettingsScreen(model, dex, ::back)
-                                            }
+                                is DetailKey -> {
+                                    NavEntry(key, contentKey = key.route) {
+                                        val route = key.route
+                                        Box(Modifier.fillMaxSize().background(pal.bg).testTag("detail:$route")) {
+                                            when {
+                                                route == "settings" -> {
+                                                    SettingsScreen(model, dex, ::back)
+                                                }
 
-                                            route == "calculator-license" -> {
-                                                CalculatorLicense(::back)
-                                            }
+                                                route == "calculator-license" -> {
+                                                    CalculatorLicense(::back)
+                                                }
 
-                                            route.startsWith(
-                                                "calculator:",
-                                            ) -> {
-                                                CalculatorScreen(
-                                                    dex,
-                                                    model,
-                                                    initialId = route.substringAfter(':'),
-                                                    onNav = ::back,
-                                                    isRoot = false,
-                                                    onOpen = ::open,
-                                                )
-                                            }
+                                                route.startsWith(
+                                                    "calculator:",
+                                                ) -> {
+                                                    CalculatorScreen(
+                                                        dex,
+                                                        model,
+                                                        initialId = route.substringAfter(':'),
+                                                        onNav = ::back,
+                                                        isRoot = false,
+                                                        onOpen = ::open,
+                                                    )
+                                                }
 
-                                            else -> {
-                                                DetailScreen(route, dex, model, ::back, ::open)
+                                                else -> {
+                                                    DetailScreen(route, dex, model, ::back, ::open)
+                                                }
                                             }
                                         }
                                     }
@@ -306,7 +330,8 @@ fun DexApp(model: DexViewModel) {
                             }
                         }
                     }
-                    ToastHost(toast?.second, Modifier.align(Alignment.BottomCenter).padding(bottom = 104.dp))
+                    SheetHost(sheets)
+                    ToastHost(toast?.second, Modifier.align(Alignment.BottomCenter).safeDrawingPadding().padding(bottom = 104.dp))
                 }
             }
         }

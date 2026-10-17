@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -223,7 +224,8 @@ private fun TypeDetailCard(attack: Int) {
             "攻击时 · 无效 ×0" to all.filter { effectiveness(attack, it) == 0.0 },
             "防守时 · 弱点" to all.filter { effectiveness(it, attack) == 2.0 },
             "防守时 · 抵抗 / 免疫" to all.filter { effectiveness(it, attack) < 1.0 },
-        ).forEach { (label, list) ->
+        ).forEachIndexed { i, (label, list) ->
+            if (i == 3) HorizontalDivider(Modifier.padding(vertical = 2.dp), color = pal.divider)
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 Text(label, fontSize = 11.sp, fontWeight = FontWeight.Bold, color = pal.n(700))
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(5.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {

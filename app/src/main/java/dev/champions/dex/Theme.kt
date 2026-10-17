@@ -1,5 +1,6 @@
 package dev.champions.dex
 
+import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +29,13 @@ import kotlin.math.sin
 
 val LocalDark = compositionLocalOf { false }
 val LocalReduceMotion = compositionLocalOf { false }
+
+// —— Motion: Material's emphasized curves. Things arriving decelerate into place; things leaving accelerate away and
+// take less time, so a dismissed surface never holds up the next tap. Callers drop to 0 ms under [LocalReduceMotion]. ——
+val EnterEasing = CubicBezierEasing(.05f, .7f, .1f, 1f)
+val ExitEasing = CubicBezierEasing(.3f, 0f, .8f, .15f)
+const val ENTER_MS = 300
+const val EXIT_MS = 200
 
 /** Organic design-system tokens. Ramps are indexed by step: n(100)…n(900). */
 @Immutable

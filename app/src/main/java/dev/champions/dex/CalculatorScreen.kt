@@ -1198,7 +1198,6 @@ private fun AnimatedVisibilityScope.FieldSheet(
     edit: ((JSONObject) -> Unit) -> Unit,
     onClose: () -> Unit,
 ) {
-    var sideTab by rememberSaveable { mutableIntStateOf(1) }
     MenuPanel("场地", pal.n(700), "天气、场地与双方状态", false, onClose) {
         item(key = "field") {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -1246,23 +1245,27 @@ private fun AnimatedVisibilityScope.FieldSheet(
                         )
                     }
                 }
-                SheetLabel("单侧状态")
-                PillSegment(listOf("攻击方", "防守方"), sideTab, { sideTab = it }, height = 36.dp)
-                val side = if (sideTab == 0) "attackerSide" else "defenderSide"
-                CalculatorSideConditions.chunked(3).forEach { row ->
-                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                        row.forEach { (key, label) ->
-                            val on = field.optJSONObject(side)?.optBoolean(key) == true
-                            ToggleTile(label, on, {
-                                edit { f ->
-                                    val s =
-                                        f.optJSONObject(side) ?: JSONObject()
-                                    s.put(key, !on)
-                                    f.put(side, s)
+                // Both sides at once, each half a two-column grid, so a screen and its counter can be read together.
+                Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+                    listOf("attackerSide" to "攻击方", "defenderSide" to "防守方").forEach { (side, label) ->
+                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                            SheetLabel(label)
+                            CalculatorSideConditions.chunked(2).forEach { row ->
+                                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                    row.forEach { (key, name) ->
+                                        val on = field.optJSONObject(side)?.optBoolean(key) == true
+                                        ToggleTile(name, on, {
+                                            edit { f ->
+                                                val s = f.optJSONObject(side) ?: JSONObject()
+                                                s.put(key, !on)
+                                                f.put(side, s)
+                                            }
+                                        }, Modifier.weight(1f).semantics { contentDescription = "$label$name" }, off = pal.surface)
+                                    }
+                                    repeat(2 - row.size) { Spacer(Modifier.weight(1f)) }
                                 }
-                            }, Modifier.weight(1f), off = pal.surface)
+                            }
                         }
-                        repeat(3 - row.size) { Spacer(Modifier.weight(1f)) }
                     }
                 }
                 Text("天气特性不会自动改写这里的天气与场地。", fontSize = 11.sp, color = pal.n(700))
