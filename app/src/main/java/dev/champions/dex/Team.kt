@@ -64,6 +64,9 @@ fun Dex.normalized(m: TeamMember): TeamMember? {
 
 fun Dex.newTeamMember(id: String): TeamMember? = normalized(TeamMember(id, 0))
 
+/** Slot of the member that fights as [formId], or -1; a Mega form is found through its holder carrying the stone. */
+fun Dex.teamSlotOf(team: List<TeamMember?>, formId: String): Int = team.indexOfFirst { it != null && battleForm(it).id == formId }
+
 /** Another form of the same species; leaving a Mega form drops its stone. */
 fun Dex.withForm(m: TeamMember, formId: String): TeamMember {
     val mega = megaSources[formId]

@@ -33,6 +33,14 @@ class TeamTest {
     private fun set(p: Pokemon, ability: Int = p.abilities.first(), item: Int? = null, moves: List<Int> = emptyList()) =
         MemberSet(dex, TeamMember(p.id, ability, item, moves))
 
+    @Test fun aMegaFormIsFoundInTheTeamThroughItsHolderAndStone() {
+        val team = listOf(null, dex.newTeamMember(megaLizard.id), dex.newTeamMember(grass.id))
+        assertEquals(TeamMember(lizard.id, lizard.abilities.first(), stone.id), team[1])
+        assertEquals(1, dex.teamSlotOf(team, megaLizard.id))
+        assertEquals(2, dex.teamSlotOf(team, grass.id))
+        assertEquals(-1, dex.teamSlotOf(team, lizard.id))                                   // The holder without its stone is another form.
+    }
+
     @Test fun everyMegaFormIsReachedFromItsHolderAndStone() {
         val megas = gameDex.pokemon.filter { it.formEnglish.startsWith("Mega ") }.map { it.id }.toSet()
         assertEquals(megas, gameDex.megaSources.keys)

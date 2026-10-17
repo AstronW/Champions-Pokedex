@@ -125,10 +125,10 @@ fun PokemonDetail(entry: Pokemon, dex: Dex, model: DexViewModel, onBack: () -> U
             horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             SecondaryButton("加入队伍", {
                 // A second tap on the same form is almost always a repeat, so it reports the existing slot instead of filling another.
-                val existing = model.team.indexOfFirst { it?.id == p.id }
+                val existing = dex.teamSlotOf(model.team, p.id)
                 toast(when {
                     existing >= 0 -> "${p.displayName}已在队伍第 ${existing + 1} 位"
-                    model.addToTeam(p.id) -> "已加入队伍第 ${model.team.indexOfLast { it?.id == p.id } + 1} 位"
+                    model.addToTeam(p.id) -> "已加入队伍第 ${dex.teamSlotOf(model.team, p.id) + 1} 位"
                     else -> "队伍已满 6 只"
                 })
             }, Modifier.weight(1f))
