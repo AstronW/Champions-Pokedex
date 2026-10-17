@@ -77,7 +77,7 @@ production 冻结。基线（`7d3be0e`）：单元测试 7 个类、23 项，约
 
 ## 设计系统台账
 
-按 `.claude/skills/material-3/PROJECT.md` 的 Organic 规则审计 `Theme.kt`、`components/` 与各页面（`581dd0e` 之后）。
+按 `.claude/skills/material-3/PROJECT.md` 的 Organic 规则审计 `Theme.kt`、`components/` 与各页面（审计时点 `296f8a2`）。
 
 | ID | 类别 | 内容 | 证据 | 状态 |
 |---|---|---|---|---|
