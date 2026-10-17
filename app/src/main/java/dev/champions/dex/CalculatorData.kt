@@ -91,21 +91,15 @@ private fun JSONObject.strings(): Map<String, String> =
 
 /** Immutable calculator data (catalog.json) parsed once per ViewModel: UI options plus the upstream rules for [CalculatorEngine]. */
 internal class CalculatorCatalog(json: JSONObject) {
-    val natureEffects: Map<String, Pair<String, String>> = json.getJSONArray("natures").let { values ->
-        (0 until values.length()).associate { i ->
-            val nature = values.getJSONObject(i)
-            nature.getString("name") to (nature.getString("plus") to nature.getString("minus"))
-        }
-    }
+    val natureEffects: Map<String, Pair<String, String>> = json.getJSONArray("natures").objects { nature ->
+        nature.getString("name") to (nature.getString("plus") to nature.getString("minus"))
+    }.toMap()
     val natureById: Map<String, CalcNature> = natureEffects.entries.associate { (name, stats) ->
         toId(name) to CalcNature(calcStats.indexOf(stats.first), calcStats.indexOf(stats.second))
     }
-    val items: List<CalculatorItem> = json.getJSONArray("items").let { values ->
-        (0 until values.length()).map { i ->
-            val item = values.getJSONObject(i)
-            CalculatorItem(item.getString("name"), item.getString("label"), item.optString("boostType").ifEmpty { null },
-                item.optString("resistType").ifEmpty { null }, item.optInt("fling"), item.optJSONObject("megaStone")?.strings().orEmpty())
-        }
+    val items: List<CalculatorItem> = json.getJSONArray("items").objects { item ->
+        CalculatorItem(item.getString("name"), item.getString("label"), item.optString("boostType").ifEmpty { null },
+            item.optString("resistType").ifEmpty { null }, item.optInt("fling"), item.optJSONObject("megaStone")?.strings().orEmpty())
     }
     val moveHits: Map<Int, IntRange> = json.getJSONObject("moveHits").let { values ->
         values.keys().asSequence().associate { id ->
@@ -124,7 +118,7 @@ internal class CalculatorCatalog(json: JSONObject) {
             val flags = m.optJSONArray("flags")
             id.toInt() to CalcMoveData(
                 basePower = m.getInt("basePower"),
-                flags = flags?.let { f -> (0 until f.length()).map(f::getString).toSet() }.orEmpty(),
+                flags = flags?.strings()?.toSet().orEmpty(),
                 multihit = when (hits) { is JSONArray -> hits.getInt(0)..hits.getInt(1); is Number -> hits.toInt()..hits.toInt(); else -> null },
                 multihitFixed = hits is Number, multiaccuracy = m.optBoolean("multiaccuracy"), secondaries = m.optBoolean("secondaries"),
                 recoil = m.optBoolean("recoil"), hasCrashDamage = m.optBoolean("hasCrashDamage"), willCrit = m.optBoolean("willCrit"),

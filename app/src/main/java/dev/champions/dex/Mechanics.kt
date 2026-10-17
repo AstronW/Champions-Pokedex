@@ -1,6 +1,5 @@
 package dev.champions.dex
 
-import org.json.JSONArray
 import org.json.JSONObject
 
 data class MoveCategory(val id: String, val name: String, val group: String, val revision: String, val url: String) {
@@ -47,9 +46,6 @@ data class Mechanics(
     val referencesByEntity = references.groupBy { it.entityKey }
     val referencesByBody = references.groupBy { it.bodyKey }
 }
-
-private fun <T> JSONArray.objects(read: (JSONObject) -> T) = (0 until length()).map { read(getJSONObject(it)) }
-private fun JSONArray.strings() = (0 until length()).map { getString(it) }
 
 /** Parse the versioned champout export without collapsing unknown flags to false. */
 fun parseMechanics(j: JSONObject): Mechanics = Mechanics(
