@@ -9,8 +9,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 
 typealias DexRule = AndroidComposeTestRule<ActivityScenarioRule<MainActivity>, MainActivity>
 
-fun DexRule.waitForCatalog() =
-    waitUntil(15000) { onAllNodesWithText("全国图鉴", substring = true).fetchSemanticsNodes().isNotEmpty() }
+fun DexRule.waitForCatalog() = waitUntil(15000) { onAllNodesWithText("全国图鉴", substring = true).fetchSemanticsNodes().isNotEmpty() }
 
 /** Opens a drawer destination by its label. */
 fun DexRule.navigate(label: String) {
@@ -19,10 +18,14 @@ fun DexRule.navigate(label: String) {
     waitForIdle()
 }
 
-fun DexRule.back() { activityRule.scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }; waitForIdle() }
-
-fun hasTagPrefix(prefix: String) = SemanticsMatcher("testTag starts with $prefix") {
-    it.config.getOrNull(SemanticsProperties.TestTag)?.startsWith(prefix) == true
+fun DexRule.back() {
+    activityRule.scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
+    waitForIdle()
 }
+
+fun hasTagPrefix(prefix: String) =
+    SemanticsMatcher("testTag starts with $prefix") {
+        it.config.getOrNull(SemanticsProperties.TestTag)?.startsWith(prefix) == true
+    }
 
 fun segment(label: String) = hasText(label) and SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.Tab)

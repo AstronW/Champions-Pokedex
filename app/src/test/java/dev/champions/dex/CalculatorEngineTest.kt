@@ -10,6 +10,7 @@ class CalculatorEngineTest {
     private val dex = parseDex(JSONObject(File("src/main/assets/dex.json").readText()), Mechanics())
     private val catalog = CalculatorCatalog(JSONObject(File("src/main/assets/calculator/catalog.json").readText()))
     private val engine = CalculatorEngine(dex, catalog)
+
     /** Produced by the upstream source and the original JavaScript boundary (scripts/calculator/test.cjs). */
     private val cases = JSONArray(File("../scripts/calculator/fixtures.json").readText())
 
@@ -29,12 +30,31 @@ class CalculatorEngineTest {
             }
             assertTrue("$name: $actual", actual is CalcDamage)
             actual as CalcDamage
-            val rolls = expected.getJSONArray("rolls").let { r -> (0 until r.length()).map { j -> r.getJSONArray(j).let { row -> (0 until row.length()).map(row::getInt) } } }
-            val wanted = CalcDamage(
-                expected.getInt("min"), expected.getInt("max"), expected.getInt("maxHP"), expected.getInt("currentHP"),
-                expected.getDouble("percentMin"), expected.getDouble("percentMax"), expected.getDouble("ohko"), rolls,
-                expected.stats("attackerStats"), expected.stats("defenderStats"), expected.getInt("hits"),
-            )
+            val rolls =
+                expected.getJSONArray("rolls").let { r ->
+                    (0 until r.length()).map { j ->
+                        r.getJSONArray(j).let { row ->
+                            (
+                                0 until
+                                    row.length()
+                            ).map(row::getInt)
+                        }
+                    }
+                }
+            val wanted =
+                CalcDamage(
+                    expected.getInt("min"),
+                    expected.getInt("max"),
+                    expected.getInt("maxHP"),
+                    expected.getInt("currentHP"),
+                    expected.getDouble("percentMin"),
+                    expected.getDouble("percentMax"),
+                    expected.getDouble("ohko"),
+                    rolls,
+                    expected.stats("attackerStats"),
+                    expected.stats("defenderStats"),
+                    expected.getInt("hits"),
+                )
             assertEquals(name, wanted, actual)
             if (actual.max > 0) damaging++
         }
@@ -44,12 +64,15 @@ class CalculatorEngineTest {
     /** Remembers every key the engine asks for. */
     private class ReadKeys : JSONObject() {
         val read = mutableSetOf<String>()
+
         override fun opt(key: String?): Any? = super.opt(key).also { if (key != null) read += key }
     }
 
     @Test fun everyConditionThePageOffersIsReadByTheEngine() {
         val request = JSONObject(cases.getJSONObject(0).getJSONObject("request").toString())
-        val field = ReadKeys(); val attackerSide = ReadKeys(); val defenderSide = ReadKeys()
+        val field = ReadKeys()
+        val attackerSide = ReadKeys()
+        val defenderSide = ReadKeys()
         request.put("field", field.put("attackerSide", attackerSide).put("defenderSide", defenderSide))
         assertTrue(engine.calculate(request) is CalcDamage)
         assertTrue(field.read.containsAll(CalculatorFieldConditions.map { it.first }))

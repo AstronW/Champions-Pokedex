@@ -25,25 +25,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asAndroidBitmap
-import androidx.compose.ui.graphics.layer.drawLayer
-import androidx.compose.ui.graphics.rememberGraphicsLayer
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
+import dev.champions.dex.components.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -53,35 +54,69 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import kotlin.math.roundToInt
-import dev.champions.dex.components.*
 
 /** Preview of the team image with its two outlets: the system share sheet, or a copy kept on the device. */
 @Composable
-fun AnimatedVisibilityScope.TeamShareSheet(sets: List<MemberSet>, dex: Dex, onClose: () -> Unit) {
-    val context = LocalContext.current; val toast = LocalToast.current; val scope = rememberCoroutineScope()
+fun AnimatedVisibilityScope.TeamShareSheet(
+    sets: List<MemberSet>,
+    dex: Dex,
+    onClose: () -> Unit,
+) {
+    val context = LocalContext.current
+    val toast = LocalToast.current
+    val scope = rememberCoroutineScope()
     val image = rememberGraphicsLayer()
     var busy by remember { mutableStateOf(false) }
+
     fun run(block: suspend (Bitmap) -> Unit) {
         if (busy) return
         busy = true
         scope.launch {
             // The preview is the image: its recorded drawing is rendered again at full resolution.
-            try { block(image.toImageBitmap().asAndroidBitmap()) } catch (_: Exception) { toast("图片生成失败，请重试") } finally { busy = false }
+            try {
+                block(image.toImageBitmap().asAndroidBitmap())
+            } catch (_: Exception) {
+                toast("图片生成失败，请重试")
+            } finally {
+                busy = false
+            }
         }
     }
     // Before Android 10 a gallery write needs a storage permission, so the user picks a location instead.
-    val createDocument = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("image/png")) { uri ->
-        if (uri != null) run { bitmap -> toast(if (withContext(Dispatchers.IO) { writeImage(context, uri, bitmap) }) "已保存" else "保存失败，请重试") }
-    }
+    val createDocument =
+        rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("image/png")) { uri ->
+            if (uri !=
+                null
+            ) {
+                run { bitmap -> toast(if (withContext(Dispatchers.IO) { writeImage(context, uri, bitmap) }) "已保存" else "保存失败，请重试") }
+            }
+        }
     MenuPanel("队伍构建", pal.a(700), "分享队伍图片", true, onClose) {
         item(key = "actions") {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 SecondaryButton("保存到本地", {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) run { bitmap ->
-                        toast(if (withContext(Dispatchers.IO) { saveToPictures(context, bitmap) }) "已保存到相册 · Pictures/$ImageFolder" else "保存失败，请重试")
-                    } else createDocument.launch(imageName())
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        run { bitmap ->
+                            toast(
+                                if (withContext(
+                                        Dispatchers.IO,
+                                    ) { saveToPictures(context, bitmap) }
+                                ) {
+                                    "已保存到相册 · Pictures/$ImageFolder"
+                                } else {
+                                    "保存失败，请重试"
+                                },
+                            )
+                        }
+                    } else {
+                        createDocument.launch(imageName())
+                    }
                 }, Modifier.weight(1f), height = 44.dp)
-                PrimaryButton("分享", { run { bitmap -> context.startActivity(withContext(Dispatchers.IO) { shareIntent(context, bitmap) }) } }, Modifier.weight(1f), height = 44.dp)
+                PrimaryButton("分享", {
+                    run { bitmap ->
+                        context.startActivity(withContext(Dispatchers.IO) { shareIntent(context, bitmap) })
+                    }
+                }, Modifier.weight(1f), height = 44.dp)
             }
         }
         item(key = "image") {
@@ -91,8 +126,18 @@ fun AnimatedVisibilityScope.TeamShareSheet(sets: List<MemberSet>, dex: Dex, onCl
                 val scale = (maxWidth / ShareWidth).coerceAtMost(1f)
                 val frame = RoundedCornerShape(20.dp)
                 CompositionLocalProvider(LocalDensity provides Density(LocalDensity.current.density, fontScale = 1f)) {
-                    TeamShareCard(sets, dex, Modifier.scaledToFit(ShareWidth, scale).clip(frame).border(1.dp, pal.divider, frame)
-                        .drawWithContent { image.record { this@drawWithContent.drawContent() }; drawLayer(image) }.testTag("team-share-image"))
+                    TeamShareCard(
+                        sets,
+                        dex,
+                        Modifier
+                            .scaledToFit(ShareWidth, scale)
+                            .clip(frame)
+                            .border(1.dp, pal.divider, frame)
+                            .drawWithContent {
+                                image.record { this@drawWithContent.drawContent() }
+                                drawLayer(image)
+                            }.testTag("team-share-image"),
+                    )
                 }
             }
         }
@@ -101,21 +146,33 @@ fun AnimatedVisibilityScope.TeamShareSheet(sets: List<MemberSet>, dex: Dex, onCl
 }
 
 private val ShareWidth = 380.dp
+
 /** One size for every move: the longest learnable names (6 characters) fit a move cell at [ShareWidth]. */
 private val MoveIcon = 14.dp
 private val MoveText = 9.sp
 
 /** Lays the content out at [width] and draws it scaled by [scale], occupying only the scaled space. */
-private fun Modifier.scaledToFit(width: Dp, scale: Float) = layout { measurable, _ ->
+private fun Modifier.scaledToFit(
+    width: Dp,
+    scale: Float,
+) = layout { measurable, _ ->
     val placeable = measurable.measure(Constraints.fixedWidth(width.roundToPx()))
     layout((placeable.width * scale).roundToInt(), (placeable.height * scale).roundToInt()) {
-        placeable.placeWithLayer(0, 0) { scaleX = scale; scaleY = scale; transformOrigin = TransformOrigin(0f, 0f) }
+        placeable.placeWithLayer(0, 0) {
+            scaleX = scale
+            scaleY = scale
+            transformOrigin = TransformOrigin(0f, 0f)
+        }
     }
 }
 
 /** The shared image: every member's form, item, ability, stat adjustment and moves on a solid page background. */
 @Composable
-private fun TeamShareCard(sets: List<MemberSet>, dex: Dex, modifier: Modifier) {
+private fun TeamShareCard(
+    sets: List<MemberSet>,
+    dex: Dex,
+    modifier: Modifier,
+) {
     Column(modifier.background(pal.bg).padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Row(verticalAlignment = Alignment.Bottom) {
             Column(Modifier.weight(1f)) {
@@ -135,12 +192,28 @@ private fun TeamShareCard(sets: List<MemberSet>, dex: Dex, modifier: Modifier) {
 }
 
 @Composable
-private fun ShareTile(set: MemberSet, dex: Dex, modifier: Modifier) {
-    val p = set.form; val m = set.member
-    Column(modifier.clip(RoundedCornerShape(20.dp)).background(typeTone(p.types.first()).blob).padding(10.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+private fun ShareTile(
+    set: MemberSet,
+    dex: Dex,
+    modifier: Modifier,
+) {
+    val p = set.form
+    val m = set.member
+    Column(
+        modifier.clip(RoundedCornerShape(20.dp)).background(typeTone(p.types.first()).blob).padding(10.dp),
+        verticalArrangement = Arrangement.spacedBy(5.dp),
+    ) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             PokemonArt(p, Modifier.size(48.dp))
-            Text(p.displayName, Modifier.weight(1f), fontSize = 13.sp, lineHeight = 15.sp, fontWeight = FontWeight.Bold, color = pal.text, maxLines = 2)
+            Text(
+                p.displayName,
+                Modifier.weight(1f),
+                fontSize = 13.sp,
+                lineHeight = 15.sp,
+                fontWeight = FontWeight.Bold,
+                color = pal.text,
+                maxLines = 2,
+            )
         }
         // Two named types need the tile's full width.
         TypeTagRow(p.types, fontSize = 10.sp, icon = 16.dp, vertical = 2.dp)
@@ -154,9 +227,20 @@ private fun ShareTile(set: MemberSet, dex: Dex, modifier: Modifier) {
             set.moves.chunked(2).forEach { pair ->
                 Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     pair.forEach { move ->
-                        Row(Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
+                        Row(
+                            Modifier.weight(1f),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(3.dp),
+                        ) {
                             TypeTag(move.type, showName = false, icon = MoveIcon)
-                            Text(move.name, fontSize = MoveText, lineHeight = 12.sp, color = pal.text, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            Text(
+                                move.name,
+                                fontSize = MoveText,
+                                lineHeight = 12.sp,
+                                color = pal.text,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
                         }
                     }
                     if (pair.size == 1) Spacer(Modifier.weight(1f))
@@ -168,9 +252,20 @@ private fun ShareTile(set: MemberSet, dex: Dex, modifier: Modifier) {
 
 /** One line that shrinks to fit, so the image never cuts a name short. */
 @Composable
-private fun FitText(text: String, modifier: Modifier = Modifier, color: Color = pal.text, size: TextUnit = 11.sp, weight: FontWeight = FontWeight.SemiBold) =
-    BasicText(text, modifier, TextStyle(color = color, fontSize = size, fontWeight = weight, fontFamily = BodyFont), maxLines = 1,
-        autoSize = TextAutoSize.StepBased(minFontSize = 8.sp, maxFontSize = size, stepSize = .5.sp))
+private fun FitText(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = pal.text,
+    size: TextUnit = 11.sp,
+    weight: FontWeight = FontWeight.SemiBold,
+) = BasicText(
+    text,
+    modifier,
+    TextStyle(color = color, fontSize = size, fontWeight = weight, fontFamily = BodyFont),
+    maxLines = 1,
+    autoSize = TextAutoSize.StepBased(minFontSize = 8.sp, maxFontSize = size, stepSize = .5.sp),
+)
+
 private const val ImageFolder = "ChampionsDex"
 
 private fun imageName() = "champions-team-" + SimpleDateFormat("yyyyMMdd-HHmmss", Locale.ROOT).format(Date()) + ".png"
@@ -182,12 +277,18 @@ private fun Bitmap.writePng(out: OutputStream) {
 
 /** Android 10+ lets an app add its own pictures to the gallery without a permission. */
 @RequiresApi(Build.VERSION_CODES.Q)
-private fun saveToPictures(context: Context, bitmap: Bitmap): Boolean {
+private fun saveToPictures(
+    context: Context,
+    bitmap: Bitmap,
+): Boolean {
     val resolver = context.contentResolver
-    val values = ContentValues().apply {
-        put(MediaStore.Images.Media.DISPLAY_NAME, imageName()); put(MediaStore.Images.Media.MIME_TYPE, "image/png")
-        put(MediaStore.Images.Media.RELATIVE_PATH, "${Environment.DIRECTORY_PICTURES}/$ImageFolder"); put(MediaStore.Images.Media.IS_PENDING, 1)
-    }
+    val values =
+        ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, imageName())
+            put(MediaStore.Images.Media.MIME_TYPE, "image/png")
+            put(MediaStore.Images.Media.RELATIVE_PATH, "${Environment.DIRECTORY_PICTURES}/$ImageFolder")
+            put(MediaStore.Images.Media.IS_PENDING, 1)
+        }
     val uri = resolver.insert(MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY), values) ?: return false
     return runCatching {
         resolver.openOutputStream(uri)!!.use(bitmap::writePng)
@@ -195,15 +296,25 @@ private fun saveToPictures(context: Context, bitmap: Bitmap): Boolean {
     }.onFailure { resolver.delete(uri, null, null) }.isSuccess
 }
 
-private fun writeImage(context: Context, uri: Uri, bitmap: Bitmap) =
-    runCatching { context.contentResolver.openOutputStream(uri)!!.use(bitmap::writePng) }.isSuccess
+private fun writeImage(
+    context: Context,
+    uri: Uri,
+    bitmap: Bitmap,
+) = runCatching { context.contentResolver.openOutputStream(uri)!!.use(bitmap::writePng) }.isSuccess
 
 /** The image goes through the app's cache and a read-only content URI, so the receiving app sees only this file. */
-private fun shareIntent(context: Context, bitmap: Bitmap): Intent {
+private fun shareIntent(
+    context: Context,
+    bitmap: Bitmap,
+): Intent {
     val file = File(context.cacheDir, "shared").apply { mkdirs() }.resolve("champions-team.png")
     file.outputStream().use(bitmap::writePng)
     val uri = FileProvider.getUriForFile(context, "${context.packageName}.files", file)
-    val send = Intent(Intent.ACTION_SEND).setType("image/png").putExtra(Intent.EXTRA_STREAM, uri)
-        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION).apply { clipData = ClipData.newRawUri(null, uri) }
+    val send =
+        Intent(Intent.ACTION_SEND)
+            .setType("image/png")
+            .putExtra(Intent.EXTRA_STREAM, uri)
+            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            .apply { clipData = ClipData.newRawUri(null, uri) }
     return Intent.createChooser(send, "分享队伍")
 }

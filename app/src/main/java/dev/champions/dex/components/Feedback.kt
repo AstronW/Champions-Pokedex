@@ -13,7 +13,10 @@ import dev.champions.dex.*
 val LocalToast = compositionLocalOf<(String) -> Unit> { {} }
 
 @Composable
-fun EmptyResult(text: String = "暂时没有匹配结果", onClear: (() -> Unit)? = null) {
+fun EmptyResult(
+    text: String = "暂时没有匹配结果",
+    onClear: (() -> Unit)? = null,
+) {
     Column(Modifier.fillMaxWidth().padding(vertical = 48.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         BallMark(Modifier.size(48.dp), pal.n(400))
         Spacer(Modifier.height(16.dp))
@@ -24,7 +27,8 @@ fun EmptyResult(text: String = "暂时没有匹配结果", onClear: (() -> Unit)
 
 @DexPreviews
 @Composable
-private fun EmptyResultPreview() = PreviewSurface {
-    EmptyResult()
-    EmptyResult("没有符合条件的招式") {}
-}
+private fun EmptyResultPreview() =
+    PreviewSurface {
+        EmptyResult()
+        EmptyResult("没有符合条件的招式") {}
+    }

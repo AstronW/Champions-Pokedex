@@ -18,6 +18,7 @@ class TeamFlowTest {
         compose.activityRule.scenario.onActivity { model = ViewModelProvider(it)[DexViewModel::class.java] }
         return model
     }
+
     /** The team is stored with the app's preferences, so every test starts from an empty one. */
     private fun ready() {
         compose.waitForCatalog()
@@ -27,7 +28,9 @@ class TeamFlowTest {
         }
         compose.waitForIdle()
     }
+
     private fun search(text: String) = compose.onNode(hasSetTextAction()).performTextReplacement(text)
+
     private val megaX = "超级喷火龙Ｘ"
 
     @Test fun aMemberHoldingItsStoneIsAnalysedAsTheMegaFormAndKeptAfterRecreation() {
@@ -45,7 +48,8 @@ class TeamFlowTest {
         assertEquals(TeamMember("0006000", model().team[0]!!.ability, 660), model().team[0]!!.copy(moves = emptyList(), up = "", down = ""))
 
         // Recreation keeps the open menu, as rotation and theme changes do.
-        compose.activityRule.scenario.recreate(); compose.waitForIdle()
+        compose.activityRule.scenario.recreate()
+        compose.waitForIdle()
         compose.onNodeWithText("携带超级进化石，按超级进化后的属性与特性分析。").assertExists()
         compose.onNodeWithText("完成").performClick()
         compose.onNodeWithTag("menu-sheet").assertDoesNotExist()

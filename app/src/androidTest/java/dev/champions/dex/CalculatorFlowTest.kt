@@ -14,27 +14,46 @@ import org.junit.runner.RunWith
 class CalculatorFlowTest {
     @get:Rule val compose = createAndroidComposeRule<MainActivity>()
 
-    private fun damageText() = compose.onAllNodesWithTag("calc-damage").fetchSemanticsNodes().firstOrNull()
-        ?.config?.get(SemanticsProperties.Text)?.joinToString()
+    private fun damageText() =
+        compose
+            .onAllNodesWithTag("calc-damage")
+            .fetchSemanticsNodes()
+            .firstOrNull()
+            ?.config
+            ?.get(SemanticsProperties.Text)
+            ?.joinToString()
+
     private fun waitForDamage(predicate: (String) -> Boolean = { true }): String {
         compose.waitUntil(20000) { damageText()?.let(predicate) == true }
         return damageText()!!
     }
-    private fun ready(): String { compose.waitForCatalog(); compose.navigate("伤害计算"); return waitForDamage() }
+
+    private fun ready(): String {
+        compose.waitForCatalog()
+        compose.navigate("伤害计算")
+        return waitForDamage()
+    }
+
     /** Open a second-level menu from its summary on the calculator page. */
     private fun open(tag: String) {
         compose.onNodeWithTag("calculator-list").performScrollToNode(hasTestTag(tag))
         compose.onNodeWithTag(tag).performClick()
         compose.onNodeWithTag("menu-sheet").assertExists()
     }
-    private fun done() { compose.onNodeWithText("完成").performClick(); compose.onNodeWithTag("menu-sheet").assertDoesNotExist() }
+
+    private fun done() {
+        compose.onNodeWithText("完成").performClick()
+        compose.onNodeWithTag("menu-sheet").assertDoesNotExist()
+    }
 
     @Test fun weatherChangesDamageAndSurvivesNavigationRecreationAndRotation() {
         val sunny = ready()
-        open("open-field"); compose.onNode(segment("下雨")).performClick()
+        open("open-field")
+        compose.onNode(segment("下雨")).performClick()
         val rain = waitForDamage { it != sunny }
         done()
-        compose.navigate("速度线"); compose.navigate("伤害计算")
+        compose.navigate("速度线")
+        compose.navigate("伤害计算")
         waitForDamage { it == rain }
         compose.activityRule.scenario.recreate()
         waitForDamage { it == rain }
@@ -47,7 +66,8 @@ class CalculatorFlowTest {
 
     @Test fun invalidPointsCannotLeaveStaleResult() {
         ready()
-        open("config-attacker"); compose.onNode(segment("能力点")).performClick()
+        open("config-attacker")
+        compose.onNode(segment("能力点")).performClick()
         compose.onNode(hasSetTextAction() and hasContentDescription("特攻能力点")).performTextReplacement("33")
         compose.waitUntil(10000) { compose.onAllNodesWithTag("calc-error").fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithTag("calc-damage").assertDoesNotExist()

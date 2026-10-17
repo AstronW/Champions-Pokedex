@@ -26,7 +26,13 @@ class MechanicsParseTest {
         val moldBreaker = mechanics.flags.getValue("ability:1").single { it.field == "mold_breaker" }
         assertNull(moldBreaker.value)
         assertEquals("百科未标明", moldBreaker.displayText)
-        assertEquals(true, mechanics.flags.getValue("ability:1").single { it.field == "skill_swap" }.value)
+        assertEquals(
+            true,
+            mechanics.flags
+                .getValue("ability:1")
+                .single { it.field == "skill_swap" }
+                .value,
+        )
     }
 
     @Test fun statusesKeepTheirAliasesAndGameTexts() {

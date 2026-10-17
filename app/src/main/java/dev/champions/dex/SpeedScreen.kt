@@ -17,37 +17,59 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.launch
 import dev.champions.dex.components.*
+import kotlinx.coroutines.launch
 
-private fun speedOf(p: Pokemon, mode: Int) = when (mode) { 0 -> actualStat(p.stats[5], 0, 5); 1 -> actualStat(p.stats[5], 32, 5); else -> actualStat(p.stats[5], 32, 5, 110) }
+private fun speedOf(
+    p: Pokemon,
+    mode: Int,
+) = when (mode) {
+    0 -> actualStat(p.stats[5], 0, 5)
+    1 -> actualStat(p.stats[5], 32, 5)
+    else -> actualStat(p.stats[5], 32, 5, 110)
+}
 
 @Composable
-fun SpeedScreen(dex: Dex, model: DexViewModel, onMenu: () -> Unit, onOpen: (String) -> Unit) {
-    var me by rememberSaveable { mutableStateOf(model.team.firstNotNullOfOrNull { it }?.let { dex.battleForm(it).id } ?: dex.species.first().id) }
+fun SpeedScreen(
+    dex: Dex,
+    model: DexViewModel,
+    onMenu: () -> Unit,
+    onOpen: (String) -> Unit,
+) {
+    var me by rememberSaveable {
+        mutableStateOf(model.team.firstNotNullOfOrNull { it }?.let { dex.battleForm(it).id } ?: dex.species.first().id)
+    }
     var mode by rememberSaveable { mutableIntStateOf(2) }
     var scarf by rememberSaveable { mutableStateOf(false) }
     var tailwind by rememberSaveable { mutableStateOf(false) }
     val mine = dex.pokemonById[me] ?: dex.pokemon.first()
     val myValue = speedOf(mine, mode).let { if (scarf) it * 3 / 2 else it }.let { if (tailwind) it * 2 else it }
-    val rows = remember(dex, me, mode, myValue) {
-        dex.pokemon.map { it to if (it.id == mine.id) myValue else speedOf(it, mode) }.sortedByDescending { it.second }
-    }
+    val rows =
+        remember(dex, me, mode, myValue) {
+            dex.pokemon.map { it to if (it.id == mine.id) myValue else speedOf(it, mode) }.sortedByDescending { it.second }
+        }
     val fastest = rows.first().second.coerceAtLeast(1)
     val faster = rows.count { it.first.id != mine.id && it.second < myValue }
     val tie = rows.count { it.first.id != mine.id && it.second == myValue }
-    val options = remember(dex) { dex.pokemon.map { SelectOption(it.id, it.displayName, "${it.number()} · ${it.english} · 速度 ${it.stats[5]}") } }
+    val options =
+        remember(dex) { dex.pokemon.map { SelectOption(it.id, it.displayName, "${it.number()} · ${it.english} · 速度 ${it.stats[5]}") } }
     val list = rememberLazyListState()
     val scope = rememberCoroutineScope()
     val reduceMotion = LocalReduceMotion.current
+
     // Item 0 is the controls card; three faster rows stay visible above mine for context.
-    fun locate() = scope.launch {
-        val target = (rows.indexOfFirst { it.first.id == mine.id } + 1 - 3).coerceAtLeast(1)
-        if (reduceMotion) list.scrollToItem(target) else list.animateScrollToItem(target)
-    }
+    fun locate() =
+        scope.launch {
+            val target = (rows.indexOfFirst { it.first.id == mine.id } + 1 - 3).coerceAtLeast(1)
+            if (reduceMotion) list.scrollToItem(target) else list.animateScrollToItem(target)
+        }
     Column(Modifier.fillMaxSize()) {
         AppHeader("Lv.50 实数值", DexRoot.SPEED.title, true, onMenu)
-        LazyColumn(state = list, contentPadding = PaddingValues(start = 18.dp, end = 18.dp, top = 6.dp, bottom = 32.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        LazyColumn(
+            state = list,
+            contentPadding = PaddingValues(start = 18.dp, end = 18.dp, top = 6.dp, bottom = 32.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
             item(key = "controls") {
                 DexCard(Modifier.padding(bottom = 6.dp), padding = PaddingValues(horizontal = 16.dp, vertical = 14.dp)) {
                     SelectField("我的宝可梦", mine.displayName, options, bold = true) { me = it }
@@ -71,11 +93,37 @@ fun SpeedScreen(dex: Dex, model: DexViewModel, onMenu: () -> Unit, onOpen: (Stri
             }
             items(rows, key = { it.first.id }) { (p, v) ->
                 val isMe = p.id == mine.id
-                Row(Modifier.fillMaxWidth().clip(PillShape).background(if (isMe) pal.a(200) else pal.bg).clickable { onOpen(p.key) }.padding(start = 5.dp, end = 12.dp, top = 5.dp, bottom = 5.dp),
-                    verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .clip(PillShape)
+                        .background(if (isMe) pal.a(200) else pal.bg)
+                        .clickable {
+                            onOpen(p.key)
+                        }.padding(start = 5.dp, end = 12.dp, top = 5.dp, bottom = 5.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
                     Blob(p, 40.dp)
-                    Text(p.displayName, Modifier.width(92.dp), fontSize = 13.sp, lineHeight = 15.sp, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis)
-                    Bar(v / fastest.toFloat(), when { isMe -> pal.accent; v > myValue -> pal.n(400); v == myValue -> pal.a(300); else -> pal.g(400) }, Modifier.weight(1f))
+                    Text(
+                        p.displayName,
+                        Modifier.width(92.dp),
+                        fontSize = 13.sp,
+                        lineHeight = 15.sp,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    Bar(
+                        v / fastest.toFloat(),
+                        when {
+                            isMe -> pal.accent
+                            v > myValue -> pal.n(400)
+                            v == myValue -> pal.a(300)
+                            else -> pal.g(400)
+                        },
+                        Modifier.weight(1f),
+                    )
                     Text("$v", Modifier.width(40.dp), fontSize = 14.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.End)
                 }
             }
