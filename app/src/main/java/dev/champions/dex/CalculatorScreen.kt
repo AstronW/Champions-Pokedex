@@ -58,10 +58,6 @@ internal fun koText(min: Int, max: Int, hp: Int, ohko: Double): String = when {
 
 private val weathers = listOf("" to "无", "Sun" to "晴天", "Rain" to "下雨", "Sand" to "沙暴", "Snow" to "下雪")
 private val terrains = listOf("" to "无", "Electric" to "电气", "Grassy" to "青草", "Misty" to "薄雾", "Psychic" to "精神")
-private val globalConditions = listOf("isGravity" to "重力", "isWonderRoom" to "奇妙空间", "isMagicRoom" to "魔法空间")
-private val sideConditions = listOf("isReflect" to "反射壁", "isLightScreen" to "光墙", "isAuroraVeil" to "极光幕", "isProtected" to "守住", "isTailwind" to "顺风",
-    "isHelpingHand" to "帮助", "isFriendGuard" to "友情防守", "isBattery" to "蓄电池", "isPowerSpot" to "能量点", "isSteelySpirit" to "钢之意志",
-    "isCharge" to "充电", "isFlowerGift" to "花之礼")
 private val statuses = listOf("" to "健康", "brn" to "灼伤", "par" to "麻痹", "psn" to "中毒", "tox" to "剧毒", "slp" to "睡眠", "frz" to "冰冻")
 private val SheetShape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)
 private val InnerShape = RoundedCornerShape(16.dp)
@@ -319,9 +315,9 @@ private fun FieldSummary(field: JSONObject, onClick: () -> Unit) {
         add(if (field.optString("gameType") == "Doubles") "双打" else "单打")
         add(weathers.firstOrNull { it.first == field.optString("weather") && it.first.isNotEmpty() }?.second ?: "无天气")
         add(terrains.firstOrNull { it.first == field.optString("terrain") && it.first.isNotEmpty() }?.second?.plus("场地") ?: "无场地")
-        globalConditions.filter { field.optBoolean(it.first) }.forEach { add(it.second) }
+        CalculatorFieldConditions.filter { field.optBoolean(it.first) }.forEach { add(it.second) }
         listOf("attackerSide" to "攻击方", "defenderSide" to "防守方").forEach { (side, label) ->
-            val on = sideConditions.filter { field.optJSONObject(side)?.optBoolean(it.first) == true }
+            val on = CalculatorSideConditions.filter { field.optJSONObject(side)?.optBoolean(it.first) == true }
             if (on.isNotEmpty()) add("$label · " + on.joinToString("、") { it.second })
         }
     }
@@ -555,19 +551,20 @@ private fun AnimatedVisibilityScope.FieldSheet(field: JSONObject, edit: ((JSONOb
                     { i -> edit { it.put("terrain", terrains[i].first) } }, height = 36.dp, fontSize = 12.sp)
                 SheetLabel("全场")
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    globalConditions.forEach { (key, label) ->
+                    CalculatorFieldConditions.forEach { (key, label) ->
                         ToggleTile(label, field.optBoolean(key), { edit { it.put(key, !it.optBoolean(key)) } }, Modifier.weight(1f), off = pal.surface)
                     }
                 }
                 SheetLabel("单侧状态")
                 PillSegment(listOf("攻击方", "防守方"), sideTab, { sideTab = it }, height = 36.dp)
                 val side = if (sideTab == 0) "attackerSide" else "defenderSide"
-                sideConditions.chunked(3).forEach { row ->
+                CalculatorSideConditions.chunked(3).forEach { row ->
                     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         row.forEach { (key, label) ->
                             val on = field.optJSONObject(side)?.optBoolean(key) == true
                             ToggleTile(label, on, { edit { f -> val s = f.optJSONObject(side) ?: JSONObject(); s.put(key, !on); f.put(side, s) } }, Modifier.weight(1f), off = pal.surface)
                         }
+                        repeat(3 - row.size) { Spacer(Modifier.weight(1f)) }
                     }
                 }
                 Text("天气特性不会自动改写这里的天气与场地。", fontSize = 11.sp, color = pal.n(700))
