@@ -27,7 +27,7 @@ internal fun decodeTeam(json: String?, legacy: String?): List<TeamMember?> {
     return List(TeamSize) { i ->
         if (stored != null) stored.optJSONObject(i)?.let { o ->
             TeamMember(o.getString("id"), o.optInt("ability"), if (o.isNull("item")) null else o.getInt("item"),
-                o.optJSONArray("moves")?.let { a -> (0 until a.length()).map(a::getInt) }.orEmpty(), o.optString("up"), o.optString("down"))
+                o.optJSONArray("moves")?.ints().orEmpty(), o.optString("up"), o.optString("down"))
         }
         else legacy.orEmpty().split(',').getOrNull(i)?.takeIf(String::isNotBlank)?.let { TeamMember(it, 0) }
     }

@@ -19,13 +19,9 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.coroutineScope
-import org.json.JSONArray
 import org.json.JSONObject
 import java.util.concurrent.atomic.AtomicInteger
 import dev.champions.dex.components.*
-
-private fun JSONArray.ints() = (0 until length()).map { getInt(it) }
-private fun <T> JSONArray.mapObjects(block: (JSONObject) -> T) = (0 until length()).map { block(getJSONObject(it)) }
 
 class DexRepository(private val context: Context) {
     suspend fun load(): Dex = withContext(Dispatchers.IO) {
@@ -36,26 +32,26 @@ class DexRepository(private val context: Context) {
 }
 
 internal fun parseDex(j: JSONObject, mechanics: Mechanics): Dex {
-    val pokemon = j.getJSONArray("pokemon").mapObjects {
+    val pokemon = j.getJSONArray("pokemon").objects {
         Pokemon(it.getString("id"), it.getInt("no"), it.getInt("formId"), it.getString("name"),
             it.getString("english"), it.getString("form"), it.getString("formEnglish"),
             it.getJSONArray("types").ints(), it.getJSONArray("stats").ints(), it.getJSONArray("abilities").ints(),
             it.getInt("weight"), it.getInt("sex"), it.getString("sprite"), it.getString("shiny"))
     }
-    val moves = j.getJSONArray("moves").mapObjects {
+    val moves = j.getJSONArray("moves").objects {
         Move(it.getInt("id"), it.getString("name"), it.getString("english"), it.getString("description"),
             it.getBoolean("available"), it.getInt("type"), it.getInt("category"), it.getInt("power"),
             it.getInt("accuracy"), it.getInt("pp"), it.getInt("priority"), it.getBoolean("contact"))
     }
-    val abilities = j.getJSONArray("abilities").mapObjects {
+    val abilities = j.getJSONArray("abilities").objects {
         Ability(it.getInt("id"), it.getString("name"), it.getString("english"), it.getString("description"))
     }
-    val items = j.getJSONArray("items").mapObjects {
+    val items = j.getJSONArray("items").objects {
         Item(it.getInt("id"), it.getString("name"), it.getString("english"), it.getString("description"), it.getString("sprite"), it.getInt("sort"),
-            it.getJSONArray("holders").let { h -> (0 until h.length()).map(h::getString) })
+            it.getJSONArray("holders").strings())
     }
     val learns = j.getJSONObject("learnsets")
-    val wiki = j.getJSONArray("wiki").mapObjects {
+    val wiki = j.getJSONArray("wiki").objects {
         WikiPage(it.getString("key"), it.getString("title"), it.getString("revision"), it.getString("url"))
     }.associateBy { it.key }
     val version = j.getJSONObject("version")
