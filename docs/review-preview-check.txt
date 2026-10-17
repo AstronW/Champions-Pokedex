@@ -1,4 +1,0 @@
-PASS: repeated form navigation preserves shiny state and returns once
-PASS: Ditto detail entry displays no-attack state
-PASS: optimized preview default calculation = 110–132 HP
-{"navigationScreenshot": "C:\\Users\\AstronW\\Projects\\PokeDex\\docs\\screenshots\\review-preview-navigation.png", "dittoScreenshot": "C:\\Users\\AstronW\\Projects\\PokeDex\\docs\\screenshots\\review-preview-ditto.png"}

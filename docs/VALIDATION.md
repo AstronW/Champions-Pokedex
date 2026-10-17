@@ -265,7 +265,7 @@ APK 未变（测试代码不进 APK，与下一节同一个体验版）。只保
 |原有百科正文|481 篇原有文章只变更链接，去除 href 后正文逐字一致；共 856 篇，没有未处理模板|
 |Kotlin 单元测试|28 项通过，包含全体百科文字完整性、未知/否/默认标记、分类关系、状态别名与历史引用边界；不换行空格按展示空白归一化|
 |计算器回归|35 组案例、396 条形态、335 个攻击招式及直接上游对照通过；仅重新生成图鉴来源哈希，计算器内核未改动|
-|Android 交互|全量 20 项中 19 项通过；1 项断言漏写“百科默认”后缀，修正后新增测试类 4 项全部通过。记录见 `mechanics-instrumentation.txt`、`mechanics-targeted-instrumentation.txt`|
+|Android 交互|全量 20 项中 19 项通过；1 项断言漏写“百科默认”后缀，修正后新增测试类 4 项全部通过。记录见 `mechanics-instrumentation.txt`、`mechanics-targeted-instrumentation.txt`（文件已于 2026-10-17 删除，原件可用 `git show 2ac182e:docs/<文件路径>` 查看）|
 |导航与状态|火焰拳→拳击类→铁拳、招式→灼伤及返回；展开状态、滚动位置与重建保持；分类查询、状态别名查询、暗色及旋转通过|
 |Android lint|0 错误、9 条原有提示，无新增提示|
 |优化构建|`./build.ps1` 完成 R8/资源压缩；最终 APK 的 v2 签名通过，1,590 个包内资源与工作区逐字节一致|
@@ -290,7 +290,7 @@ APK 未变（测试代码不进 APK，与下一节同一个体验版）。只保
 |---|---|
 |数据合同|Python 6 项通过|
 |Kotlin 单元测试|24 项全部通过，含 35 组 Node/Rhino 结果对照、727 篇百科文字完整性检查；新增搜索、索引顺序、属性相性、形态选择、交换、招式约束及目录元数据回归|
-|Android 交互|16 项完整运行全部通过，0 失败、0 跳过；记录见 `refactor-instrumentation.txt`|
+|Android 交互|16 项完整运行全部通过，0 失败、0 跳过；记录见 `refactor-instrumentation.txt`（文件已于 2026-10-17 删除，原件可用 `git show 2ac182e:docs/<文件路径>` 查看）|
 |Android lint|0 错误、9 条原有提示，无新增提示|
 |优化构建|`./build.ps1` 成功，R8 与资源压缩启用，APK Signature Scheme v2 验证通过|
 |打包资源|APK 中 1,460 个资源与工作区文件逐字节一致|
@@ -298,7 +298,7 @@ APK 未变（测试代码不进 APK，与下一节同一个体验版）。只保
 
 仅使用本次启动的只读 `emulator-5580`（Pixel_10 / API 36）；adb 均显式指定 serial，Gradle 通过 `ANDROID_SERIAL=emulator-5580` 指定同一设备。安装后模拟器曾显示一次 System UI 无响应提示，选择等待后恢复，后续页面检查完成，应用没有 AndroidRuntime 崩溃记录。测试后关闭本次模拟器。没有进行真机性能或长期稳定性验收，不将减少重复计算等同于已测得的帧率提升。
 
-最终 Preview 截图已检查：`screenshots/refactor-preview-light.png`、`screenshots/refactor-preview-dark-rain.png`、`screenshots/refactor-preview-landscape.png`。
+最终 Preview 截图已检查：`screenshots/refactor-preview-light.png`、`screenshots/refactor-preview-dark-rain.png`、`screenshots/refactor-preview-landscape.png`。（文件已于 2026-10-17 删除，原件可用 `git show 2ac182e:docs/<文件路径>` 查看）
 
 ---
 
@@ -350,7 +350,7 @@ APK 未变（测试代码不进 APK，与下一节同一个体验版）。只保
 |页面状态|形态切换留在同一返回栈条目，异色、页签、差值显示在重建后保留；栏目切换、筛选与 Activity 重建保留列表位置；搜索栏固定在列表上方|
 |计算器|天气改变结果并在切换栏目、重建、横屏后保留；滑杆合计受 66 点约束；越界数字输入显示错误且不留旧结果；百变怪无攻击招式；中文搜索选中阿罗拉雷丘|
 |Android lint|0 错误、9 条提示：原有 7 条，新增 2 条 Modifier 参数风格提示（`Glyph` 默认尺寸、`Kicker` 参数顺序）|
-|Preview 实际页面|在 `emulator-5554`（Pixel_10 AVD）检查亮色列表、侧边栏、超级妙蛙花详情、计算结果、暗色队伍构建、横屏计算器；截图 `screenshots/v2-*.png`|
+|Preview 实际页面|在 `emulator-5554`（Pixel_10 AVD）检查亮色列表、侧边栏、超级妙蛙花详情、计算结果、暗色队伍构建、横屏计算器；截图 `screenshots/v2-*.png`（文件已于 2026-10-17 删除，原件可用 `git show 2ac182e:docs/<文件路径>` 查看）|
 
 所有 adb 命令均指定 `-s emulator-5554`，Gradle 交互测试通过 `ANDROID_SERIAL` 指定同一设备。未做真机性能验收。
 
@@ -366,16 +366,16 @@ APK 未变（测试代码不进 APK，与下一节同一个体验版）。只保
 |---|---|
 |数据合同|Python 6 项通过；未修改生成的数据、Wiki、图片和上游源文件|
 |Kotlin 单元测试|12 项通过，包含原有 35 组计算对照、反复打开形态去重、回退方向、栈容量边界、空攻击招式与中文形态名|
-|Android 交互|15 项覆盖全部验证通过；完整运行 14 项通过，1 项因测试选择器同时命中两个开关而失败，修正选择器后该用例定向复测通过。原始记录见 `review-instrumentation.txt`、`review-ditto-instrumentation.txt`|
+|Android 交互|15 项覆盖全部验证通过；完整运行 14 项通过，1 项因测试选择器同时命中两个开关而失败，修正选择器后该用例定向复测通过。原始记录见 `review-instrumentation.txt`、`review-ditto-instrumentation.txt`（文件已于 2026-10-17 删除，原件可用 `git show 2ac182e:docs/<文件路径>` 查看）|
 |动画中间帧|Compose 测试时钟推进至 48 ms，确认进入页面位于右侧、返回页面从左侧恢复、退出页面向右移动；另验证进入动画中立即返回不丢状态|
 |减少动态效果|开启后首层详情直接占满页面，没有默认尺寸展开或裁剪|
 |页面状态|妙蛙花与超级妙蛙花重复往返 4 次，异色、页签及重建后状态保留，一次返回到列表；筛选后栏目切换和 Activity 重建保留位置|
 |计算器|百变怪在选择和详情入口均显示无攻击招式状态；手动选择假设招式可计算，关闭假设模式后清除旧结果；中文搜索能选中阿罗拉雷丘|
 |Android lint|0 错误、7 条原有提示，无新增提示|
 |Debug / Preview|构建通过；Preview 由 `./build.ps1` 生成，R8 与资源压缩启用，APK Signature Scheme v2 签名校验通过|
-|最终 Preview 实际操作|安装最终优化 APK，连续切换形态 3 次后一次返回列表且异色状态保留；百变怪详情进入计算器成功；默认计算为 110–132 HP。记录见 `review-preview-check.txt`|
+|最终 Preview 实际操作|安装最终优化 APK，连续切换形态 3 次后一次返回列表且异色状态保留；百变怪详情进入计算器成功；默认计算为 110–132 HP。记录见 `review-preview-check.txt`（文件已于 2026-10-17 删除，原件可用 `git show 2ac182e:docs/<文件路径>` 查看）|
 
-只操作本次独立启动的 `emulator-5580`（Pixel 10、API 36、SwiftShader），所有 adb 命令均指定 serial。最终 Preview 截图：`screenshots/review-preview-navigation.png`、`screenshots/review-preview-ditto.png`，已检查实际显示。Debug 的交互测试与优化 Preview 的实际操作分别记录；未将构建或模拟器结果扩展为真机性能验收。
+只操作本次独立启动的 `emulator-5580`（Pixel 10、API 36、SwiftShader），所有 adb 命令均指定 serial。最终 Preview 截图：`screenshots/review-preview-navigation.png`、`screenshots/review-preview-ditto.png`，已检查实际显示。Debug 的交互测试与优化 Preview 的实际操作分别记录；未将构建或模拟器结果扩展为真机性能验收。（文件已于 2026-10-17 删除，原件可用 `git show 2ac182e:docs/<文件路径>` 查看）
 
 ---
 
@@ -392,7 +392,7 @@ APK 未变（测试代码不进 APK，与下一节同一个体验版）。只保
 |输入约束|越界/空能力点、未开放招式被拒绝；形态固定性别与招式合法命中次数在适配层检查|
 |数据合同回归|Python 原有 6 项全部通过；原 `dex.json`、Wiki、图片未改动|
 |Kotlin 单元测试|5 项通过（原有 4 项 + 内含 35 个案例的解释器对照）|
-|Android 交互回归|8 项通过（原有图鉴 5 项 + 计算器 3 项）；记录见 `calculator-instrumentation.txt`|
+|Android 交互回归|8 项通过（原有图鉴 5 项 + 计算器 3 项）；记录见 `calculator-instrumentation.txt`（文件已于 2026-10-17 删除，原件可用 `git show 2ac182e:docs/<文件路径>` 查看）|
 |Android lint|0 错误、7 提示：5 条依赖/构建版本更新提示，2 条原有屏幕高度 API 使用提示；没有屏蔽 lint 错误|
 |Debug / Preview|构建成功；Preview 开启 R8 与资源压缩，签名验证通过|
 |Preview 实际计算|安装最终优化版并打开计算器；默认喷火龙→妙蛙花/喷射火焰为 110–132 HP，下雨为 54–66 HP；亮暗主题显示正常|
@@ -400,7 +400,7 @@ APK 未变（测试代码不进 APK，与下一节同一个体验版）。只保
 
 计算器 Android 测试覆盖：修改天气、切换栏目、Activity 重建、横屏显示；按英文搜索超级喷火龙 X；计算器→图鉴→详情带入的新计算页面→逐层返回；无效能力点清除旧伤害。
 
-仅使用本次独立启动的 `emulator-5580`（Pixel 10、API 36、SwiftShader），所有 adb 命令显式指定该 serial。没有操作其他设备。Preview 实机式人工复核截图见 `screenshots/calculator-preview-light.png`、`screenshots/calculator-preview-dark-rain.png` 和 `screenshots/calculator-preview-landscape.png`。
+仅使用本次独立启动的 `emulator-5580`（Pixel 10、API 36、SwiftShader），所有 adb 命令显式指定该 serial。没有操作其他设备。Preview 实机式人工复核截图见 `screenshots/calculator-preview-light.png`、`screenshots/calculator-preview-dark-rain.png` 和 `screenshots/calculator-preview-landscape.png`。（文件已于 2026-10-17 删除，原件可用 `git show 2ac182e:docs/<文件路径>` 查看）
 
 构建/运行修复：Rhino 的可选 JavaBean 转换引用 Android 缺失类，针对 5 个已禁用路径的类加入 `dontwarn`；实际 Preview 首次运行又暴露 R8 删除反射加载的 VMBridge，补齐解释器/内置对象保留规则后，优化版真实计算通过。Debug 的测试 APK 不能直接用于 R8 混淆后的 Preview（测试运行器依赖被改名的 Kotlin 类型），因此 8 项交互测试针对 Debug，Preview 另行实际操作验证，未将二者混称。
 
