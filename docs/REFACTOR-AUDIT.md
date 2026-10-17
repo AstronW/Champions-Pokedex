@@ -74,3 +74,14 @@ production 冻结。基线（`7d3be0e`）：单元测试 7 个类、23 项，约
 | T2 | 可读性 | `ModelsTest`、`CalculatorInputTest` 的 fixture 写得很挤（不加空格） | 只是格式，改了会掩盖 blame 历史，收益低 | Rejected：仅格式 |
 | T3 | 补深度 | 队伍构建（加入成员、配置、分享）没有交互测试 | 新增 `TeamFlowTest` 2 项：带超级石的成员按超级形态分析、重建后保留；超级形态详情页只加入一次并报告位置。全量交互测试 8 项通过；撤回 D3 修复、把 `battleForm` 改坏两处变异均能被测出。分享图片未覆盖 | Done |
 | T4 | 刻意保留 | `CalculatorEngineTest` 逐一对照 1238 个参考用例，是单元测试里最慢的一项（约 0.46 s） | 它是移植正确性的唯一证据 | Deliberate |
+
+## 设计系统台账
+
+按 `.claude/skills/material-3/PROJECT.md` 的 Organic 规则审计 `Theme.kt`、`components/` 与各页面（`581dd0e` 之后）。
+
+| ID | 类别 | 内容 | 证据 | 状态 |
+|---|---|---|---|---|
+| DS0 | 合规 | 除 `Theme.kt` 外没有硬编码颜色；每个组件文件都有 `@DexPreviews` | `grep -n "Color(0x"` 在其他文件无结果；按文件统计 `@DexPreviews` | 无需改动 |
+| DS1 | 去重 | 计算结果卡的 `SheetShape` 与菜单面板的 `PanelShape` 都是“顶部 28dp”，合并为 `components/Menus.kt` 的 `PanelShape` | 两处定义逐字相同 | Done |
+| DS2 | 规则与实现不一致 | PROJECT.md 写“字号取自 `MaterialTheme.typography` 的项目定义”，但页面里有 200 多处直接写的 `fontSize`，只有 16 处引用 typography 样式 | `grep -oh "fontSize = [0-9.]*\.sp"` 与 `grep -oh "typography\.[a-zA-Z]*"` | Blocked：需要用户决定改规则还是改代码 |
+| DS3 | 否决 | 页面里的圆角另有 20、22、26、30dp 等取值，没有对应的 token | 各处是有意的视觉取值，强行归并会改变界面 | Rejected：会改变外观 |

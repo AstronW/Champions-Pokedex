@@ -59,7 +59,6 @@ internal fun koText(min: Int, max: Int, hp: Int, ohko: Double): String = when {
 private val weathers = listOf("" to "无", "Sun" to "晴天", "Rain" to "下雨", "Sand" to "沙暴", "Snow" to "下雪")
 private val terrains = listOf("" to "无", "Electric" to "电气", "Grassy" to "青草", "Misty" to "薄雾", "Psychic" to "精神")
 private val statuses = listOf("" to "健康", "brn" to "灼伤", "par" to "麻痹", "psn" to "中毒", "tox" to "剧毒", "slp" to "睡眠", "frz" to "冰冻")
-private val SheetShape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)
 private val InnerShape = RoundedCornerShape(16.dp)
 
 /** Second-level menu names: Pokémon picker and set configuration for one side. */
@@ -157,7 +156,7 @@ fun CalculatorScreen(dex: Dex, model: DexViewModel, modifier: Modifier = Modifie
 @Composable
 private fun CalcResult(attacker: Pokemon, defender: Pokemon, move: Move?, noMoves: Boolean, result: CalcOutcome?, compact: Boolean,
                        onDetails: () -> Unit, modifier: Modifier) {
-    val shape = if (compact) RoundedCornerShape(topStart = 28.dp, bottomStart = 28.dp) else SheetShape
+    val shape = if (compact) RoundedCornerShape(topStart = 28.dp, bottomStart = 28.dp) else PanelShape
     Column(modifier.shadow(14.dp, shape).clip(shape).background(pal.n(100))
         .padding(start = 20.dp, end = 20.dp, top = if (compact) 18.dp else 14.dp, bottom = 18.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)) {

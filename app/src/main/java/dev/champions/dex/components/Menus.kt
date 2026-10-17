@@ -67,7 +67,8 @@ fun MenuHost(open: String, modifier: Modifier = Modifier, content: @Composable A
         label = "menu") { menu -> if (menu.isNotEmpty()) content(menu) }
 }
 
-private val PanelShape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)
+/** Top-rounded shape of every second-level menu, also used by surfaces that rise from the bottom like one. */
+val PanelShape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)
 
 /**
  * Panel that rises from the bottom of a [MenuHost] over a scrim. Dragging the handle or title row down past a short
