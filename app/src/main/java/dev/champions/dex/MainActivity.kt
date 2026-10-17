@@ -164,7 +164,7 @@ fun DexApp(model: DexViewModel) {
                     ) { key ->
                         when (key) {
                             HomeKey -> {
-                                NavEntry(key, contentKey = HomeContentKey) {
+                                NavEntry(key, contentKey = HOME_CONTENT_KEY) {
                                     val rootStates = rememberSaveableStateHolder()
                                     val pageDuration = if (model.reduceMotion) 0 else 260
                                     AnimatedContent(
@@ -270,7 +270,7 @@ fun DexApp(model: DexViewModel) {
     }
 }
 
-private fun Scene<DexKey>.isHome() = entries.lastOrNull()?.contentKey == HomeContentKey
+private fun Scene<DexKey>.isHome() = entries.lastOrNull()?.contentKey == HOME_CONTENT_KEY
 
 /** The catalogue stays still beneath a detail sliding over or away from it; details slide past each other. */
 private fun AnimatedContentTransitionScope<Scene<DexKey>>.detailSlide(

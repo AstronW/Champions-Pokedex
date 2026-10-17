@@ -10,7 +10,7 @@ internal data class DetailKey(
 ) : DexKey
 
 /** Content key of the bottom entry; detail routes are prefixed ("pokemon:", "settings", …) and never equal it. */
-internal const val HomeContentKey = "home"
+internal const val HOME_CONTENT_KEY = "home"
 
 /** Revisit an existing entry without duplicating its state or the path above it. */
 internal fun openDetailEntry(

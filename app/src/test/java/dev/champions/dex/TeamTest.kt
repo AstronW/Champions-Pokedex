@@ -141,9 +141,11 @@ class TeamTest {
         assertEquals(listOf(14, 0), refrigerate.attacks.map { it.type }) // Status moves never count; Weather Ball keeps its own rule
         assertEquals("冰冻皮肤", refrigerate.attacks.first().cause)
         assertEquals(2.0, refrigerate.hits(15), 0.0)
-        assertEquals(0, set(normal, ability = 70, moves = listOf(304)).attacks.single().type) // Without a skin ability the move stays Normal
+        // Without a skin ability the move stays Normal.
+        assertEquals(0, set(normal, ability = 70, moves = listOf(304)).attacks.single().type)
         assertEquals(9, set(normal, ability = 70, moves = listOf(311)).attacks.single().type) // Drought makes Weather Ball Fire
-        assertEquals(10, set(normal, ability = 204, moves = listOf(304)).attacks.single().type) // Liquid Voice turns sound moves into Water
+        // Liquid Voice turns sound moves into Water.
+        assertEquals(10, set(normal, ability = 204, moves = listOf(304)).attacks.single().type)
         assertEquals(15, set(lizard, item = 660, moves = listOf(304)).attacks.single().type) // Dragonize from the Mega Stone
         assertEquals(0.0, set(normal, ability = 70, moves = listOf(304)).hits(7), 0.0)
         assertEquals(1.0, set(normal, ability = 113, moves = listOf(304)).hits(7), 0.0) // Scrappy

@@ -49,7 +49,7 @@ fun PokemonRow(
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 Text(p.number(), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = pal.n(700))
-                if (mega) AssetImage(MegaSymbol, "可超级进化", Modifier.height(18.dp).aspectRatio(56f / 74f))
+                if (mega) AssetImage(MEGA_SYMBOL, "可超级进化", Modifier.height(18.dp).aspectRatio(56f / 74f))
                 if (badge != null) Pill(badge, pal.bg.copy(alpha = .75f), pal.a(800), fontSize = 10.sp)
             }
             Text(
@@ -209,12 +209,18 @@ fun AbilityRow(
 @Composable
 private fun PokemonRowPreview() =
     PreviewSurface {
-        PokemonRow(PreviewData.charizard, mega = true, badge = null, metricLabel = "总和", metric = "${PreviewData.charizard.total}", favorite = true, onClick = {
-        }, onFavorite = {})
-        PokemonRow(PreviewData.megaCharizardX, mega = false, badge = "超级进化", metricLabel = "速度", metric = "100", favorite = false, onClick = {
-        }, onFavorite = {})
-        PokemonRow(PreviewData.pikachu, mega = false, badge = null, metricLabel = "编号", metric = "25", favorite = false, onClick = {
-        }, onFavorite = {})
+        PokemonRow(
+            PreviewData.charizard,
+            true,
+            null,
+            "总和",
+            "${PreviewData.charizard.total}",
+            favorite = true,
+            onClick = {},
+            onFavorite = {},
+        )
+        PokemonRow(PreviewData.megaCharizardX, false, "超级进化", "速度", "100", favorite = false, onClick = {}, onFavorite = {})
+        PokemonRow(PreviewData.pikachu, false, null, "编号", "25", favorite = false, onClick = {}, onFavorite = {})
     }
 
 @DexPreviews

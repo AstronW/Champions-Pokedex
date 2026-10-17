@@ -317,6 +317,10 @@ fun CategoryListScreen(
     }
 }
 
+/** Relations listed on a category page, in order; paragraph mentions come last and start folded. */
+private val CategoryRelationTitles =
+    listOf("member" to "成员招式", "related_move" to "相关招式", "related_ability" to "相关特性", "section_reference" to "段落提及")
+
 @Composable
 fun CategoryDetail(
     category: MoveCategory,
@@ -366,7 +370,7 @@ fun CategoryDetail(
                     color = pal.a(800),
                 )
             }
-            listOf("member" to "成员招式", "related_move" to "相关招式", "related_ability" to "相关特性", "section_reference" to "段落提及").forEach { (relation, title) ->
+            CategoryRelationTitles.forEach { (relation, title) ->
                 val entries = groups[relation].orEmpty().groupBy { it.entityKey }
                 if (entries.isNotEmpty()) {
                     item(key = "heading:$relation") {
