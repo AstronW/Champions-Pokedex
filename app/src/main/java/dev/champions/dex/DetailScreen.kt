@@ -28,6 +28,7 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,12 +48,15 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.champions.dex.components.AbilityRow
 import dev.champions.dex.components.ActiveFilters
+import dev.champions.dex.components.AnimatedPokemonArt
 import dev.champions.dex.components.AppHeader
 import dev.champions.dex.components.AssetImage
 import dev.champions.dex.components.Bar
@@ -172,7 +176,7 @@ fun PokemonDetail(
             contentPadding = PaddingValues(start = 18.dp, end = 18.dp, bottom = 24.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            item(key = "hero") { PokemonHero(p, shiny, compact) { shiny = !shiny } }
+            item(key = "hero") { PokemonHero(p, variants, shiny, compact) { shiny = !shiny } }
             if (variants.size > 1) {
                 item(key = "forms") {
                     PillSegment(
@@ -290,12 +294,18 @@ fun PokemonDetail(
 @Composable
 private fun PokemonHero(
     p: Pokemon,
+    variants: List<Pokemon>,
     shiny: Boolean,
     compact: Boolean,
     onShiny: () -> Unit,
 ) {
     val tone1 = typeTone(p.types.first())
     val tone2 = typeTone(p.types.last())
+    // After the picture on screen: its other colouring, then every other form in both colourings.
+    val prefetch =
+        remember(p, variants) {
+            (listOf(p) + variants).flatMap { listOfNotNull(AnimatedSprites.name(it, false), AnimatedSprites.name(it, true)) }.distinct()
+        }
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
         // The primary type colour fills the whole hero; a second type tints a soft corner.
         Box(
@@ -319,10 +329,21 @@ private fun PokemonHero(
                         .background(tone2.blob),
                 )
             }
-            PokemonArt(p, Modifier.fillMaxHeight().aspectRatio(1f).padding(vertical = 8.dp), shiny)
-            if (p.shiny.isNotEmpty()) {
-                Box(Modifier.align(Alignment.TopStart).padding(12.dp)) {
+            var loading by remember(p.id, shiny) { mutableStateOf(false) }
+            AnimatedPokemonArt(p, Modifier.fillMaxHeight().aspectRatio(1f).padding(vertical = 8.dp), shiny, prefetch) { loading = it }
+            // The download spinner mirrors the shiny toggle: same centre line, same inset from the opposite edge.
+            Row(Modifier.align(Alignment.TopStart).fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                if (p.shiny.isNotEmpty()) {
                     ToggleTile(if (shiny) "★ 异色" else "☆ 异色", shiny, onShiny, Modifier.width(76.dp), off = pal.bg.copy(alpha = .75f))
+                }
+                Spacer(Modifier.weight(1f))
+                if (loading) {
+                    CircularProgressIndicator(
+                        Modifier.size(16.dp).semantics { contentDescription = "正在加载动图" },
+                        color = pal.n(700),
+                        strokeWidth = 2.dp,
+                        trackColor = Color.Transparent,
+                    )
                 }
             }
         }

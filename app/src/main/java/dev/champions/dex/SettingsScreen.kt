@@ -11,8 +11,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -23,10 +26,19 @@ import dev.champions.dex.components.AppHeader
 import dev.champions.dex.components.DexCard
 import dev.champions.dex.components.GhostButton
 import dev.champions.dex.components.Kicker
+import dev.champions.dex.components.LocalToast
 import dev.champions.dex.components.PillSegment
 import dev.champions.dex.components.ToggleTile
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
+private fun formatBytes(bytes: Long) =
+    when {
+        bytes >= 1024 * 1024 -> "%.1f MB".format(bytes / 1024f / 1024f)
+        bytes >= 1024 -> "${bytes / 1024} KB"
+        else -> "$bytes B"
+    }
 
 @Composable
 fun SettingsScreen(
@@ -74,10 +86,36 @@ fun SettingsScreen(
                 }
             }
             item {
+                val scope = rememberCoroutineScope()
+                val toast = LocalToast.current
+                var refresh by remember { mutableIntStateOf(0) }
+                val size by produceState<Long?>(null, refresh) { value = AnimatedSprites.cacheSize(context) }
+                DexCard {
+                    Kicker("缓存")
+                    Text(
+                        "宝可梦动图 · ${size?.let(::formatBytes) ?: "计算中…"}",
+                        fontSize = 15.sp,
+                    )
+                    Text(
+                        "详情页联网时下载的宝可梦动图，保存在本机缓存，再次打开无需重新下载；超过 256 MB 时自动删除最久未看的。清除只删除这些动图，内置图片、收藏、队伍与设置不受影响。",
+                        fontSize = 12.sp,
+                        lineHeight = 18.sp,
+                        color = pal.n(700),
+                    )
+                    GhostButton("清除宝可梦动图缓存") {
+                        scope.launch {
+                            AnimatedSprites.clearCache(context)
+                            refresh++
+                            toast("已清除宝可梦动图缓存")
+                        }
+                    }
+                }
+            }
+            item {
                 DexCard {
                     Kicker("数据来源")
                     Text(
-                        "游戏数据：champout 提取的 Pokémon Champions 数据。\n百科详解：52poke 神奇宝贝百科，2026-09-13 离线存档，各页附修订链接。文字已转为简体和阅读格式，保留原文的版本说明。\n图片：PokeAPI sprites / generation-ix / champions。缺少的形态图片显示占位。",
+                        "游戏数据：champout 提取的 Pokémon Champions 数据。\n百科详解：52poke 神奇宝贝百科，2026-09-13 离线存档，各页附修订链接。文字已转为简体和阅读格式，保留原文的版本说明。\n图片：PokeAPI sprites / generation-ix / champions。缺少的形态图片显示占位；详情页动图联网时下载并缓存。",
                         fontSize = 13.sp,
                         lineHeight = 20.sp,
                         color = pal.n(800),

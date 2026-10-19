@@ -1,6 +1,6 @@
 # Champions 图鉴
 
-原生 Kotlin / Jetpack Compose Android 图鉴，中文界面，离线运行。
+原生 Kotlin / Jetpack Compose Android 图鉴，中文界面，离线运行；详情页头图在联网时加载 PokeAPI 的 Champions 动图。
 
 ## 功能
 
@@ -52,7 +52,7 @@ Wiki 使用最新导出中的 `expanded`，不读取历史编辑草稿；转换�
 
 分类、特殊判定、招式目标和状态引用从同一 manifest 的 `wiki_*` 文件导入。`data/mechanics-records.json` 保存未裁剪的记录（含章节上下文、模板修订与差异）；`data/mechanics-sources.json` 和 `data/status-sources.json` 保存分类来源与完整状态原文。应用的 `mechanics.json` 使用精简字段，状态正文优先展示已展开的效果节，没有效果节时选“影响对战”或概述。
 
-图片只来自 `sprites/pokemon/versions/generation-ix/champions/` 及其 `shiny/`；属性图标来自 `sprites/types/generation-ix/champions/small/`。缺图的形态明确显示占位，`data/sprite-map.json` 记录逐形态映射与缺失项；彩粉蝶仅匹配经查看确认的花园花纹。PokeAPI 元数据只用于图片 ID 关联，固定版本见 `data/pokeapi/SOURCE.json`。
+图片只来自 `sprites/pokemon/versions/generation-ix/champions/` 及其 `shiny/`；属性图标来自 `sprites/types/generation-ix/champions/small/`。缺图的形态明确显示占位，`data/sprite-map.json` 记录逐形态映射与缺失项；彩粉蝶仅匹配经查看确认的花园花纹。PokeAPI 元数据只用于图片 ID 关联，固定版本见 `data/pokeapi/SOURCE.json`。详情页动图从同一目录的固定提交在线下载并缓存，规则见 `docs/PLAN.md`。
 
 ## 验证
 
