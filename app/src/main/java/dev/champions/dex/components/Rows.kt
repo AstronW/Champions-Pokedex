@@ -98,11 +98,17 @@ fun categoryColors(category: Int): Pair<Color, Color> =
 /** Move lists show the type as an icon only; inset by the row's vertical padding, it follows the pill's curve. */
 val MoveTypeIcon = 26.dp
 
+/**
+ * One move in any move list: the catalogue, a learnset, or a picker. [selected] marks the current choice in a picker;
+ * [note] is a short label beside the name (such as a hypothetical pick in the calculator).
+ */
 @Composable
 fun MoveRow(
     move: Move,
     showAccuracy: Boolean,
     favorite: Boolean = false,
+    selected: Boolean = false,
+    note: String? = null,
     onClick: () -> Unit,
 ) {
     Row(
@@ -110,7 +116,7 @@ fun MoveRow(
             .fillMaxWidth()
             .clip(
                 PillShape,
-            ).background(pal.surface)
+            ).background(if (selected) pal.a(100) else pal.surface)
             .clickable(onClick = onClick)
             .padding(start = 12.dp, end = 14.dp, top = 11.dp, bottom = 11.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -129,6 +135,7 @@ fun MoveRow(
             )
             if (favorite) Glyph(GlyphKind.STAR, Modifier.size(12.dp), pal.accent, filled = true)
             if (!move.available) Text("未开放", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = pal.a(700))
+            if (note != null) Pill(note, pal.a(200), pal.a(800), fontSize = 10.sp)
         }
         val (bg, fg) = categoryColors(move.category)
         Text(
@@ -162,9 +169,17 @@ fun MoveRow(
     }
 }
 
+/** Column captions above [MoveRow]s with the same [showAccuracy]; lists pin it as a sticky header on [pal.bg]. */
 @Composable
-fun MoveHeaderRow() {
-    Row(Modifier.fillMaxWidth().padding(start = 12.dp, end = 14.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+fun MoveHeaderRow(
+    modifier: Modifier = Modifier,
+    showAccuracy: Boolean = true,
+) {
+    Row(
+        modifier.fillMaxWidth().padding(start = 12.dp, end = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
         @Composable fun h(
             t: String,
             m: Modifier,
@@ -174,8 +189,8 @@ fun MoveHeaderRow() {
         h("属性", Modifier.width(MoveTypeIcon).requiredWidth(MoveTypeIcon + 8.dp), TextAlign.Center)
         h("招式", Modifier.weight(1f))
         h("分类", Modifier.width(40.dp), TextAlign.Center)
-        h("威力", Modifier.width(36.dp), TextAlign.End)
-        h("命中", Modifier.width(36.dp), TextAlign.End)
+        h("威力", Modifier.width(if (showAccuracy) 36.dp else 44.dp), TextAlign.End)
+        if (showAccuracy) h("命中", Modifier.width(36.dp), TextAlign.End)
     }
 }
 
@@ -243,8 +258,9 @@ private fun PokemonRowPreview() =
 private fun MoveRowPreview() =
     PreviewSurface {
         MoveHeaderRow()
-        PreviewData.moves.forEachIndexed { i, m -> MoveRow(m, showAccuracy = true, favorite = i == 0) {} }
-        MoveRow(PreviewData.earthquake, showAccuracy = false) {}
+        PreviewData.moves.forEachIndexed { i, m -> MoveRow(m, showAccuracy = true, favorite = i == 0, selected = i == 1) {} }
+        MoveHeaderRow(showAccuracy = false)
+        MoveRow(PreviewData.earthquake, showAccuracy = false, note = "假设") {}
     }
 
 @DexPreviews

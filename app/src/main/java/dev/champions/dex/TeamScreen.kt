@@ -22,7 +22,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,6 +53,7 @@ import dev.champions.dex.components.PillSegment
 import dev.champions.dex.components.PokemonArt
 import dev.champions.dex.components.PokemonPickerSheet
 import dev.champions.dex.components.SecondaryButton
+import dev.champions.dex.components.PickerField
 import dev.champions.dex.components.SelectField
 import dev.champions.dex.components.SelectOption
 import dev.champions.dex.components.SheetLabel
@@ -236,6 +239,7 @@ private fun AnimatedVisibilityScope.MemberSheet(
     val m = set.member
     val form = set.form
     val learnable = remember(dex, m.id) { dex.learnedMoves[m.id].orEmpty().filter { it.available } }
+    var picking by rememberSaveable { mutableStateOf<Int?>(null) }
     val itemOptions =
         remember(dex, m.id) {
             listOf(SelectOption("", "无道具")) +
@@ -331,27 +335,15 @@ private fun AnimatedVisibilityScope.MemberSheet(
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         row.forEach { k ->
                             val current = set.moves.getOrNull(k)
-                            val options =
-                                listOf(SelectOption("", "无")) +
-                                    learnable
-                                        .filter { it.id == current?.id || it.id !in m.moves }
-                                        .map {
-                                            SelectOption(
-                                                "${it.id}",
-                                                it.name,
-                                                "${TypeNames[it.type]} · ${it.categoryLabel} · 威力 ${it.powerLabel}",
-                                            )
-                                        }
-                            SelectField(
+                            PickerField(
                                 "招式 ${k + 1}",
                                 current?.name ?: "未选择",
-                                options,
                                 Modifier.weight(1f),
                                 container = pal.n(100),
-                                enabled =
-                                    current != null || k == m.moves.size,
+                                enabled = current != null || k == m.moves.size,
                                 tag = "team-move-$k",
-                            ) { setMove(k, it.toIntOrNull()) }
+                                leading = current?.let { { TypeTag(it.type, showName = false, icon = 28.dp) } },
+                            ) { picking = k }
                         }
                     }
                 }
@@ -412,6 +404,18 @@ private fun AnimatedVisibilityScope.MemberSheet(
                 empty = "选择攻击招式后显示打击面。",
             )
         }
+    }
+    picking?.let { k ->
+        val current = set.moves.getOrNull(k)
+        MovePickerSheet(
+            "招式 ${k + 1}",
+            learnable.filter { it.id == current?.id || it.id !in m.moves },
+            current,
+            {
+                setMove(k, it?.id)
+                picking = null
+            },
+        ) { picking = null }
     }
 }
 

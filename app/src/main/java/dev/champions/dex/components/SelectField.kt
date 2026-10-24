@@ -61,39 +61,7 @@ fun SelectField(
     onChoose: (String) -> Unit,
 ) {
     var open by rememberSaveable { mutableStateOf(false) }
-    Column(modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        if (label != null) Text(label, fontSize = 11.sp, fontWeight = FontWeight.Bold, color = pal.n(700))
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .then(
-                    if (tag !=
-                        null
-                    ) {
-                        Modifier.testTag(tag)
-                    } else {
-                        Modifier
-                    },
-                ).heightIn(min = 40.dp)
-                .clip(PillShape)
-                .background(container)
-                .border(1.dp, pal.divider, PillShape)
-                .clickable(enabled = enabled, onClickLabel = label ?: value) { open = true }
-                .padding(start = 14.dp, end = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                value,
-                Modifier.weight(1f),
-                fontSize = 14.sp,
-                fontWeight = if (bold) FontWeight.Bold else FontWeight.Normal,
-                color = if (enabled) pal.text else pal.n(600),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Glyph(GlyphKind.CHEVRON, Modifier.size(16.dp).rotate(90f), if (enabled) pal.n(700) else pal.n(500))
-        }
-    }
+    PickerField(label, value, modifier, container, enabled, bold, tag) { open = true }
     if (open) {
         var query by rememberSaveable { mutableStateOf("") }
         val shown =
@@ -106,6 +74,52 @@ fun SelectField(
                 onChoose(it)
                 open = false
             }, { open = false })
+        }
+    }
+}
+
+/**
+ * The pill field of [SelectField] on its own, for a choice made in a dedicated sheet (such as a move picker).
+ * [leading] sits before the value, such as the chosen move's type icon.
+ */
+@Composable
+fun PickerField(
+    label: String?,
+    value: String,
+    modifier: Modifier = Modifier,
+    container: Color = pal.bg,
+    enabled: Boolean = true,
+    bold: Boolean = false,
+    tag: String? = null,
+    leading: (@Composable () -> Unit)? = null,
+    onClick: () -> Unit,
+) {
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        if (label != null) Text(label, fontSize = 11.sp, fontWeight = FontWeight.Bold, color = pal.n(700))
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .then(if (tag != null) Modifier.testTag(tag) else Modifier)
+                .heightIn(min = 40.dp)
+                .clip(PillShape)
+                .background(container)
+                .border(1.dp, pal.divider, PillShape)
+                .clickable(enabled = enabled, onClickLabel = label ?: value, onClick = onClick)
+                .padding(start = if (leading != null) 6.dp else 14.dp, end = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            leading?.invoke()
+            Text(
+                value,
+                Modifier.weight(1f),
+                fontSize = 14.sp,
+                fontWeight = if (bold) FontWeight.Bold else FontWeight.Normal,
+                color = if (enabled) pal.text else pal.n(600),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Glyph(GlyphKind.CHEVRON, Modifier.size(16.dp).rotate(90f), if (enabled) pal.n(700) else pal.n(500))
         }
     }
 }
@@ -179,6 +193,10 @@ private fun SelectFieldPreview() =
         SelectField("道具", "生命宝珠", PreviewOptions) {}
         SelectField(null, "猛火", emptyList(), container = pal.surface, bold = true) {}
         SelectField("特性", "无法选择", emptyList(), enabled = false) {}
+        PickerField("招式 1", PreviewData.earthquake.name, leading = {
+            TypeTag(PreviewData.earthquake.type, showName = false, icon = 28.dp)
+        }) {}
+        PickerField("招式 2", "未选择", enabled = false) {}
     }
 
 @DexPreviews

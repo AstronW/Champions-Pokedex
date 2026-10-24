@@ -68,6 +68,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.champions.dex.components.ActiveFilter
 import dev.champions.dex.components.AppHeader
 import dev.champions.dex.components.Blob
 import dev.champions.dex.components.EmptyResult
@@ -77,7 +78,6 @@ import dev.champions.dex.components.GlyphKind
 import dev.champions.dex.components.Kicker
 import dev.champions.dex.components.MenuHost
 import dev.champions.dex.components.MenuPanel
-import dev.champions.dex.components.MoveTypeIcon
 import dev.champions.dex.components.PanelShape
 import dev.champions.dex.components.Pill
 import dev.champions.dex.components.PillSegment
@@ -92,7 +92,6 @@ import dev.champions.dex.components.TypeChoice
 import dev.champions.dex.components.TypeTag
 import dev.champions.dex.components.TypeTagColumn
 import dev.champions.dex.components.TypeTagRow
-import dev.champions.dex.components.categoryColors
 import dev.champions.dex.components.number
 import dev.champions.dex.components.rememberMenuState
 import kotlinx.coroutines.Dispatchers
@@ -1287,29 +1286,17 @@ private fun AnimatedVisibilityScope.MoveSheet(
     edit: ((JSONObject) -> Unit) -> Unit,
     onClose: () -> Unit,
 ) {
-    var query by rememberSaveable { mutableStateOf("") }
-    var category by rememberSaveable { mutableIntStateOf(0) }
-    var type by rememberSaveable { mutableStateOf<Int?>(null) }
+    val filter = rememberMoveFilter()
+    var filtering by rememberSaveable { mutableStateOf(false) }
     var stab by rememberSaveable { mutableStateOf(false) }
     var superEffective by rememberSaveable { mutableStateOf(false) }
     val list =
-        remember(dex, learned, allMoves, query, category, type, stab, superEffective, attacker.types, defender.types) {
-            val search = SearchQuery(query)
-            dex.attackingMoves.filter { m ->
-                (allMoves || m.id in learned) && search.matches(m.searchText) && (category == 0 || m.category == category - 1) &&
-                    (type == null || m.type == type) && (!stab || m.type in attacker.types) &&
-                    (!superEffective || effectiveness(m.type, defender.types) > 1)
+        remember(dex, learned, allMoves, filter.key, stab, superEffective, attacker.types, defender.types) {
+            filter.apply(dex.attackingMoves.filter { allMoves || it.id in learned }, allowUnavailable = false).filter { m ->
+                (!stab || m.type in attacker.types) && (!superEffective || effectiveness(m.type, defender.types) > 1)
             }
         }
     val current = request.optInt("move", -1)
-    val filtered = category != 0 || type != null || stab || superEffective
-
-    fun clear() {
-        category = 0
-        type = null
-        stab = false
-        superEffective = false
-    }
     MenuPanel(
         "招式",
         pal.a(700),
@@ -1349,67 +1336,49 @@ private fun AnimatedVisibilityScope.MoveSheet(
                 }
             }
         }
-        item(key = "search") { SearchField(query, { query = it }, "搜索名称、英文或编号", null) }
-        item(key = "category") { PillSegment(listOf("全部", "物理", "特殊"), category, { category = it }, height = 36.dp, fontSize = 13.sp) }
-        item(key = "types") { TypeChips(type) { type = it } }
-        item(key = "flags") {
-            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                ToggleTile("本系招式", stab, { stab = !stab }, Modifier.weight(1f), off = pal.surface)
-                ToggleTile("对防守方效果绝佳", superEffective, { superEffective = !superEffective }, Modifier.weight(1f), off = pal.surface)
-            }
+        item(key = "search") {
+            MoveSearchBar(
+                filter,
+                "搜索名称、英文或编号",
+                "${list.size} 个攻击招式",
+                { filtering = true },
+                extra =
+                    listOfNotNull(
+                        if (stab) ActiveFilter("本系招式") { stab = false } else null,
+                        if (superEffective) ActiveFilter("对防守方效果绝佳") { superEffective = false } else null,
+                    ),
+            )
         }
-        item(key = "count") { CountRow("共 ${list.size} 个攻击招式", filtered, ::clear) }
-        items(list, key = { it.id }) { m ->
-            val on = m.id == current
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .clip(PillShape)
-                    .background(if (on) pal.a(100) else pal.surface)
-                    .clickable {
-                        edit { q ->
-                            q.put("move", m.id)
-                            q.put("hits", 0)
-                        }
-                        onClose()
-                    }.padding(start = 12.dp, end = 14.dp, top = 11.dp, bottom = 11.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-            ) {
-                TypeTag(m.type, showName = false, icon = MoveTypeIcon)
-                Text(
-                    m.name,
-                    Modifier.weight(1f),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                if (m.id !in learned) Pill("假设", pal.a(200), pal.a(800), fontSize = 10.sp)
-                val (bg, fg) = categoryColors(m.category)
-                Text(
-                    m.categoryLabel,
-                    Modifier
-                        .width(40.dp)
-                        .clip(PillShape)
-                        .background(bg)
-                        .padding(vertical = 2.dp),
-                    color = fg,
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                )
-                Text(m.powerLabel, Modifier.width(36.dp), fontSize = 14.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.End)
+        moveItems(list, showAccuracy = true, selected = current, note = { if (it.id !in learned) "假设" else null }) { m ->
+            edit { q ->
+                q.put("move", m.id)
+                q.put("hits", 0)
             }
+            onClose()
         }
         if (list.isEmpty()) {
             item(key = "empty") {
                 EmptyResult(if (!allMoves && learned.isEmpty()) "此形态没有可用的攻击招式" else "暂时没有匹配结果") {
-                    query = ""
-                    clear()
+                    filter.query = ""
+                    filter.reset()
+                    stab = false
+                    superEffective = false
                 }
             }
         }
+    }
+    if (filtering) {
+        MoveFilterSheet(
+            "筛选攻击招式",
+            filter,
+            list.size,
+            listOf(
+                Triple("本系招式", stab) { stab = !stab },
+                Triple("对防守方效果绝佳", superEffective) { superEffective = !superEffective },
+            ),
+            allowUnavailable = false,
+            categories = MoveCategories.take(3),
+        ) { filtering = false }
     }
 }
 

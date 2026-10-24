@@ -37,8 +37,6 @@ import dev.champions.dex.components.EmptyResult
 import dev.champions.dex.components.FilterSheet
 import dev.champions.dex.components.GhostButton
 import dev.champions.dex.components.HideKeyboardWhileScrolling
-import dev.champions.dex.components.MoveHeaderRow
-import dev.champions.dex.components.MoveRow
 import dev.champions.dex.components.PokemonRow
 import dev.champions.dex.components.SearchField
 import dev.champions.dex.components.ToggleTile
@@ -169,94 +167,6 @@ fun PokemonListScreen(
     }
 }
 
-private val MoveCategories = listOf("全部", "物理", "特殊", "变化")
-
-/** Saved move filter state, shared by the move catalogue and the learnset tab. */
-class MoveFilterState(
-    type: Int?,
-    category: Int?,
-    unavailable: Boolean,
-    sort: MoveSort,
-) {
-    var type by mutableStateOf(type)
-    var category by mutableStateOf(category)
-    var includeUnavailable by mutableStateOf(unavailable)
-    var sort by mutableStateOf(sort)
-    val key get() = listOf(type, category, includeUnavailable, sort).joinToString("\u0000")
-
-    fun reset() {
-        type = null
-        category = null
-        includeUnavailable = false
-        sort = MoveSort.DEFAULT
-    }
-
-    fun active(): List<ActiveFilter> =
-        buildList {
-            category?.let { add(ActiveFilter(MoveCategories[it + 1]) { category = null }) }
-            type?.let { add(ActiveFilter(TypeNames[it], it) { type = null }) }
-            if (sort != MoveSort.DEFAULT) add(ActiveFilter("按${sort.label}排序") { sort = MoveSort.DEFAULT })
-            if (includeUnavailable) add(ActiveFilter("含未开放") { includeUnavailable = false })
-        }
-
-    companion object {
-        val Saver =
-            androidx.compose.runtime.saveable.listSaver<MoveFilterState, Any?>(
-                { listOf(it.type, it.category, it.includeUnavailable, it.sort.name) },
-                { MoveFilterState(it[0] as Int?, it[1] as Int?, it[2] as Boolean, MoveSort.valueOf(it[3] as String)) },
-            )
-    }
-}
-
-@Composable
-fun rememberMoveFilter() = rememberSaveable(saver = MoveFilterState.Saver) { MoveFilterState(null, null, false, MoveSort.DEFAULT) }
-
-@Composable
-fun MoveFilterSheet(
-    title: String,
-    filter: MoveFilterState,
-    shown: Int,
-    extra: List<Triple<String, Boolean, () -> Unit>>,
-    allowUnavailable: Boolean = true,
-    onDismiss: () -> Unit,
-) {
-    FilterSheet(
-        title,
-        MoveCategories,
-        (filter.category ?: -1) + 1,
-        {
-            filter.category =
-                if (it ==
-                    0
-                ) {
-                    null
-                } else {
-                    it - 1
-                }
-        },
-        filter.type,
-        { filter.type = it },
-        MoveSort.entries.map { it.label },
-        filter.sort.ordinal,
-        { filter.sort = MoveSort.entries[it] },
-        (
-            if (allowUnavailable) {
-                listOf(
-                    Triple("含未开放", filter.includeUnavailable) {
-                        filter.includeUnavailable = !filter.includeUnavailable
-                    },
-                )
-            } else {
-                emptyList()
-            }
-        ) +
-            extra,
-        "显示 $shown 个招式",
-        { filter.reset() },
-        onDismiss,
-    )
-}
-
 @Composable
 fun MoveListScreen(
     dex: Dex,
@@ -264,30 +174,28 @@ fun MoveListScreen(
     onMenu: () -> Unit,
     onOpen: (String) -> Unit,
 ) {
-    var query by rememberSaveable { mutableStateOf("") }
     var favoritesOnly by rememberSaveable { mutableStateOf(false) }
     var sheet by rememberSaveable { mutableStateOf(false) }
     val filter = rememberMoveFilter()
     val focus = LocalFocusManager.current
     val moves =
-        remember(dex, query, filter.key, favoritesOnly, model.favorites) {
+        remember(dex, filter.key, favoritesOnly, model.favorites) {
             // The catalogue lists available moves only; unavailable ones stay reachable from learnsets and links.
-            filterMoves(dex.availableMoves, query, filter.type, filter.category, false, filter.sort)
-                .filter { !favoritesOnly || it.key in model.favorites }
+            filter.apply(dex.availableMoves, allowUnavailable = false).filter { !favoritesOnly || it.key in model.favorites }
         }
     val list = rememberLazyListState()
     HideKeyboardWhileScrolling(list.isScrollInProgress)
-    ResetScrollOnChange(listOf(query, filter.key, favoritesOnly).joinToString("\u0000")) { list.requestScrollToItem(0) }
-    val filters = filter.active() + listOfNotNull(if (favoritesOnly) ActiveFilter("仅看收藏") { favoritesOnly = false } else null)
+    ResetScrollOnChange(listOf(filter.key, favoritesOnly).joinToString("\u0000")) { list.requestScrollToItem(0) }
     Column(Modifier.fillMaxSize()) {
         AppHeader("${dex.availableMoves.size} 个招式", DexRoot.MOVES.title, true, onMenu)
         ListControls {
-            SearchField(query, { query = it }, "搜索招式", filters.size) {
-                focus.clearFocus()
-                sheet = true
-            }
-            Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                Box(Modifier.weight(1f)) { ActiveFilters("${moves.size} 个", filters) }
+            MoveSearchBar(
+                filter,
+                "搜索招式",
+                "${moves.size} 个",
+                { sheet = true },
+                extra = listOfNotNull(if (favoritesOnly) ActiveFilter("仅看收藏") { favoritesOnly = false } else null),
+            ) {
                 GhostButton("详细分类") {
                     focus.clearFocus()
                     onOpen("categories:move")
@@ -302,19 +210,15 @@ fun MoveListScreen(
             if (moves.isEmpty()) {
                 item(key = "empty") {
                     EmptyResult(onClear = {
-                        query = ""
+                        filter.query = ""
                         favoritesOnly = false
                         filter.reset()
                     })
                 }
-            } else {
-                item(key = "head") { MoveHeaderRow() }
             }
-            items(moves, key = { it.id }) { m ->
-                MoveRow(m, true, m.key in model.favorites) {
-                    focus.clearFocus()
-                    onOpen(m.key)
-                }
+            moveItems(moves, showAccuracy = true, favorite = { it.key in model.favorites }) {
+                focus.clearFocus()
+                onOpen(it.key)
             }
         }
     }
@@ -323,16 +227,9 @@ fun MoveListScreen(
             "筛选招式",
             filter,
             moves.size,
-            listOf(
-                Triple("仅看收藏", favoritesOnly) {
-                    favoritesOnly = !favoritesOnly
-                },
-            ),
+            listOf(Triple("仅看收藏", favoritesOnly) { favoritesOnly = !favoritesOnly }),
             allowUnavailable = false,
-        ) {
-            sheet =
-                false
-        }
+        ) { sheet = false }
     }
 }
 

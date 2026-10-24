@@ -55,7 +55,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.champions.dex.components.AbilityRow
-import dev.champions.dex.components.ActiveFilters
 import dev.champions.dex.components.AnimatedPokemonArt
 import dev.champions.dex.components.AppHeader
 import dev.champions.dex.components.AssetImage
@@ -64,11 +63,8 @@ import dev.champions.dex.components.CardShape
 import dev.champions.dex.components.DexCard
 import dev.champions.dex.components.EmptyResult
 import dev.champions.dex.components.FavoriteButton
-import dev.champions.dex.components.Glyph
-import dev.champions.dex.components.GlyphKind
 import dev.champions.dex.components.Kicker
 import dev.champions.dex.components.LocalToast
-import dev.champions.dex.components.MoveRow
 import dev.champions.dex.components.Pill
 import dev.champions.dex.components.PillSegment
 import dev.champions.dex.components.PillShape
@@ -162,7 +158,7 @@ fun PokemonDetail(
     val base = variants.firstOrNull() ?: p
     val learnset = dex.learnedMoves[p.id].orEmpty()
     val moves =
-        remember(learnset, filter.key) { filterMoves(learnset, "", filter.type, filter.category, filter.includeUnavailable, filter.sort) }
+        remember(learnset, filter.key) { filter.apply(learnset) }
     val toast = LocalToast.current
     val compact =
         with(LocalDensity.current) {
@@ -233,37 +229,10 @@ fun PokemonDetail(
                 item(key = "weak") { WeaknessCard(p.types) }
             } else {
                 item(key = "moveHead") {
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("可学会的招式 · ${moves.size}", Modifier.weight(1f), style = MaterialTheme.typography.titleMedium)
-                            val active = filter.active().size
-                            Row(
-                                Modifier
-                                    .heightIn(min = 40.dp)
-                                    .clip(PillShape)
-                                    .background(
-                                        if (active >
-                                            0
-                                        ) {
-                                            pal.accent
-                                        } else {
-                                            pal.surface
-                                        },
-                                    ).clickable(role = Role.Button) { sheet = true }
-                                    .padding(horizontal = 14.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(6.dp),
-                            ) {
-                                val fg = if (active > 0) pal.bg else pal.text
-                                Glyph(GlyphKind.FILTER, Modifier.size(16.dp), fg)
-                                Text("筛选 · 排序", color = fg, fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                            }
-                        }
-                        if (filter.active().isNotEmpty()) ActiveFilters(null, filter.active())
-                    }
+                    MoveSearchBar(filter, "搜索可学会的招式", "可学会 ${moves.size} 个", { sheet = true })
                 }
                 if (moves.isEmpty()) item(key = "noMoves") { EmptyResult("没有符合条件的招式") }
-                items(moves, key = { it.id }) { m -> MoveRow(m, false, m.key in model.favorites) { onOpen(m.key) } }
+                moveItems(moves, showAccuracy = false, favorite = { it.key in model.favorites }) { onOpen(it.key) }
             }
         }
         Row(
